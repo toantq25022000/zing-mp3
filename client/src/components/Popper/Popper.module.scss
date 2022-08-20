@@ -1,0 +1,13 @@
+.wrapper {
+    min-width: 240px;
+    width: 100%;
+    overflow: hidden;
+    height: auto;
+    min-height: 95px;
+    border-radius: 8px;
+    background-color: var(--primary-bg);
+    z-index: 5;
+    display: block;
+    box-shadow: 0 4px 6px 0 rgb(32 33 36 / 28%);
+    color: var(--text-primary);
+}

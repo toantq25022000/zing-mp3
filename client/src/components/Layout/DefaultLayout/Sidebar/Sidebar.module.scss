@@ -1,0 +1,158 @@
+.wrraper {
+    display: flex;
+    flex-direction: column;
+    width: 240px;
+    height: 100%;
+    background-color: var(--sidebar-bg);
+    padding-bottom: 54px;
+    position: relative;
+    z-index: 10;
+
+    .logo {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 70px;
+        padding: 0 25px;
+
+        &__img {
+            width: 120px;
+            height: 40px;
+        }
+    }
+
+    .mb-15 {
+        margin-bottom: 15px;
+    }
+
+    .navbar {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        .navbar-menu {
+            position: relative;
+
+            .title {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 26px;
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: var(--text-primary);
+                text-transform: uppercase;
+                margin: 0 28px 8px;
+                white-space: nowrap;
+            }
+        }
+
+        .sidebar-devide {
+            position: relative;
+            height: 1px;
+
+            &::after {
+                content: '';
+                border-top: 1px solid var(--border-primary);
+                position: absolute;
+                left: 25px;
+                right: 25px;
+                top: 0;
+            }
+        }
+        .sidebar-main {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            margin-top: 15px;
+            .sidebar-scrollbar {
+                height: 100%;
+                width: 100%;
+                overflow: hidden scroll;
+                position: absolute;
+                offset: 0;
+                --webkit-mask-image: linear-gradient(
+                    180deg,
+                    hsla(0, 0%, 100%, 0),
+                    hsla(0, 0%, 100%, 0.8) 10%,
+                    #fff 25%
+                );
+                &:hover {
+                    scrollbar-color: initial;
+                    &::-webkit-scrollbar {
+                        display: block;
+                    }
+                }
+                &::-webkit-scrollbar {
+                    display: none;
+                    position: absolute;
+                    background-color: transparent;
+                    width: 4px;
+                    border-radius: 2px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: var(--scroll-thumb-bg);
+                }
+
+                .vip-baner-sidebar {
+                    padding: 15px 8px;
+                    margin: 10px 20px;
+                    border-radius: 8px;
+                    text-align: center;
+                    background-image: linear-gradient(117deg, #5a4be7, #c86dd7 102%);
+
+                    .text {
+                        display: inline-block;
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                        color: var(--white);
+                        margin-bottom: 15px;
+                    }
+
+                    .button {
+                        display: inline-block;
+                        text-transform: uppercase;
+                        color: var(--black);
+                        padding: 6px 35px;
+                        background-color: #ffdb00;
+                        border-color: #ffdb00;
+                        border-radius: 50px;
+                        font-size: 1.2rem;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+
+        .create-playlist {
+            .btn-add {
+                position: fixed;
+                width: 240px;
+                left: 0;
+                height: 54px;
+                border: none;
+                outline: none;
+                border-top: 1px solid var(--border-primary);
+                padding: 0 20px;
+                border-radius: 0;
+                display: flex;
+                align-items: center;
+                color: var(--text-primary);
+                font-weight: 700;
+                bottom: 90px;
+                z-index: 3;
+                cursor: pointer;
+                background-color: var(--sidebar-bg);
+
+                .add-icon {
+                    display: inline-block;
+                    font-size: 3rem;
+                }
+                & > span {
+                    font-size: 1.4rem;
+                }
+            }
+        }
+    }
+}
