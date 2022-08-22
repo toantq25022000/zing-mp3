@@ -12,6 +12,7 @@ const images = {
     ZMALayout: require('./zma.svg').default,
     EiffelTheme: require('./eiffel.jpg'),
     EiffelLayout: require('./eiffel-bg.jpg'),
+
     JackTheme: require('./jack.jpg'),
     JackLayout: require('./jack-bg.jpg'),
     IUTheme: require('./iu.jpg'),
@@ -26,6 +27,20 @@ const images = {
     JisooLayout: require('./jisoo-bg.jpg'),
     RoseTheme: require('./rose.jpg'),
     RoseLayout: require('./rose-bg.jpg'),
+
+    DarkTheme: require('./dark.jpg'),
+    PurpleTheme: require('./purple.jpg'),
+    BlueTheme: require('./blue.jpg'),
+    BlueLightTheme: require('./blue-light.jpg'),
+    GreenTheme: require('./green.jpg'),
+    BrownTheme: require('./brown.jpg'),
+    PinkTheme: require('./pink.jpg'),
+    RedTheme: require('./red.jpg'),
+
+    LightTheme: require('./light.jpg'),
+    GrayTheme: require('./gray.jpg'),
+    GreenLightTheme: require('./green-light.jpg'),
+    PinkLightTheme: require('./pink-light.jpg'),
 };
 
 export default images;

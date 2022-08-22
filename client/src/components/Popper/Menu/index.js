@@ -12,7 +12,7 @@ function Menu({ children, items = [], className, placement, trigger }) {
         return items.map((item, index) => <MenuItem key={index} data={item} />);
     };
     return (
-        <>
+        <div>
             <Tippy
                 interactive
                 // visible={true}
@@ -26,7 +26,7 @@ function Menu({ children, items = [], className, placement, trigger }) {
             >
                 {children}
             </Tippy>
-        </>
+        </div>
     );
 }
 

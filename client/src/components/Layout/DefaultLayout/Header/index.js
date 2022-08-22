@@ -244,6 +244,90 @@ const THEME_ITEMS = [
             },
         ],
     },
+    ,
+    {
+        title: 'Màu Tối',
+        items: [
+            {
+                title: 'Tối',
+                image: images.DarkTheme,
+                dataTheme: 'dark',
+                isCheck: false,
+            },
+            {
+                title: 'Tím',
+                image: images.PurpleTheme,
+                dataTheme: 'purple',
+                isCheck: false,
+            },
+            {
+                title: 'Xanh Đậm',
+                image: images.BlueTheme,
+                dataTheme: 'blue',
+                isCheck: false,
+            },
+            {
+                title: 'Xanh Biển',
+                image: images.BlueLightTheme,
+                dataTheme: 'blue-light',
+                isCheck: false,
+            },
+            {
+                title: 'Xanh Lá',
+                image: images.GreenTheme,
+                dataTheme: 'green',
+                isCheck: false,
+            },
+            {
+                title: 'Nâu',
+                image: images.BrownTheme,
+                dataTheme: 'brown',
+                isCheck: false,
+            },
+            {
+                title: 'Hồng',
+                image: images.PinkTheme,
+                dataTheme: 'pink',
+                isCheck: false,
+            },
+            {
+                title: 'Đỏ',
+                image: images.RedTheme,
+                dataTheme: 'red',
+                isCheck: false,
+            },
+        ],
+    },
+    ,
+    {
+        title: 'Màu Sáng',
+        items: [
+            {
+                title: 'Sáng',
+                image: images.LightTheme,
+                dataTheme: 'light',
+                isCheck: false,
+            },
+            {
+                title: 'Xám',
+                image: images.GrayTheme,
+                dataTheme: 'gray',
+                isCheck: false,
+            },
+            {
+                title: 'Xanh Nhạt',
+                image: images.GreenLightTheme,
+                dataTheme: 'green-light',
+                isCheck: false,
+            },
+            {
+                title: 'Hồng Cánh Sen',
+                image: images.PinkLightTheme,
+                dataTheme: 'pink-light',
+                isCheck: false,
+            },
+        ],
+    },
 ];
 
 function Header() {

@@ -69,7 +69,7 @@
             .sidebar-scrollbar {
                 height: 100%;
                 width: 100%;
-                overflow: hidden scroll;
+                overflow-y: overlay;
                 position: absolute;
                 offset: 0;
                 --webkit-mask-image: linear-gradient(

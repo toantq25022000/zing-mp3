@@ -13,7 +13,11 @@ export default function DefaultLayout({ children }) {
         <div className={clsx(cx('wrapper'), 'zm-layout', 'has-player')}>
             <Sidebar />
             <Header />
-            <div className={cx('content')}>{children}</div>
+            <div className={cx('container')}>
+                <div className={cx('body-scrolled')}>
+                    <div className={cx('content')}>{children}</div>
+                </div>
+            </div>
             <Player />
         </div>
     );

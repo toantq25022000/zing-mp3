@@ -2,48 +2,79 @@ const express = require("express");
 const router = express.Router();
 
 const ZingController = require("../app/controllers/ZingController");
-const ZingFullController = require("../app/controllers/ZingFullController");
-
-// getFullInfo
-router.get("/song", ZingFullController.getSong);
-
-// getDetailPlaylist
-router.get("/detail-playlist", ZingController.getDetailPlaylist);
 
 // getHome
 router.get("/home", ZingController.getHome);
 
+// getSong
+router.get("/song/:id", ZingController.getSong);
+
+// getSongInfo
+router.get("/song/info/:id", ZingController.getSongInfo);
+
+// getLyricSong
+router.get("/song/lyric/:id", ZingController.getSongLyric);
+
+//getChartHome
+router.get("/chart/home", ZingController.getHomeChart);
+
+//getNewReleaseChart
+router.get("/chart/new-release", ZingController.getNewReleaseChart);
+
+//getWeekChart
+router.get("/chart/week/:id", ZingController.getWeekChart);
+
+// getDetailPlaylist
+router.get("/playlist/:id", ZingController.getPlaylist);
+
 // getTop100
 router.get("/top100", ZingController.getTop100);
 
-// getChartHome
-router.get("/chart-home", ZingController.getChartHome);
+// getDetailArtist
+router.get("/artist/:id", ZingController.getArtist);
 
-// getNewReleaseChart
-router.get("/new-release-chart", ZingController.getNewReleaseChart);
+// getListArtistSong
+router.get("/artist/song/:id", ZingController.getListArtistSong);
 
-// getWeekChart
-router.get("/get-week-chart", ZingController.getWeekChart);
+// Search all
+router.get("/search", ZingController.SearchAll);
 
-// getArtist
-router.get("/detail-artist", ZingController.getDetailArtist);
+// Search by type
+router.get("/search-by-type", ZingController.SearchByType);
 
-// getArtistSong
-router.get("/artist-song", ZingFullController.getArtistSong);
-
-// getLyric
-router.get("/lyric", ZingFullController.getLyric);
-
-// search
-router.get("/search", ZingController.search);
-
+// getMV
+router.get("/mv/:id", ZingController.getMV);
 // getListMV
-router.get("/list-mv", ZingFullController.getListMV);
+router.get("/mv/list", ZingController.getListMV);
 
 // getCategoryMV
-router.get("/category-mv", ZingFullController.getCategoryMV);
+router.get("/mv/category", ZingController.getCategoryMV);
 
-// getVideo
-router.get("/video", ZingFullController.getVideo);
+// getRadio
+router.get("/radio", ZingController.getRadio);
+
+// getListByGenre
+router.get("/list-by-genre/:id", ZingController.getListByGenre);
+
+// getHubHome
+router.get("/hub", ZingController.getHubHome);
+
+// getHubDetail
+router.get("/hub/:id", ZingController.getHubDetail);
+
+// getSuggestedPlaylists
+router.get("/suggested-playlist/:id", ZingController.getSuggestedPlaylists);
+
+// getSuggestionKeyword
+router.get("/suggestion-keyword", ZingController.getSuggestionKeyword);
+
+// getEvents
+router.get("/events", ZingController.getEvents);
+
+// getEventInfo
+router.get("/events/:id", ZingController.getEventInfo);
+
+// getRecommenedKeywords
+router.get("/recommend-keyword", ZingController.getRecommenedKeyword);
 
 module.exports = router;

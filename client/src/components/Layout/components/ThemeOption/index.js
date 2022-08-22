@@ -27,6 +27,7 @@ function ThemeOption({ data }) {
             htmlElement.setAttribute('class', 'theme-bg-image');
         } else {
             htmlElement.removeAttribute('style');
+            bgLayout.removeAttribute('style');
             htmlElement.removeAttribute('class');
         }
     };
