@@ -55,6 +55,7 @@ function MenuItem({ data }) {
                         className={cx('menu-item', {
                             separate: data.separate,
                         })}
+                        onClick={data.onClick && data.onClick}
                     >
                         {data.icon && <div className={cx('icon-left')}>{data.icon}</div>}
                         <span className={cx('item-title')}>{data.title}</span>

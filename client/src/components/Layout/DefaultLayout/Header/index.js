@@ -1,10 +1,11 @@
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { ArrowLeft, ArrowRight, Upload, Gear } from 'react-bootstrap-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBan,
-    faCode,
     faFileLines,
     faFlag,
     faGem,
@@ -21,16 +22,20 @@ import {
 import clsx from 'clsx';
 import classNames from 'classnames/bind';
 import styles from './Header.module.scss';
-import { ThemeIcon } from '../../components/Icons';
-import Search from '../../components/Search';
-import Menu from '../../../Popper/Menu';
-import { useState } from 'react';
-import Modal from '../../Modal';
-import ThemeOption from '../../components/ThemeOption';
-import images from '../../../../assets/images';
-import Image from '../../components/Image';
+import { ThemeIcon } from '~/components/Layout/components/Icons';
+import Search from '~/components/Layout/components/Search';
+import Menu from '~/components/Popper/Menu';
+import Modal from '~/components/Layout/Modal';
+import ThemeOption from '~/components/Layout/components/ThemeOption';
+import images from '~/assets/images';
+import Image from '~/components/Layout/components/Image';
+import { authSlice } from '~/redux/features/auth/authSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import instance from '~/utils/axios';
+import { faVuejs } from '@fortawesome/free-brands-svg-icons';
 
 const cx = classNames.bind(styles);
+
 const SETTING_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faBan} />,
@@ -94,22 +99,6 @@ const SETTING_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faShieldAlt} />,
         title: 'Chính sách bảo mật',
-    },
-];
-
-const USER_OPTION_ITEMS = [
-    {
-        icon: <FontAwesomeIcon icon={faGem} />,
-        title: 'Nâng cấp VIP',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCode} />,
-        title: 'Mua code VIP',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faSignOut} />,
-        title: 'Đăng xuất',
-        separate: true,
     },
 ];
 
@@ -244,7 +233,6 @@ const THEME_ITEMS = [
             },
         ],
     },
-    ,
     {
         title: 'Màu Tối',
         items: [
@@ -298,7 +286,6 @@ const THEME_ITEMS = [
             },
         ],
     },
-    ,
     {
         title: 'Màu Sáng',
         items: [
@@ -332,6 +319,32 @@ const THEME_ITEMS = [
 
 function Header() {
     const [openTheme, setOpenTheme] = useState(false);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.auth.token);
+    const user = useSelector((state) => state.auth.user);
+
+    const USER_OPTION_ITEMS = [
+        {
+            icon: <FontAwesomeIcon icon={faGem} />,
+            title: 'Nâng cấp VIP',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faVuejs} />,
+            title: 'Mua code VIP',
+        },
+        {
+            icon: <FontAwesomeIcon icon={faSignOut} />,
+            title: 'Đăng xuất',
+            separate: true,
+            onClick: () => {
+                dispatch(authSlice.actions.setToken(null));
+                dispatch(authSlice.actions.setUser(null));
+                localStorage.removeItem('token-user-zm3');
+                navigate('/login');
+            },
+        },
+    ];
 
     const handleOpenModalSetting = () => {
         setOpenTheme((prev) => !prev);
@@ -376,10 +389,13 @@ function Header() {
 
                     <Tippy content="Nâng cấp VIP">
                         <div className={cx('setting')}>
-                            <button className={clsx(cx('icon'), 'zm-btn')}>
+                            {/* <button className={clsx(cx('icon'), 'zm-btn')}>
                                 <div className={cx('box-wrap')}>
                                     <span className={cx('text')}>VIP</span>
                                 </div>
+                            </button> */}
+                            <button className={clsx(cx('icon', 'size'), 'zm-btn')}>
+                                <FontAwesomeIcon icon={faVuejs} />
                             </button>
                         </div>
                     </Tippy>
@@ -400,15 +416,32 @@ function Header() {
                             </div>
                         </Tippy>
                     </Menu>
-                    <Menu items={USER_OPTION_ITEMS} placement="bottom-end" trigger="click" className={cx('menu-list')}>
-                        <div className={cx('avatar')}>
-                            <Image
-                                src="https://s120-ava-talk-zmp3.zmdcdn.me/3/a/a/b/27/120/b4701d451aea1101afa6d78875e0f7f6.jpg"
-                                alt=""
-                                className={cx('avatar__img')}
-                            />
-                        </div>
-                    </Menu>
+                    {user ? (
+                        <Menu
+                            items={USER_OPTION_ITEMS}
+                            placement="bottom-end"
+                            trigger="click"
+                            className={cx('menu-list')}
+                        >
+                            <div className={cx('avatar')}>
+                                <Image
+                                    src="https://s120-ava-talk-zmp3.zmdcdn.me/3/a/a/b/27/120/b4701d451aea1101afa6d78875e0f7f6.jpg"
+                                    alt=""
+                                    className={cx('avatar__img')}
+                                />
+                            </div>
+                        </Menu>
+                    ) : (
+                        <Link to="/login">
+                            <div className={cx('avatar')}>
+                                <Image
+                                    src="https://s120-ava-talk-zmp3.zmdcdn.me/3/a/a/b/27/120/b4701d451aea1101afa6d78875e0f7f6.jpg"
+                                    alt=""
+                                    className={cx('avatar__img')}
+                                />
+                            </div>
+                        </Link>
+                    )}
                 </div>
             </div>
         </div>

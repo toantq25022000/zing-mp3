@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import styles from './Sidebar.module.scss';
 import classNames from 'classnames/bind';
 import NavbarItem from '../../components/NavbarItem';
 
 import {
-    MusicPlayer,
+    Fan,
+    Newspaper,
     Vinyl,
     MusicNoteList,
     Soundwave,
-    FileEarmarkSlides,
     Pencil,
     MusicNoteBeamed,
     Slack,
@@ -17,42 +17,49 @@ import {
     Plus,
 } from 'react-bootstrap-icons';
 import clsx from 'clsx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
+const srcIconImgs = {
+    mySong: 'https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.0.13/static/media/my-song.cf0cb0b4.svg',
+    myPlayList: 'https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.0.13/static/media/my-playlist.7e92a5f0.svg',
+    myHistory: 'https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.0.13/static/media/my-history.374cb625.svg',
+};
+
 export default function Sidebar() {
-    const srcIconImgs = {
-        mySong: 'https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.0.13/static/media/my-song.cf0cb0b4.svg',
-        myPlayList: 'https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.0.13/static/media/my-playlist.7e92a5f0.svg',
-        myHistory: 'https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.0.13/static/media/my-history.374cb625.svg',
+    const sibarRef = useRef();
+    const [expanded, setExpanded] = useState(false);
+
+    const handleExpanedSidebar = () => {
+        sibarRef.current.classList.toggle(cx('is-expanded'));
+        setExpanded((prev) => !prev);
     };
+
     return (
-        <div className={clsx(cx('wrraper'), 'zm-sidebar')}>
+        <div className={cx('wrraper', 'zm-sidebar')} ref={sibarRef}>
             <div className={cx('logo')}>
-                <img
-                    src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/backgrounds/logo-dark.svg"
-                    alt=""
-                    className={cx('logo__img')}
-                />
+                <div className={cx('logo__img')}></div>
             </div>
 
             <div className={cx('navbar')}>
                 <nav className={cx('navbar-menu', 'mb-15')}>
-                    <NavbarItem title="Cá nhân" Icon={MusicPlayer} isActive={true} />
-                    <NavbarItem title="Khám phá" Icon={Vinyl} />
-                    <NavbarItem title="#zingchart" Icon={MusicNoteList} />
-                    <NavbarItem title="Radio" Icon={Soundwave} liveLable={true} />
-                    <NavbarItem title="Theo dõi" Icon={FileEarmarkSlides} />
+                    <NavbarItem title="Cá nhân" Icon={Fan} to="/mymusic" isExpanded={expanded} />
+                    <NavbarItem title="Khám phá" Icon={Vinyl} to="/" isExpanded={expanded} />
+                    <NavbarItem title="#zingchart" Icon={MusicNoteList} to="/mymusic" isExpanded={expanded} />
+                    <NavbarItem title="Radio" Icon={Soundwave} liveLable={true} to="/mymusic" isExpanded={expanded} />
+                    <NavbarItem title="Theo dõi" Icon={Newspaper} to="/mymusic" isExpanded={expanded} />
                 </nav>
 
                 <div className={cx('sidebar-devide')}></div>
                 <div className={cx('sidebar-main')}>
                     <div className={cx('sidebar-scrollbar')}>
                         <nav className={cx('navbar-menu')}>
-                            <NavbarItem title="Nhạc mới" Icon={MusicNoteBeamed} />
-                            <NavbarItem title="Thể loại" Icon={Slack} />
-                            <NavbarItem title="Top100" Icon={Star} />
-                            <NavbarItem title="MV" Icon={CameraVideo} />
+                            <NavbarItem title="Nhạc mới" Icon={MusicNoteBeamed} to="/mymusic" isExpanded={expanded} />
+                            <NavbarItem title="Thể loại" Icon={Slack} to="/mymusic" isExpanded={expanded} />
+                            <NavbarItem title="Top100" Icon={Star} to="/mymusic" isExpanded={expanded} />
+                            <NavbarItem title="MV" Icon={CameraVideo} to="/mymusic" isExpanded={expanded} />
                         </nav>
 
                         <div className={cx('vip-baner-sidebar')}>
@@ -64,9 +71,24 @@ export default function Sidebar() {
                                 Thư viện
                                 <Pencil size={16} />
                             </div>
-                            <NavbarItem title="Bài hát" srcImgIcon={srcIconImgs.mySong} />
-                            <NavbarItem title="Playlist" srcImgIcon={srcIconImgs.myPlayList} />
-                            <NavbarItem title="Gần đây" srcImgIcon={srcIconImgs.myHistory} />
+                            <NavbarItem
+                                title="Bài hát"
+                                srcImgIcon={srcIconImgs.mySong}
+                                to="/mymusic"
+                                isExpanded={expanded}
+                            />
+                            <NavbarItem
+                                title="Playlist"
+                                srcImgIcon={srcIconImgs.myPlayList}
+                                to="/mymusic"
+                                isExpanded={expanded}
+                            />
+                            <NavbarItem
+                                title="Gần đây"
+                                srcImgIcon={srcIconImgs.myHistory}
+                                to="/mymusic"
+                                isExpanded={expanded}
+                            />
                         </nav>
                     </div>
                 </div>
@@ -77,6 +99,10 @@ export default function Sidebar() {
                     </button>
                 </div>
             </div>
+
+            <button className={clsx(cx('btn-expanded'), 'zm-btn')} onClick={handleExpanedSidebar}>
+                <FontAwesomeIcon icon={faAngleRight} />
+            </button>
         </div>
     );
 }

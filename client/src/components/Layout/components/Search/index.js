@@ -8,12 +8,15 @@ import classNames from 'classnames/bind';
 import styles from './Search.module.scss';
 import { Wrapper as WrapperPopper } from '../../../Popper';
 import OfferMusicItem from '../OfferMusicItem';
+import instance from '../../../../utils/axios';
 
 const cx = classNames.bind(styles);
 
 function Search() {
     const [searchResult, setSearchResult] = useState([]);
     const [stateInput, setStateInput] = useState(false);
+    const [recommendKeyword, setRecommenedKeyword] = useState([]);
+
     const inputRef = useRef();
 
     const handleFocusInput = (e) => {
@@ -24,6 +27,12 @@ function Search() {
         setStateInput(false);
     };
     useEffect(() => {
+        const getRecommenedKeywords = async () => {
+            const response = await instance.get('/recommended-keyword');
+            setRecommenedKeyword(() => response.data.map((item) => item.keyword));
+        };
+
+        getRecommenedKeywords();
         setTimeout(() => {
             setSearchResult([1, 2, 3]);
         }, 0);
@@ -39,9 +48,10 @@ function Search() {
                         <WrapperPopper className={clsx(cx('popper-search', 'suggest__list'))}>
                             <h4 className={cx('search-title')}>Đề xuất cho bạn</h4>
                             <div className={cx('offer-list')}>
-                                <OfferMusicItem label="nhìn về" />
-                                <OfferMusicItem label="pháo hông" />
-                                <OfferMusicItem label="karaoke" />
+                                {recommendKeyword &&
+                                    recommendKeyword.map((keyword, index) => (
+                                        <OfferMusicItem key={index} label={keyword} />
+                                    ))}
                             </div>
                         </WrapperPopper>
                     </div>
@@ -49,7 +59,7 @@ function Search() {
             >
                 <div
                     className={cx('search', {
-                        ['search-is-collapse']: stateInput,
+                        'search-is-collapse': stateInput,
                     })}
                 >
                     <FontAwesomeIcon icon={faSearch} className={cx('search-icon')} />

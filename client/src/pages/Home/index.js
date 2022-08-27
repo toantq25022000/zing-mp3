@@ -4,11 +4,6 @@ function Home() {
     return (
         <>
             <SliderShow />
-            <SliderShow />
-            <SliderShow />
-            <SliderShow />
-            <SliderShow />
-            <SliderShow />
         </>
     );
 }

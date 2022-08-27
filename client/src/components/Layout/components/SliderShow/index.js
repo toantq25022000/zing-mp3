@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Import Swiper components
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -18,8 +18,8 @@ function SliderShow() {
     useEffect(() => {
         const getSlider = async () => {
             const response = await instance.get('/home');
-            if (response) {
-                response?.items?.forEach((item) => {
+            if (response.data) {
+                response.data?.items?.forEach((item) => {
                     const banner = item.sectionType === 'banner';
                     if (banner) {
                         setSliders(item.items);
@@ -31,14 +31,6 @@ function SliderShow() {
         getSlider();
     }, []);
 
-    const imgs = [
-        'https://photo-zmp3.zmdcdn.me/banner/e/d/7/e/ed7e08cbb44c48ae048234a289106ca2.jpg',
-        'https://photo-zmp3.zmdcdn.me/banner/b/f/3/d/bf3dfe4ba61ce88efaf77d37c255ee05.jpg',
-        'https://photo-zmp3.zmdcdn.me/banner/a/4/c/6/a4c6a0657deb5465785c3cef08b1c305.jpg',
-        'https://photo-zmp3.zmdcdn.me/banner/e/e/b/5/eeb58dfab29271bd6d99d31f3e1d5cb9.jpg',
-        'https://photo-zmp3.zmdcdn.me/banner/f/5/0/a/f50a9d735ce1d5c332cd594f9ede1760.jpg',
-        'https://photo-zmp3.zmdcdn.me/banner/2/f/9/a/2f9a9727c784170ac85b6c401af8a8db.jpg',
-    ];
     return (
         <div className="wrapper">
             <Swiper

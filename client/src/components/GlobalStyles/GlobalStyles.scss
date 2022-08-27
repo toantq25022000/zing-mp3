@@ -79,6 +79,8 @@
     --chart-icon-play-color: #fff;
     --linear-gradient-bg: linear-gradient(180deg, #740091, #2d1a4c);
     --padding-section: 59px;
+    --invalid-color: #f33a58;
+    --img-logo-mp3: url(https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/backgrounds/logo-light.svg);
 }
 // Data theme
 
@@ -139,6 +141,7 @@
     --notify-box-shadow: rgba(0, 0, 0, 0.6);
     --portal-menu-box-shadow: rgba(0, 0, 0, 0.7);
     --main-text-stroke: #fff;
+    --img-logo-mp3: url(https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/backgrounds/logo-dark.svg);
 }
 
 [data-theme='blue-light'],
@@ -349,12 +352,15 @@ body ::-webkit-scrollbar-track {
     width: $width;
     height: $height;
 }
-//Layout background
-
-.zm-layout.has-player,
-.zm-layout.has-player .zm-sidebar {
-    height: calc(100vh - 90px);
+//
+a,
+a:focus,
+a:hover,
+a:visited {
+    outline: none;
+    text-decoration: none;
 }
+//Layout background
 
 .theme-bg-image .zm-layout {
     background-size: 1920px auto;
@@ -402,6 +408,10 @@ body ::-webkit-scrollbar-track {
     filter: brightness(0.9);
 }
 
+.zm-sidebar .btn-expanded {
+    display: none;
+}
+
 .disabled {
     pointer-events: none;
     -webkit-user-select: none;
@@ -432,4 +442,30 @@ body .tippy-box {
     display: block;
     box-shadow: 0 4px 6px 0 rgba(32, 33, 36, 0.28);
     color: var(--text-primary);
+}
+
+//active link current page
+.active {
+    position: relative;
+    background-color: var(--alpha-bg);
+    color: var(--text-item-hover);
+}
+
+.active::before {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--purple-primary);
+}
+
+//Media queries screen
+
+//Tablet and higher mobile
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+    .active::before {
+        display: none;
+    }
 }

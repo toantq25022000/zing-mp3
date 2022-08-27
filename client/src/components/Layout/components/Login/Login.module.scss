@@ -1,0 +1,129 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    -webkit-user-select: none;
+    user-select: none;
+
+    &.hasBg {
+        &::before {
+            content: '';
+            position: absolute;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+                url('https://kenhhomestay.com/wp-content/uploads/2018/01/du-lich-can-tho-52.jpg');
+            background-size: cover;
+            filter: blur(3px);
+            top: -5px;
+            left: -5px;
+            bottom: -5px;
+            right: -5px;
+            z-index: -1;
+        }
+    }
+}
+
+.container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    z-index: 2;
+}
+
+.content {
+    --width: 640px;
+    width: var(--width);
+    background-color: #fff;
+    max-width: calc(100vw - 32px);
+    min-height: 600px;
+    padding: 48px 16px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.backBtn {
+    color: #404040;
+    font-size: 2rem;
+    left: 0;
+    padding: 32px;
+    position: absolute;
+    top: 0;
+    cursor: pointer;
+}
+
+.header {
+    overflow: hidden;
+}
+
+.title {
+    color: #292929;
+    font-size: 2.8rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 16px 0;
+}
+
+.logo {
+    width: 100px;
+    object-fit: cover;
+}
+
+.body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+}
+
+.formBody {
+    max-width: 100%;
+    width: 380px;
+}
+
+.submitBtn {
+    margin-top: 20px;
+    height: 44px;
+    border-radius: 4px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border: none;
+    background-color: #1dbfaf;
+    background-image: linear-gradient(70.06deg, #2cccff -5%, #22dfbf 106%);
+    cursor: pointer;
+
+    &[disabled] {
+        box-shadow: none;
+        cursor: not-allowed;
+        opacity: 0.5;
+        -ms-user-select: none;
+        user-select: none;
+    }
+}
+
+.btnText {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.mainStep {
+    margin-top: 8px;
+}
+
+.dontHaveAcc {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    margin-bottom: 0;
+    padding: 24px 16px 0;
+    color: var(--black);
+    & a {
+        color: var(--red);
+        font-weight: 600;
+    }
+}

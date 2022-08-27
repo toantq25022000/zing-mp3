@@ -1,5 +1,12 @@
 const images = {
     SearchIcon: require('./icons8-search.svg').default,
+    DefaultImage: require('./default.jpg'),
+    PersionalIcon: require('./personal-18px.svg').default,
+    GoogleIcon: require('./google-18px.svg').default,
+    FacebookIcon: require('./facebook-18px.svg').default,
+    GithubIcon: require('./github-18px.svg').default,
+    LogoMiniIcon: require('./icon_zing_mp3_60.f6b51045.svg').default,
+
     LodonTheme: require('./London-thumb.png'),
     LodonLayout: require('./London-Mid1.jpg'),
     LightDarkTheme: require('./dynamic-light-dark-1.jpg'),

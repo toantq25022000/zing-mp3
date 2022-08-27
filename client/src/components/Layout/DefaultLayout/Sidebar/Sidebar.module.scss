@@ -8,151 +8,244 @@
     position: relative;
     z-index: 10;
 
-    .logo {
+    .btn-expanded {
+        display: none;
+    }
+}
+
+.zm-sidebar {
+    height: calc(100vh - 90px);
+}
+
+.logo {
+    width: 240px;
+    height: 70px;
+    position: fixed;
+    top: 0;
+    padding: 0 25px 0 28px;
+    display: flex;
+    align-items: center;
+
+    &__img {
+        width: 120px;
+        height: 40px;
+
+        display: inline-block;
+        background: var(--img-logo-mp3) 50% / contain no-repeat;
+    }
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+.navbar {
+    margin-top: 70px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-menu {
+    position: relative;
+
+    .title {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        width: 100%;
-        height: 70px;
-        padding: 0 25px;
-
-        &__img {
-            width: 120px;
-            height: 40px;
-        }
+        height: 26px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        text-transform: uppercase;
+        margin: 0 28px 8px;
+        white-space: nowrap;
     }
+}
 
-    .mb-15 {
-        margin-bottom: 15px;
+.sidebar-devide {
+    position: relative;
+    height: 1px;
+
+    &::after {
+        content: '';
+        border-top: 1px solid var(--border-primary);
+        position: absolute;
+        left: 25px;
+        right: 25px;
+        top: 0;
     }
-
-    .navbar {
+}
+.sidebar-main {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-top: 15px;
+    .sidebar-scrollbar {
         height: 100%;
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        .navbar-menu {
-            position: relative;
+        overflow-y: overlay;
+        position: absolute;
+        offset: 0;
+        --webkit-mask-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0.8) 10%, #fff 25%);
+        &:hover {
+            scrollbar-color: initial;
+            &::-webkit-scrollbar {
+                display: block;
+            }
+        }
+        &::-webkit-scrollbar {
+            display: none;
+            position: absolute;
+            background-color: transparent;
+            width: 4px;
+            border-radius: 2px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--scroll-thumb-bg);
+        }
 
-            .title {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                height: 26px;
+        .vip-baner-sidebar {
+            padding: 15px 8px;
+            margin: 10px 20px;
+            border-radius: 8px;
+            text-align: center;
+            background-image: linear-gradient(117deg, #5a4be7, #c86dd7 102%);
+
+            .text {
+                display: inline-block;
                 font-size: 1.2rem;
-                font-weight: 700;
-                color: var(--text-primary);
+                font-weight: 600;
+                color: var(--white);
+                margin-bottom: 15px;
+            }
+
+            .button {
+                display: inline-block;
                 text-transform: uppercase;
-                margin: 0 28px 8px;
-                white-space: nowrap;
+                color: var(--black);
+                padding: 6px 35px;
+                background-color: #ffdb00;
+                border-color: #ffdb00;
+                border-radius: 50px;
+                font-size: 1.2rem;
+                font-weight: 600;
             }
         }
+    }
+}
+.create-playlist {
+    .btn-add {
+        position: fixed;
+        width: 240px;
+        left: 0;
+        height: 54px;
+        border: none;
+        outline: none;
+        border-top: 1px solid var(--border-primary);
+        padding: 0 20px;
+        border-radius: 0;
+        display: flex;
+        align-items: center;
+        color: var(--text-primary);
+        font-weight: 700;
+        bottom: 90px;
+        z-index: 3;
+        cursor: pointer;
+        background-color: var(--sidebar-bg);
 
-        .sidebar-devide {
-            position: relative;
-            height: 1px;
-
-            &::after {
-                content: '';
-                border-top: 1px solid var(--border-primary);
-                position: absolute;
-                left: 25px;
-                right: 25px;
-                top: 0;
-            }
+        .add-icon {
+            display: inline-block;
+            font-size: 3rem;
         }
-        .sidebar-main {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            margin-top: 15px;
-            .sidebar-scrollbar {
-                height: 100%;
-                width: 100%;
-                overflow-y: overlay;
-                position: absolute;
-                offset: 0;
-                --webkit-mask-image: linear-gradient(
-                    180deg,
-                    hsla(0, 0%, 100%, 0),
-                    hsla(0, 0%, 100%, 0.8) 10%,
-                    #fff 25%
-                );
-                &:hover {
-                    scrollbar-color: initial;
-                    &::-webkit-scrollbar {
-                        display: block;
-                    }
-                }
-                &::-webkit-scrollbar {
-                    display: none;
-                    position: absolute;
-                    background-color: transparent;
-                    width: 4px;
-                    border-radius: 2px;
-                }
-                &::-webkit-scrollbar-thumb {
-                    background-color: var(--scroll-thumb-bg);
-                }
-
-                .vip-baner-sidebar {
-                    padding: 15px 8px;
-                    margin: 10px 20px;
-                    border-radius: 8px;
-                    text-align: center;
-                    background-image: linear-gradient(117deg, #5a4be7, #c86dd7 102%);
-
-                    .text {
-                        display: inline-block;
-                        font-size: 1.2rem;
-                        font-weight: 600;
-                        color: var(--white);
-                        margin-bottom: 15px;
-                    }
-
-                    .button {
-                        display: inline-block;
-                        text-transform: uppercase;
-                        color: var(--black);
-                        padding: 6px 35px;
-                        background-color: #ffdb00;
-                        border-color: #ffdb00;
-                        border-radius: 50px;
-                        font-size: 1.2rem;
-                        font-weight: 600;
-                    }
-                }
-            }
+        & > span {
+            font-size: 1.4rem;
         }
+    }
+}
 
-        .create-playlist {
-            .btn-add {
-                position: fixed;
+// Responsive styles
+
+@media screen and (max-width: 63.9375em) {
+    .zm-sidebar {
+        position: fixed;
+        background-color: var(--sidebar-popup-bg);
+        width: 70px;
+        padding-bottom: 55px;
+        transition: width 0.3s ease-out;
+
+        &.is-expanded {
+            width: 240px;
+            box-shadow: 0 2px 5px 0 rgb(0 0 0 / 30%);
+
+            .logo {
+                justify-content: flex-start;
                 width: 240px;
-                left: 0;
-                height: 54px;
-                border: none;
-                outline: none;
-                border-top: 1px solid var(--border-primary);
-                padding: 0 20px;
-                border-radius: 0;
-                display: flex;
-                align-items: center;
-                color: var(--text-primary);
-                font-weight: 700;
-                bottom: 90px;
-                z-index: 3;
-                cursor: pointer;
-                background-color: var(--sidebar-bg);
+                padding: 0 25px;
+            }
 
-                .add-icon {
-                    display: inline-block;
-                    font-size: 3rem;
-                }
-                & > span {
-                    font-size: 1.4rem;
-                }
+            .logo__img {
+                width: 120px;
+                height: 40px;
+                background-image: var(--img-logo-mp3);
+            }
+
+            .vip-baner-sidebar {
+                display: block;
+            }
+
+            .navbar-menu .title {
+                display: flex;
             }
         }
+
+        .btn-expanded {
+            width: 40px;
+            height: 40px;
+            background-color: var(--alpha-bg);
+            color: var(--navigation-text);
+            position: absolute;
+            right: 15px;
+            bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+        }
+    }
+}
+
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+    .logo {
+        display: flex;
+        justify-content: center;
+        width: 70px;
+        padding: 0;
+    }
+
+    .logo__img {
+        width: 45px;
+        height: 45px;
+        background-image: url(https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.7.26/static/media/icon_zing_mp3_60.f6b51045.svg);
+    }
+
+    .vip-baner-sidebar {
+        display: none;
+    }
+
+    .navbar-menu .title {
+        display: none;
+    }
+
+    .create-playlist {
+        display: none;
+    }
+}
+
+@media (max-width: 46.1875em) {
+    .wrraper {
+        display: none;
     }
 }
