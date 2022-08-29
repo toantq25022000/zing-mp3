@@ -31,7 +31,7 @@ router.get("/playlist/:id", ZingController.getPlaylist);
 router.get("/top100", ZingController.getTop100);
 
 // getDetailArtist
-router.get("/artist/:id", ZingController.getArtist);
+router.get("/artist", ZingController.getArtist);
 
 // getListArtistSong
 router.get("/artist/song/:id", ZingController.getListArtistSong);

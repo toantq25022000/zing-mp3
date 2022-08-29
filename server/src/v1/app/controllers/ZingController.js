@@ -68,7 +68,7 @@ class ZingController {
   }
 
   getArtist(req, res) {
-    zing.get_artist(req.params.name).then((data) => {
+    zing.get_artist(req.query.name).then((data) => {
       res.json(data);
     });
   }

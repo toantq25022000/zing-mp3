@@ -1,4 +1,5 @@
-import Login from '~/components/Layout/components/Login';
+import Login from '~/components/layouts/components/Login';
+import DetailPlaylist from '~/pages/DetailPlaylist';
 import Home from '~/pages/Home';
 import MyMusic from '~/pages/MyMusic';
 import Radio from '~/pages/Radio';
@@ -8,6 +9,7 @@ const publicRoutes = [
     { path: '/', component: Home },
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Login, layout: null },
+    { path: '/album/:name/:id', component: DetailPlaylist },
     { path: '/mymusic', component: MyMusic },
     { path: '/radio', component: Radio },
     { path: '/zing-chart', component: ZingChart },

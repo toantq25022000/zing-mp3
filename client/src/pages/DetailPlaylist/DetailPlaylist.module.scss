@@ -1,0 +1,430 @@
+.wrapper {
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.container {
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.inner {
+    .playlist-header {
+        padding: 0 0 30px;
+
+        .media-left {
+            margin-right: 20px;
+        }
+    }
+}
+
+.header-thumbnail {
+    position: relative;
+    max-width: 100%;
+
+    figure {
+        width: 200px;
+        height: 200px;
+        line-height: 0;
+        padding-bottom: 100%;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    &:hover {
+        cursor: pointer;
+        img {
+            transform: scale(1.1) translateZ(0);
+        }
+
+        .opacity {
+            visibility: visible;
+        }
+
+        .playlist-actions {
+            visibility: visible;
+        }
+    }
+}
+
+.card-image {
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+    border-radius: 8px;
+    transition: border-radius 2s ease-out;
+
+    .thumb {
+        box-shadow: 0 5px 8px 0 rgb(0 0 0 / 20%);
+        overflow: hidden;
+        border-radius: 8px;
+        overflow: hidden !important;
+    }
+
+    & .thumb-rotate {
+        -webkit-animation-name: spin;
+        animation-name: spin;
+        -webkit-animation-duration: 12s;
+        animation-duration: 12s;
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        animation-timing-function: linear;
+        .opacity {
+            -webkit-animation-name: spin;
+            animation-name: spin;
+            -webkit-animation-duration: 12s;
+            animation-duration: 12s;
+            -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+            -webkit-animation-timing-function: linear;
+            animation-timing-function: linear;
+        }
+    }
+
+    .thumb-rotate {
+        border-radius: 999px;
+        transition: border-radius 2s ease-out;
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+    & .thumb-rotate-off {
+        -webkit-animation-name: spin-off;
+        animation-name: spin-off;
+        -webkit-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+        .opacity {
+            -webkit-animation-name: spin-off;
+            animation-name: spin-off;
+            -webkit-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+        }
+    }
+
+    & .thumb-rotate-off {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        transition: border-radius 0.5s ease-out 0.5s;
+    }
+
+    img {
+        transition: transform 0.7s;
+        height: auto;
+        width: 100%;
+    }
+}
+
+.opacity {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--dark-alpha-50);
+
+    -webkit-animation-name: spin-off;
+    animation-name: spin-off;
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+
+    border-radius: 8px;
+    visibility: hidden;
+}
+
+.actions-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.playlist-actions {
+    width: 100%;
+    justify-content: space-evenly;
+    visibility: hidden;
+
+    .action-play {
+        display: flex;
+        border: 1px solid #fff;
+    }
+}
+
+.icon-play-circle {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-image: var(--play-icon);
+}
+
+.icon-play-gif {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-image: var(--play-icon-gif);
+
+    background-size: 18px;
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.media-content {
+    display: flex;
+    flex-direction: column;
+    align-self: normal;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .actions {
+        .btn-play-all {
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+
+            .icon {
+                font-size: 16px;
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+.content-top {
+    width: 100%;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 0;
+    text-transform: none;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.artists,
+.release,
+.like {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    line-height: 1.75;
+}
+
+.is-ghost {
+    color: var(--text-secondary);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.level-wrap {
+    .tooltip-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        background-color: var(--alpha-bg);
+        color: var(--white);
+    }
+
+    .tooltip-btn + .tooltip-btn {
+        margin-left: 10px;
+    }
+}
+
+.playlist-content {
+}
+
+.description {
+    font-size: 14px;
+    padding-bottom: 10px;
+    color: var(--text-primary);
+
+    span {
+        color: var(--text-secondary);
+    }
+}
+
+//Song list
+.select-header {
+    border-bottom: 1px solid var(--border-secondary);
+    height: 46px;
+}
+
+.zm-media-left {
+    width: 50%;
+    margin-right: 10px;
+}
+
+.sort-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.group-dropdown {
+    position: relative;
+
+    .dropdown-trigger {
+        line-height: 1;
+    }
+
+    .btn-sort {
+        font-size: 16px;
+        color: var(--song-item-action);
+    }
+}
+
+.zm-media-content {
+    margin-left: -10px;
+    flex-basis: auto;
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: left;
+    align-self: center;
+    width: 0;
+}
+
+.column-text {
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.zm-media-right {
+    margin-left: 10px;
+}
+
+.bottom-info {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+
+    span {
+        margin: 0 8px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+//Animation
+
+@-webkit-keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+@-webkit-keyframes spin-off {
+    0% {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+@keyframes spin-off {
+    0% {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+@media (min-width: 64em) {
+    .playlist-header {
+        width: 300px;
+        float: left;
+
+        &.sticky {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 110px;
+            display: block;
+        }
+
+        .media-left {
+            margin-right: 0;
+            height: 300px;
+
+            .header-thumbnail {
+                figure {
+                    width: 100%;
+                }
+            }
+        }
+
+        .media-content {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
+            width: 100%;
+
+            .content-top {
+                text-align: center;
+
+                .title {
+                    white-space: normal;
+                }
+            }
+
+            .actions {
+                margin-top: 16px;
+                flex-direction: column;
+
+                .btn-play-all {
+                    margin-bottom: 16px;
+                }
+            }
+        }
+    }
+
+    .playlist-content {
+        margin-left: 330px;
+    }
+}
+
+@media (max-width: 63.9375em) {
+    .description {
+        display: none;
+    }
+}
