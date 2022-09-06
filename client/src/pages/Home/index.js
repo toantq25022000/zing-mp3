@@ -2,22 +2,32 @@ import { useEffect, useState } from 'react';
 import CarouselMusic from '~/components/layouts/components/CarouselMusic';
 import instance from '~/utils/axios';
 import SliderShow from '~/components/layouts/components/SliderShow';
+import { useDispatch } from 'react-redux';
+import { collectSlice } from '~/redux/features/collect/collectSlice';
 
 function Home() {
     const [result, setResult] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const getHome = async () => {
             const response = await instance.get('/home');
-            if (response) {
+            if (response.data) {
                 const resResult = response.data.items.filter(
                     (item) => item.sectionType === 'playlist' || item.sectionType === 'mix',
                 );
                 setResult(resResult);
+
+                response.data?.items?.forEach((item) => {
+                    const banner = item.sectionType === 'banner';
+                    if (banner) {
+                        dispatch(collectSlice.actions.setSliders(item.items));
+                    }
+                });
             }
         };
         getHome();
-    }, []);
+    }, [dispatch]);
 
     return (
         <>

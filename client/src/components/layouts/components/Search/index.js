@@ -13,7 +13,7 @@ import instance from '~/utils/axios';
 const cx = classNames.bind(styles);
 
 function Search() {
-    const [searchResult, setSearchResult] = useState([]);
+    // const [searchResult, setSearchResult] = useState([]);
     const [stateInput, setStateInput] = useState(false);
     const [recommendKeyword, setRecommenedKeyword] = useState([]);
 
@@ -28,14 +28,19 @@ function Search() {
     };
     useEffect(() => {
         const getRecommenedKeywords = async () => {
-            const response = await instance.get('/recommended-keyword');
-            setRecommenedKeyword(() => response.data.map((item) => item.keyword));
+            try {
+                const response = await instance.get('/recommended-keyword');
+                if (response.data) {
+                    setRecommenedKeyword(() => response.data.map((item) => item.keyword));
+                } else {
+                    setRecommenedKeyword([]);
+                }
+            } catch (error) {
+                console.log(error);
+            }
         };
 
         getRecommenedKeywords();
-        setTimeout(() => {
-            setSearchResult([1, 2, 3]);
-        }, 0);
     }, []);
     return (
         <>

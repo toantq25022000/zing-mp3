@@ -1,25 +1,34 @@
+import { Link } from 'react-router-dom';
+import Tippy from '@tippyjs/react';
 import clsx from 'clsx';
 import classNames from 'classnames/bind';
-
 import styles from './SongItem.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMusic, faHeart as faHeartSolid, faMicrophone, faEllipsis, faPlay } from '@fortawesome/free-solid-svg-icons';
+
+import { faMusic, faHeart as faHeartSolid, faEllipsis, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
-import Tippy from '@tippyjs/react';
-import { Link } from 'react-router-dom';
+
+import { secondsToTime } from '~/utils/collectionFunctionConstants';
+import { KaraokeIcon } from '../Icons';
+import { memo } from 'react';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
-function SongItem({ data }) {
+function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
     const isSongVip = data.streamingStatus === 2;
-    const sToMinutesAndSeconds = (s) => {
-        const minutes = Math.floor(s / 60);
-        const seconds = ((s % 60) / 10).toFixed(0);
-        return (minutes > 10 ? '' : '0') + minutes + ':' + (seconds > 10 ? '' : '0') + seconds;
-    };
+
+    const isPlay = useSelector((state) => state.song.isPlay);
+    const songId = useSelector((state) => state.song.songId);
+
     return (
-        <div className={cx('wrapper')}>
-            <div className={clsx(cx('container', { 'is-vip': isSongVip }), 'bor-b-1')}>
+        <div className={cx('wrapper')} onDoubleClick={onDoubleClickSong} id={data.encodeId}>
+            <div
+                className={clsx(
+                    cx('container', { isActiveSong: data.encodeId === songId ? true : false }, { 'is-vip': isSongVip }),
+                    'bor-b-1',
+                )}
+            >
                 <div className={clsx(cx('body'), 'media')}>
                     <div className={cx('body-left')}>
                         <div className={clsx(cx('song-prefix'), 'mr-10')}>
@@ -34,9 +43,16 @@ function SongItem({ data }) {
                             <div className={clsx(cx('opacity-bg'), 'opacity')}></div>
                             <div className={cx('actions-container')}>
                                 <div className={clsx(cx('box-actions'), 'zm-action')}>
-                                    <button className={clsx(cx('btn-play'), 'zm-btn')}>
-                                        <FontAwesomeIcon icon={faPlay} className={cx('icon-play-circle')} />
-                                        {/* <span className={cx('icon-play-gif')}></span> */}
+                                    <button className={clsx(cx('btn-play'), 'zm-btn')} onClick={onPlayOrPauseSong}>
+                                        {isPlay ? (
+                                            data.encodeId === songId ? (
+                                                <span className={cx('icon-play-gif')}></span>
+                                            ) : (
+                                                <FontAwesomeIcon icon={faPlay} className={cx('icon-play-circle')} />
+                                            )
+                                        ) : (
+                                            <FontAwesomeIcon icon={faPlay} className={cx('icon-play-circle')} />
+                                        )}
                                     </button>
                                 </div>
                             </div>
@@ -70,7 +86,7 @@ function SongItem({ data }) {
                                         <button
                                             className={clsx(cx('icon-hv', 'icon-width'), 'is-hover-circle', 'zm-btn')}
                                         >
-                                            <FontAwesomeIcon icon={faMicrophone} className={cx('icon-hover')} />
+                                            <KaraokeIcon className={cx('icon-hover')} />
                                         </button>
                                     </Tippy>
                                 </div>
@@ -123,9 +139,7 @@ function SongItem({ data }) {
                                         </span>
                                     </button>
                                 </div>
-                                <div className={cx('level-item', 'duration')}>
-                                    {sToMinutesAndSeconds(data.duration)}
-                                </div>
+                                <div className={cx('level-item', 'duration')}>{secondsToTime(data.duration)}</div>
                             </div>
                         </div>
                     </div>
@@ -135,4 +149,4 @@ function SongItem({ data }) {
     );
 }
 
-export default SongItem;
+export default memo(SongItem);

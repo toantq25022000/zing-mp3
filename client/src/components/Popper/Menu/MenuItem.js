@@ -1,6 +1,7 @@
 import { faAngleRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
+import clsx from 'clsx';
 import Menu from '.';
 import styles from './Menu.module.scss';
 
@@ -37,17 +38,35 @@ function MenuItem({ data }) {
                             'menu-item',
                             {
                                 separate: data.separate,
+                                noSelect: data.isNoneSelected,
                             },
                             'option-theme',
                         )}
                     >
                         <span className={cx('item-title')}>{data.title}</span>
-                        <span className={cx('icon-check')}>
-                            <label className={cx('switch')}>
-                                <input type="checkbox" />
-                                <span className={cx('slider', 'round')}></span>
-                            </label>
-                        </span>
+                        {data.listOptions ? (
+                            <div className={cx('sizes')}>
+                                {data.listOptions.map((option) => (
+                                    <span
+                                        key={option.size}
+                                        className={clsx(
+                                            cx(`size-${option.size}`, 'button-size', option.isActive && 'active'),
+                                            'zm-btn',
+                                        )}
+                                        tabIndex="0"
+                                    >
+                                        A
+                                    </span>
+                                ))}
+                            </div>
+                        ) : (
+                            <span className={cx('icon-check')}>
+                                <label className={cx('switch')}>
+                                    <input type="checkbox" disabled={data.isNoneSelected} />
+                                    <span className={cx('slider', 'round')}></span>
+                                </label>
+                            </span>
+                        )}
                     </div>
                 );
             default:

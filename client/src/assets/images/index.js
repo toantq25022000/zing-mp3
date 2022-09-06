@@ -7,6 +7,8 @@ const images = {
     GithubIcon: require('./github-18px.svg').default,
     LogoMiniIcon: require('./icon_zing_mp3_60.f6b51045.svg').default,
 
+    defaultImagePlayer: require('./defaultImagePlayer.png'),
+
     LodonTheme: require('./London-thumb.png'),
     LodonLayout: require('./London-Mid1.jpg'),
     LightDarkTheme: require('./dynamic-light-dark-1.jpg'),

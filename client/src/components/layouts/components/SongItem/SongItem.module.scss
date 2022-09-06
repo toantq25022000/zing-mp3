@@ -60,9 +60,6 @@
     right: 0;
 }
 
-.box-actions {
-}
-
 .btn-play {
     height: 18px;
     width: 18px;
@@ -78,6 +75,7 @@
 }
 
 .icon-play-gif {
+    display: inline-block;
     width: 18px;
     height: 18px;
     background-image: var(--play-icon-gif);
@@ -193,9 +191,6 @@
     }
 }
 
-.wrapper-btn-like {
-}
-
 .hover-items {
     display: none;
 }
@@ -215,9 +210,7 @@
 }
 
 .icon-hover {
-    font-size: 16px;
-    padding: 5px;
-    color: currentColor;
+    font-size: 1.6rem;
 }
 
 .animation-like {
@@ -241,7 +234,6 @@
 
 .container:hover {
     background-color: var(--alpha-bg);
-    cursor: pointer;
 
     .box-actions,
     .opacity-bg {
@@ -254,6 +246,17 @@
 
     .hover-items {
         display: block;
+    }
+}
+
+.container {
+    &.isActiveSong {
+        background-color: var(--alpha-bg);
+
+        .box-actions,
+        .opacity-bg {
+            visibility: visible;
+        }
     }
 }
 

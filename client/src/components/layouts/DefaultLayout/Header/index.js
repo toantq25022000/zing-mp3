@@ -34,6 +34,7 @@ import ThemeOption from '~/components/layouts/components/ThemeOption';
 import images from '~/assets/images';
 import Image from '~/components/layouts/components/Image';
 import { authSlice } from '~/redux/features/auth/authSlice';
+import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
 
 const cx = classNames.bind(styles);
 
@@ -108,36 +109,36 @@ const THEME_ITEMS = [
         title: 'Dynamic',
         items: [
             {
+                id: 'lodon',
                 title: 'Lodon',
                 image: images.LodonTheme,
                 bgLayout: images.LodonLayout,
                 dataTheme: 'blue',
                 styleHtml: '--layout-bg: #061d50;',
-                isCheck: false,
             },
             {
+                id: 'dyamic',
                 title: 'Sáng tối',
                 image: images.LightDarkTheme,
                 dataTheme: 'dark',
-                isCheck: true,
             },
             {
+                id: 'dyamic-blue',
                 title: 'Xanh Da Trời',
                 image: images.BlueTheme,
                 dataTheme: 'blue',
-                isCheck: false,
             },
             {
+                id: 'dyamic-pink',
                 title: 'Hồng',
                 image: images.PinkTheme,
                 dataTheme: 'pink-light',
-                isCheck: false,
             },
             {
+                id: 'dyamic-brown',
                 title: 'Nâu',
                 image: images.BrownTheme,
                 dataTheme: 'brown',
-                isCheck: false,
             },
         ],
     },
@@ -145,29 +146,29 @@ const THEME_ITEMS = [
         title: 'Chủ Đề',
         items: [
             {
+                id: 'xmon',
                 title: 'XNON',
                 image: images.XoneTheme,
                 bgLayout: images.XoneLayout,
                 dataTheme: 'dark',
                 styleHtml: '--purple-primary: #d7cb1f;--progressbar-active-bg: #d7cb1f;--link-text-hover: #d7cb1f;',
-                isCheck: false,
             },
             {
+                id: 'zma',
                 title: 'Zing Music Awards',
                 image: images.ZMATheme,
                 bgLayout: images.ZMALayout,
                 dataTheme: 'blue',
                 styleHtml:
                     '--layout-bg: #37075d;--primary-bg: #6a39af;--queue-player-popup-bg: #5d218c;--purple-primary: #ed2b91;--link-text-hover: #fe63da;--sidebar-popup-bg: #572f90;--linear-gradient-bg: linear-gradient(to bottom, #740091, #2d1a4c);',
-                isCheck: false,
             },
             {
+                id: 'eiffel',
                 title: 'Tháp Eiffel',
                 image: images.EiffelTheme,
                 bgLayout: images.EiffelLayout,
                 dataTheme: 'dark',
                 styleHtml: '--layout-bg: #282828;--primary-bg: #3d3d3d;',
-                isCheck: false,
             },
         ],
     },
@@ -175,62 +176,62 @@ const THEME_ITEMS = [
         title: 'Nghệ Sĩ',
         items: [
             {
+                id: 'jack',
                 title: 'Jack',
                 image: images.JackTheme,
                 bgLayout: images.JackLayout,
                 dataTheme: 'brown',
                 styleHtml:
                     '--layout-bg:#767269; --primary-bg:#565147; --queue-player-popup-bg:#726c5e; --purple-primary:#ac8e77; --main-box-shadow:#4242421a; --linear-gradient-bg:linear-gradient(to bottom, #656156, #574f40);',
-                isCheck: false,
             },
             {
+                id: 'iu',
                 title: 'IU',
                 image: images.IUTheme,
                 bgLayout: images.IULayout,
                 dataTheme: 'gray',
                 styleHtml: '--layout-bg:#e7dfdd; --purple-primary:#409abc; --text-item-hover:#409abc;',
-                isCheck: false,
             },
             {
+                id: 'ji-chang-wook',
                 title: 'Ji Chang Wook',
                 image: images.JiChangWookTheme,
                 bgLayout: images.JiChangWookLayout,
                 dataTheme: 'green-light',
                 styleHtml: '--layout-bg:#b2d8db;',
-                isCheck: false,
             },
             {
+                id: 'lisa',
                 title: 'Lisa',
                 image: images.LisaTheme,
                 bgLayout: images.LisaLayout,
                 dataTheme: 'pink-light',
                 styleHtml: '--layout-bg:#b2d8db;',
-                isCheck: false,
             },
             {
+                id: 'jennie-kim',
                 title: 'Jennie Kim',
                 image: images.JennieTheme,
                 bgLayout: images.JennieLayout,
                 dataTheme: 'gray',
                 styleHtml:
                     '--layout-bg:#bab8c3; --player-bg:#c6c4d1; --purple-primary:#346875; --primary-bg:#e2e7f5; --text-item-hover:#2a5e6b;',
-                isCheck: false,
             },
             {
+                id: 'jisoo',
                 title: 'Jisoo',
                 image: images.JisooTheme,
                 bgLayout: images.JisooLayout,
                 dataTheme: 'light',
                 styleHtml: null,
-                isCheck: false,
             },
             {
+                id: 'rose',
                 title: 'Rosé',
                 image: images.RoseTheme,
                 bgLayout: images.RoseLayout,
                 dataTheme: 'blue',
                 styleHtml: '--layout-bg:#061d50;',
-                isCheck: false,
             },
         ],
     },
@@ -238,52 +239,52 @@ const THEME_ITEMS = [
         title: 'Màu Tối',
         items: [
             {
+                id: 'dark',
                 title: 'Tối',
                 image: images.DarkTheme,
                 dataTheme: 'dark',
-                isCheck: false,
             },
             {
+                id: 'purple',
                 title: 'Tím',
                 image: images.PurpleTheme,
                 dataTheme: 'purple',
-                isCheck: false,
             },
             {
+                id: 'blue',
                 title: 'Xanh Đậm',
                 image: images.BlueTheme,
                 dataTheme: 'blue',
-                isCheck: false,
             },
             {
+                id: 'blue-light',
                 title: 'Xanh Biển',
                 image: images.BlueLightTheme,
                 dataTheme: 'blue-light',
-                isCheck: false,
             },
             {
+                id: 'green',
                 title: 'Xanh Lá',
                 image: images.GreenTheme,
                 dataTheme: 'green',
-                isCheck: false,
             },
             {
+                id: 'brown',
                 title: 'Nâu',
                 image: images.BrownTheme,
                 dataTheme: 'brown',
-                isCheck: false,
             },
             {
+                id: 'pink',
                 title: 'Hồng',
                 image: images.PinkTheme,
                 dataTheme: 'pink',
-                isCheck: false,
             },
             {
+                id: 'red',
                 title: 'Đỏ',
                 image: images.RedTheme,
                 dataTheme: 'red',
-                isCheck: false,
             },
         ],
     },
@@ -291,28 +292,28 @@ const THEME_ITEMS = [
         title: 'Màu Sáng',
         items: [
             {
+                id: 'light',
                 title: 'Sáng',
                 image: images.LightTheme,
                 dataTheme: 'light',
-                isCheck: false,
             },
             {
+                id: 'gray',
                 title: 'Xám',
                 image: images.GrayTheme,
                 dataTheme: 'gray',
-                isCheck: false,
             },
             {
+                id: 'green-light',
                 title: 'Xanh Nhạt',
                 image: images.GreenLightTheme,
                 dataTheme: 'green-light',
-                isCheck: false,
             },
             {
+                id: 'pink-light',
                 title: 'Hồng Cánh Sen',
                 image: images.PinkLightTheme,
                 dataTheme: 'pink-light',
-                isCheck: false,
             },
         ],
     },
@@ -324,6 +325,7 @@ function Header({ headerRef }) {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
     const user = useSelector((state) => state.auth.user);
+    const theme = useSelector((state) => state.userConfig.theme);
 
     const USER_OPTION_ITEMS = [
         {
@@ -348,10 +350,16 @@ function Header({ headerRef }) {
     ];
 
     const handleOpenModalSetting = () => {
-        setOpenTheme((prev) => !prev);
+        setOpenTheme(true);
     };
 
     const hanldCloseModal = () => {
+        const htmlElement = document.getElementsByTagName('html')[0];
+        const dataIdTheme = htmlElement.getAttribute('data-themeid');
+
+        if (dataIdTheme !== theme.id) {
+            handleSetThemeWebsite(theme);
+        }
         setOpenTheme(false);
     };
 
@@ -441,7 +449,7 @@ function Header({ headerRef }) {
 
                     <div className={cx('modal-body')}>
                         {THEME_ITEMS.map((theme, index) => (
-                            <ThemeOption key={index} data={theme} />
+                            <ThemeOption key={index} data={theme} onSetOpenTheme={setOpenTheme} />
                         ))}
                     </div>
                 </Modal>

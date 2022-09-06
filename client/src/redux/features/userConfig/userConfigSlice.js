@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    theme: null,
+    theme: JSON.parse(localStorage.getItem('zm3_user_setting')) || null,
 };
 
 export const userConfigSlice = createSlice({
@@ -9,7 +9,8 @@ export const userConfigSlice = createSlice({
     initialState,
     reducers: {
         setTheme: (state, action) => {
-            state.token = action.payload;
+            state.theme = action.payload;
+            localStorage.setItem('zm3_user_setting', JSON.stringify(action.payload));
         },
     },
 });

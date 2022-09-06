@@ -9,14 +9,17 @@ import Header from './Header';
 import Player from './Player';
 import instance from '~/utils/axios';
 import { authSlice } from '~/redux/features/auth/authSlice';
+import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
 
 const cx = classNames.bind(styles);
 
 export default function DefaultLayout({ children }) {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
-    const user = useSelector((state) => state.auth.user);
+    const theme = useSelector((state) => state.userConfig.theme);
+
     const headerRef = useRef();
+
     useEffect(() => {
         const getCurrentUser = async () => {
             try {
@@ -34,6 +37,12 @@ export default function DefaultLayout({ children }) {
 
         getCurrentUser();
     }, [token, dispatch]);
+
+    useEffect(() => {
+        if (theme) {
+            handleSetThemeWebsite(theme);
+        }
+    }, []);
 
     const handleScrollBody = (e) => {
         const scrollTop = e.target.scrollTop;

@@ -84,6 +84,7 @@
     --play-icon: url('/assets/images/play.81e7696e.svg');
     --play-icon-gif: url('/assets/images/icon-playing.gif');
     --vip-label: url('/assets/images/vip-label.3dd6ac7e.svg');
+    --icon-logo: url('/assets/images/icon_zing_mp3_60.f6b51045.svg');
 }
 // Data theme
 
@@ -343,18 +344,6 @@ body ::-webkit-scrollbar-track {
     border-radius: 4px;
 }
 
-// Funtion mixin
-@mixin flexBox($align: center, $justify: flex-end, $direction: row) {
-    display: flex;
-    align-items: $align;
-    justify-content: $justify;
-    flex-direction: $direction;
-}
-
-@mixin setWidthHeight($width, $height) {
-    width: $width;
-    height: $height;
-}
 //
 a,
 a:focus,
@@ -444,6 +433,14 @@ figure {
     margin: 0 4px;
 }
 
+.is-over-lyric {
+    color: hsla(0, 0%, 100%, 0.5) !important;
+}
+
+.is-active-lyric {
+    color: #ffed00 !important;
+}
+
 .is-hover-circle:hover {
     background-color: var(--alpha-bg);
 }
@@ -460,6 +457,19 @@ select {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    word-break: normal;
 }
 
 //
@@ -639,6 +649,6 @@ body .tippy-box {
     }
 
     .hide-on-mobile {
-        display: none;
+        display: none !important;
     }
 }

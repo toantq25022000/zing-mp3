@@ -50,6 +50,14 @@
             visibility: visible;
         }
     }
+    &.isPlaying {
+        .opacity {
+            visibility: hidden;
+        }
+        .playlist-actions {
+            visibility: visible;
+        }
+    }
 }
 
 .card-image {
@@ -231,6 +239,10 @@
 
 .is-ghost {
     color: var(--text-secondary);
+
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 .actions {
@@ -247,7 +259,6 @@
         width: 35px;
         height: 35px;
         background-color: var(--alpha-bg);
-        color: var(--white);
     }
 
     .tooltip-btn + .tooltip-btn {
@@ -256,6 +267,9 @@
 }
 
 .playlist-content {
+    .song-list {
+        min-height: 150px;
+    }
 }
 
 .description {
@@ -370,7 +384,7 @@
     }
 }
 
-@media (min-width: 64em) {
+@media (min-width: 74.75em) {
     .playlist-header {
         width: 300px;
         float: left;
@@ -423,7 +437,7 @@
     }
 }
 
-@media (max-width: 63.9375em) {
+@media (max-width: 74.6875em) {
     .description {
         display: none;
     }

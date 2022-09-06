@@ -2,19 +2,25 @@ import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
 
 import styles from './ThemeOption.module.scss';
 
 const cx = classNames.bind(styles);
 
-function ThemeOption({ data }) {
+function ThemeOption({ data, onSetOpenTheme }) {
     const { title, items } = data;
+    const theme = useSelector((state) => state.userConfig.theme);
+
+    const dispatch = useDispatch();
 
     const handlePreviewTheme = (itemTheme) => {
         const htmlElement = document.getElementsByTagName('html')[0];
         const bgLayout = document.querySelector('.zm-layout');
         //Set attr for element HTML
         htmlElement.setAttribute('data-theme', itemTheme.dataTheme);
+        htmlElement.setAttribute('data-themeid', itemTheme.id);
         if (itemTheme.styleHtml) {
             htmlElement.style = itemTheme.styleHtml;
         } else {
@@ -31,6 +37,22 @@ function ThemeOption({ data }) {
             htmlElement.removeAttribute('class');
         }
     };
+
+    const handleSetThemeForApp = (itemTheme) => {
+        handlePreviewTheme(itemTheme);
+        dispatch(
+            userConfigSlice.actions.setTheme({
+                id: itemTheme.id,
+                title: itemTheme.title,
+                thumbnail: itemTheme.image,
+                bgImg: itemTheme.bgLayout,
+                theme: itemTheme.dataTheme,
+                style: itemTheme.styleHtml,
+            }),
+        );
+        onSetOpenTheme(false);
+    };
+
     return (
         <div className={clsx(cx('wrapper'), 'grid')}>
             <h4 className={cx('title')}>{title}</h4>
@@ -44,7 +66,7 @@ function ThemeOption({ data }) {
 
                             <span
                                 className={cx('icon-check', {
-                                    isCheck: item.isCheck,
+                                    isCheck: theme.id === item.id,
                                 })}
                             >
                                 <FontAwesomeIcon icon={faCheck} />
@@ -61,6 +83,7 @@ function ThemeOption({ data }) {
                                         'is-outlined',
                                         'mb-10',
                                     )}
+                                    onClick={() => handleSetThemeForApp(item)}
                                 >
                                     Áp dụng
                                 </button>
