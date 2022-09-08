@@ -132,6 +132,10 @@
     margin-top: 3px;
     color: var(--text-secondary);
 
+    span {
+        display: inline-block;
+    }
+
     .is-ghost {
         display: inline-block;
         color: var(--text-secondary);
@@ -258,6 +262,10 @@
             visibility: visible;
         }
     }
+}
+
+.box-card-info {
+    z-index: 105;
 }
 
 // Responsive

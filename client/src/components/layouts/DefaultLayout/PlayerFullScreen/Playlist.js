@@ -26,15 +26,6 @@ function Playlist() {
     const isPlay = useSelector((state) => state.song.isPlay);
 
     useEffect(() => {
-        if (songId) {
-            // const scrollIntoViewSong = (ref) => {
-            //     ref.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-            // };
-            // if (document.getElementById('song-' + songId)) {
-            //     scrollIntoViewSong(document.getElementById('song-' + songId));
-            // }
-        }
-
         let timeout;
         const handleMouseNotActive = () => {
             clearTimeout(timeout);

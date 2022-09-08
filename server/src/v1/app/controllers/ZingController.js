@@ -68,8 +68,36 @@ class ZingController {
   }
 
   getArtist(req, res) {
-    zing.get_artist(req.query.name).then((data) => {
+    zing.get_artist(req.query.alias).then((data) => {
       res.json(data);
+    });
+  }
+
+  getCardInfoArtist(req, res) {
+    zing.get_artist(req.query.alias).then((response) => {
+      const { data } = response;
+      const cardInfo = {
+        ...response,
+        data: {
+          album: data.sections.find(
+            (section) => section.itemType === "release-date"
+          )?.items,
+          alias: data.alias,
+          awards: data.awards,
+          id: data.id,
+          isOA: data.hasOA,
+          isOABrand: data.isOABrand,
+          link: data.link,
+          name: data.name,
+          playlistId: data.playlistId,
+          sortBiography: data.sortBiography,
+          spotlight: data.spotlight,
+          thumbnail: data.thumbnail,
+          thumbnailM: data.thumbnailM,
+          totalFollow: data.totalFollow,
+        },
+      };
+      res.json(cardInfo);
     });
   }
 

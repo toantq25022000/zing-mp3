@@ -24,6 +24,11 @@ export const handlePlaySongRandom = (currentIndexSong, playlists, arrayIndexRand
     dispatch(songSlice.actions.setIsPlay(true));
 };
 
+export const setNumberToThounsandLike = (number) => {
+    if (number < 1000) return number;
+    return Math.floor(number / 1000) + 'K';
+};
+
 export const handleSetThemeWebsite = (theme) => {
     const htmlElement = document.getElementsByTagName('html')[0];
     const bgLayout = document.querySelector('.zm-layout');

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import instance from '~/utils/axios';
 import classNames from 'classnames/bind';
@@ -15,10 +16,9 @@ import {
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import SongItem from '~/components/layouts/components/SongItem';
-import { useDispatch, useSelector } from 'react-redux';
 import { songSlice } from '~/redux/features/song/songSlice';
 import { playlistSlice } from '~/redux/features/playlist/playlistSlice';
-import { handlePlaySongRandom } from '~/utils/collectionFunctionConstants';
+import { handlePlaySongRandom, setNumberToThounsandLike } from '~/utils/collectionFunctionConstants';
 
 const cx = classNames.bind(styles);
 
@@ -80,12 +80,6 @@ function DetailPlaylist() {
         const dd = d.getDate();
         const yy = d.getFullYear();
         return dd + '/' + mm + '/' + yy;
-    };
-
-    const setNumberToThounsandLike = (number) => {
-        if (!playlistResult.song) return 0;
-        if (number < 1000) return number;
-        return Math.floor(number / 1000) + 'K';
     };
 
     const getSumDurationPlaylist = () => {

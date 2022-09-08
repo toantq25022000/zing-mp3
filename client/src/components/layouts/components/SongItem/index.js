@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
+import TippyHandless from '@tippyjs/react/headless';
 import clsx from 'clsx';
 import classNames from 'classnames/bind';
 import styles from './SongItem.module.scss';
@@ -10,16 +11,55 @@ import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 import { secondsToTime } from '~/utils/collectionFunctionConstants';
 import { KaraokeIcon } from '../Icons';
-import { memo } from 'react';
-import { useSelector } from 'react-redux';
+import { memo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import ArtistCard from '../ArtistCard';
+import instance from '~/utils/axios';
+import { artistSlice } from '~/redux/features/artist/artistSlice';
 
 const cx = classNames.bind(styles);
 
 function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
+    //state
+    //const
     const isSongVip = data.streamingStatus === 2;
+    const dispatch = useDispatch();
+    //selector
 
     const isPlay = useSelector((state) => state.song.isPlay);
     const songId = useSelector((state) => state.song.songId);
+    const artistListInfo = useSelector((state) => state.artist.artistListInfo);
+
+    //handle event
+    const checkExistCardInfoArtist = (artist) => {
+        const findArtistInList = artistListInfo?.find((item) => item.id === artist.id);
+        return findArtistInList;
+    };
+
+    const handleFetchInfoArtist = (artist) => {
+        const resultCheck = checkExistCardInfoArtist(artist);
+
+        //if not exsist artist in list => call api
+        if (!resultCheck) {
+            try {
+                instance.get(`/card-info?alias=${artist.alias}`).then((response) => {
+                    dispatch(artistSlice.actions.setArtistListInfo([...artistListInfo, response.data]));
+                    dispatch(artistSlice.actions.setArtistCardInfo(response.data));
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        // else: exist artist => get info artist
+        else {
+            dispatch(artistSlice.actions.setArtistCardInfo(resultCheck));
+        }
+    };
+
+    //delete data artistCardInfo old from store
+    const handleHiddenTippyInfo = () => {
+        dispatch(artistSlice.actions.setArtistCardInfo(null));
+    };
 
     return (
         <div className={cx('wrapper')} onDoubleClick={onDoubleClickSong} id={data.encodeId}>
@@ -65,9 +105,23 @@ function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
                             <div className={cx('subtitle')}>
                                 {data.artists
                                     ?.map((artist) => (
-                                        <a key={artist.id} href="/" className={cx('is-ghost')}>
-                                            {artist.name}
-                                        </a>
+                                        <span key={artist.id}>
+                                            <TippyHandless
+                                                interactive={true}
+                                                placement="bottom-start"
+                                                onTrigger={() => handleFetchInfoArtist(artist)}
+                                                onHidden={handleHiddenTippyInfo}
+                                                render={(attrs) => (
+                                                    <div className={cx('box-card-info')} tabIndex="-1" {...attrs}>
+                                                        <ArtistCard />
+                                                    </div>
+                                                )}
+                                            >
+                                                <a href="/" className={cx('is-ghost')}>
+                                                    {artist.name}
+                                                </a>
+                                            </TippyHandless>
+                                        </span>
                                     ))
                                     .reduce((prev, current) => [prev, ', ', current])}
                             </div>
