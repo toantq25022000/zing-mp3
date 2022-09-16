@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
-import styles from './Player.module.scss';
-import clsx from 'clsx';
-import { Link, useNavigate } from 'react-router-dom';
+import Tippy from '@tippyjs/react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faHeart as faHeartSolid,
@@ -19,11 +18,13 @@ import {
     faVolumeXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
+import clsx from 'clsx';
+
 import { KaraokeIcon, LoopIcon, ShuffleIcon, SpinnerLoadIcon } from '../../components/Icons';
+import styles from './Player.module.scss';
 import instance from '~/utils/axios';
 import { songSlice } from '~/redux/features/song/songSlice';
 import { handlePlaySongRandom, secondsToTime } from '~/utils/collectionFunctionConstants';
-import Tippy from '@tippyjs/react';
 import PlayerFullScreen from '../PlayerFullScreen';
 
 const cx = classNames.bind(styles);
@@ -38,7 +39,6 @@ function Player() {
     const isVolumeOff = useSelector((state) => state.song.isVolumeOff);
     const songInfo = useSelector((state) => state.song.songInfo);
     const playlists = useSelector((state) => state.playlist.playlists);
-    const playlistInfo = useSelector((state) => state.playlist.playlistInfo);
     const isPlay = useSelector((state) => state.song.isPlay);
     const isLoop = useSelector((state) => state.song.isLoop);
     const isRandom = useSelector((state) => state.song.isRandom);
@@ -57,7 +57,6 @@ function Player() {
     const playerFullRef = useRef();
 
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     let isSeeking = false;
 
@@ -253,7 +252,7 @@ function Player() {
     useEffect(() => {
         const getSongResponse = async () => {
             try {
-                const response = await instance.get(`/song/info/${songId}`);
+                const response = await instance.get(`/song/info?id=${songId}`);
                 if (response.data) {
                     dispatch(songSlice.actions.setSongInfo(response.data));
                 } else {
@@ -273,7 +272,7 @@ function Player() {
         const getSrcAudio = async () => {
             try {
                 setIsLoadingPlay(true);
-                const response = await instance.get(`/song/${songId}`);
+                const response = await instance.get(`/song/streaming?id=${songId}`);
                 if (response.data) {
                     dispatch(songSlice.actions.setSrcAudio(response.data[128]));
 
@@ -299,6 +298,7 @@ function Player() {
         if (srcAudio !== '') {
             audioRef.current.volume = volume / 100;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [srcAudio]);
 
     useEffect(() => {

@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-keys */
 const images = {
     SearchIcon: require('./icons8-search.svg').default,
     DefaultImage: require('./default.jpg'),

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 // Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper';
@@ -15,15 +15,39 @@ import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faPause, faPlay, faRadio } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { songSlice } from '~/redux/features/song/songSlice';
+import { getCurrentIndexSongOfPlaylist } from '~/utils/collectionFunctionConstants';
 
 const cx = classNames.bind(styles);
 // import required modules
 
 function Playlist() {
+    const dispatch = useDispatch();
+
     const playlists = useSelector((state) => state.playlist.playlists);
     const songId = useSelector((state) => state.song.songId);
     const isPlay = useSelector((state) => state.song.isPlay);
+    const isRandom = useSelector((state) => state.song.isRandom);
+
+    const handlePlaySong = (song) => {
+        // if song is allowed , not for VIP
+        if (song.streamingStatus === 1) {
+            if (isRandom) dispatch(songSlice.actions.setIsRandom(false));
+            if (songId === song.encodeId) {
+                if (isPlay) {
+                    dispatch(songSlice.actions.setIsPlay(false));
+                } else {
+                    dispatch(songSlice.actions.setIsPlay(true));
+                }
+            } else {
+                dispatch(songSlice.actions.setSongId(song.encodeId));
+                dispatch(songSlice.actions.setIsPlay(true));
+
+                dispatch(songSlice.actions.setCurrentIndexSong(getCurrentIndexSongOfPlaylist(playlists, song)));
+            }
+        }
+    };
 
     useEffect(() => {
         let timeout;
@@ -103,6 +127,7 @@ function Playlist() {
                                                 ),
                                                 'zm-btn',
                                             )}
+                                            onClick={() => handlePlaySong(song)}
                                         >
                                             <FontAwesomeIcon
                                                 icon={songId === song.encodeId && isPlay ? faPause : faPlay}

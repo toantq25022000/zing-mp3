@@ -76,8 +76,8 @@ function ArtistCard() {
                         <div className={cx('album')}>
                             <h3 className={cx('title')}>Mới nhất</h3>
                             <div className={cx('album__list')}>
-                                {cardInfo?.album.slice(0, 4).map((item) => (
-                                    <div className={cx('album__item')}>
+                                {cardInfo?.album.slice(0, 4).map((item, index) => (
+                                    <div className={cx('album__item')} key={index}>
                                         <div className={cx('album__thumb')}>
                                             <figure>
                                                 <img src={item.thumbnail || item.thumbnailM} alt="" />

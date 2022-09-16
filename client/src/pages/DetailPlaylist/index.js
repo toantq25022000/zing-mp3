@@ -6,19 +6,17 @@ import classNames from 'classnames/bind';
 import styles from './DetailPlaylist.module.scss';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faEllipsisVertical,
-    faHeart as faHeartSolid,
-    faPause,
-    faPlay,
-    faSort,
-} from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisVertical, faPause, faPlay, faSort } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import SongItem from '~/components/layouts/components/SongItem';
 import { songSlice } from '~/redux/features/song/songSlice';
 import { playlistSlice } from '~/redux/features/playlist/playlistSlice';
-import { handlePlaySongRandom, setNumberToThounsandLike } from '~/utils/collectionFunctionConstants';
+import {
+    getCurrentIndexSongOfPlaylist,
+    handlePlaySongRandom,
+    setNumberToThounsandLike,
+} from '~/utils/collectionFunctionConstants';
 
 const cx = classNames.bind(styles);
 
@@ -33,8 +31,6 @@ function DetailPlaylist() {
     const playlistId = useSelector((state) => state.playlist.playlistId);
     const songId = useSelector((state) => state.song.songId);
     const isRandom = useSelector((state) => state.song.isRandom);
-    const currentIndexSong = useSelector((state) => state.song.currentIndexSong);
-    const arrayIndexRandom = useSelector((state) => state.song.arrayIndexRandom);
 
     const isPlay = useSelector((state) => state.song.isPlay);
     const dispatch = useDispatch();
@@ -44,8 +40,7 @@ function DetailPlaylist() {
     useEffect(() => {
         const getPlaylist = async () => {
             try {
-                const response = await instance.get(`/playlist/${idPlaylist}`);
-                console.log(response.data);
+                const response = await instance.get(`/playlist?id=${idPlaylist}`);
                 if (!response.data) {
                     navigate('/');
                     return;
@@ -58,6 +53,7 @@ function DetailPlaylist() {
             }
         };
         getPlaylist();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idPlaylist]);
 
     useEffect(() => {
@@ -71,6 +67,7 @@ function DetailPlaylist() {
         } else {
             window.scrollTo(0, 0);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [songId]);
 
     const releaseDateUpdatePlaylist = (date) => {
@@ -91,12 +88,7 @@ function DetailPlaylist() {
         return hours + ' giờ ' + (minutes > 10 ? '' : '0') + minutes + ' phút';
     };
 
-    const getCurrentIndexSongOfPlaylist = (song) => {
-        return playlists.indexOf(song);
-    };
-
     const arrayPlaylistCanPlay = useMemo(() => {
-        console.log('tinh toan lai lai ');
         return playlistResult?.song?.items?.filter((song) => song.streamingStatus === 1);
     }, [playlistResult]);
 
@@ -124,7 +116,7 @@ function DetailPlaylist() {
                     );
                     console.log('dispatch playlists new');
                 }
-                dispatch(songSlice.actions.setCurrentIndexSong(getCurrentIndexSongOfPlaylist(song)));
+                dispatch(songSlice.actions.setCurrentIndexSong(getCurrentIndexSongOfPlaylist(playlists, song)));
             }
         }
     };

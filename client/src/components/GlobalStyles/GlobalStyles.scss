@@ -496,6 +496,7 @@ textarea {
     text-transform: none;
     text-align: center;
     background-color: transparent;
+    outline: none;
     cursor: pointer;
 }
 
@@ -587,19 +588,6 @@ body .tippy-box {
 //Menu
 .menu-list {
     padding: 10px 0;
-}
-
-//Search
-.suggest__list {
-    overflow: hidden;
-    width: 100%;
-    height: auto;
-    min-height: 0;
-    background-color: var(--primary-bg);
-    z-index: 5;
-    display: block;
-    box-shadow: 0 4px 6px 0 rgba(32, 33, 36, 0.28);
-    color: var(--text-primary);
 }
 
 //active link current page

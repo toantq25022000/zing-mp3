@@ -7,10 +7,10 @@ const ZingController = require("../app/controllers/ZingController");
 router.get("/home", ZingController.getHome);
 
 // getSong
-router.get("/song/:id", ZingController.getSong);
+router.get("/song/streaming", ZingController.getSong);
 
 // getSongInfo
-router.get("/song/info/:id", ZingController.getSongInfo);
+router.get("/song/info", ZingController.getSongInfo);
 
 // getLyricSong
 router.get("/song/lyric/:id", ZingController.getSongLyric);
@@ -25,7 +25,10 @@ router.get("/chart/new-release", ZingController.getNewReleaseChart);
 router.get("/chart/week/:id", ZingController.getWeekChart);
 
 // getDetailPlaylist
-router.get("/playlist/:id", ZingController.getPlaylist);
+router.get("/playlist", ZingController.getPlaylist);
+
+//getSectiononBottomPlaylist
+router.get("/section-bottom", ZingController.getSectionBottomPlaylist);
 
 // getTop100
 router.get("/top100", ZingController.getTop100);
@@ -69,7 +72,7 @@ router.get("/hub/:id", ZingController.getHubDetail);
 router.get("/suggested-playlist/:id", ZingController.getSuggestedPlaylists);
 
 // getSuggestionKeyword
-router.get("/suggestion-keyword", ZingController.getSuggestionKeyword);
+router.get("/ac-suggestions", ZingController.getSuggestionKeyword);
 
 // getEvents
 router.get("/events", ZingController.getEvents);

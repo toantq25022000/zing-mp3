@@ -10,6 +10,7 @@ import Player from './Player';
 import instance from '~/utils/axios';
 import { authSlice } from '~/redux/features/auth/authSlice';
 import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
+import { songSlice } from '~/redux/features/song/songSlice';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +18,8 @@ export default function DefaultLayout({ children }) {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
     const theme = useSelector((state) => state.userConfig.theme);
-
+    const isPlay = useSelector((state) => state.song.isPlay);
+    const isOpenSearchResult = useSelector((state) => state.userConfig.isOpenSearchResult);
     const headerRef = useRef();
 
     useEffect(() => {
@@ -38,11 +40,35 @@ export default function DefaultLayout({ children }) {
         getCurrentUser();
     }, [token, dispatch]);
 
+    const handleChangeStatePlaySong = () => {
+        dispatch(songSlice.actions.setIsPlay(!isPlay));
+    };
+
     useEffect(() => {
+        //handle set theme of user current or default
         if (theme) {
             handleSetThemeWebsite(theme);
         }
-    }, []);
+    }, [theme]);
+
+    useEffect(() => {
+        const keyDownHandler = (event) => {
+            // If search result wrap is open
+            if (isOpenSearchResult) return;
+            if (event.code === 'Space') {
+                event.preventDefault();
+
+                handleChangeStatePlaySong();
+            }
+        };
+
+        document.addEventListener('keydown', keyDownHandler);
+
+        return () => {
+            document.removeEventListener('keydown', keyDownHandler);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpenSearchResult, isPlay]);
 
     const handleScrollBody = (e) => {
         const scrollTop = e.target.scrollTop;

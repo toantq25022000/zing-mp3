@@ -39,7 +39,6 @@ function ThemeOption({ data, onSetOpenTheme }) {
     };
 
     const handleSetThemeForApp = (itemTheme) => {
-        handlePreviewTheme(itemTheme);
         dispatch(
             userConfigSlice.actions.setTheme({
                 id: itemTheme.id,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ArrowLeft, ArrowRight, Upload, Gear } from 'react-bootstrap-icons';
 import Tippy from '@tippyjs/react';
@@ -25,7 +25,6 @@ import clsx from 'clsx';
 import classNames from 'classnames/bind';
 
 import styles from './Header.module.scss';
-import instance from '~/utils/axios';
 import { ThemeIcon } from '~/components/layouts/components/Icons';
 import Search from '~/components/layouts/components/Search';
 import Menu from '~/components/Popper/Menu';
@@ -323,7 +322,6 @@ function Header({ headerRef }) {
     const [openTheme, setOpenTheme] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const token = useSelector((state) => state.auth.token);
     const user = useSelector((state) => state.auth.user);
     const theme = useSelector((state) => state.userConfig.theme);
 

@@ -1,6 +1,5 @@
-import classNames from 'classnames/bind';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
 import CardItem from '../CardItem';
 import styles from './CarouselMusic.module.scss';
 

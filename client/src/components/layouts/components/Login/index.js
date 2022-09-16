@@ -167,6 +167,7 @@ function Login() {
 
         const valueEmail = e.target.value.trim();
 
+        // eslint-disable-next-line no-useless-escape
         if (valueEmail.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,})+$/)) {
             setError((prev) => ({
                 ...prev,
@@ -218,6 +219,7 @@ function Login() {
     const handleBlurEmail = (e) => {
         const valueEmail = e.target.value.trim();
 
+        // eslint-disable-next-line no-useless-escape
         if (!valueEmail.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
             setError((prev) => ({
                 ...prev,

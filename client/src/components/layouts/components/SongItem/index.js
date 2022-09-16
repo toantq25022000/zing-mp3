@@ -1,4 +1,6 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import Tippy from '@tippyjs/react';
 import TippyHandless from '@tippyjs/react/headless';
 import clsx from 'clsx';
@@ -11,8 +13,6 @@ import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 
 import { secondsToTime } from '~/utils/collectionFunctionConstants';
 import { KaraokeIcon } from '../Icons';
-import { memo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import ArtistCard from '../ArtistCard';
 import instance from '~/utils/axios';
 import { artistSlice } from '~/redux/features/artist/artistSlice';
@@ -104,8 +104,8 @@ function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
                             </div>
                             <div className={cx('subtitle')}>
                                 {data.artists
-                                    ?.map((artist) => (
-                                        <span key={artist.id}>
+                                    ?.map((artist, index) => (
+                                        <span key={index}>
                                             <TippyHandless
                                                 interactive={true}
                                                 placement="bottom-start"

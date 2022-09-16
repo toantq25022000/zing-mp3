@@ -10,13 +10,13 @@ class ZingController {
   }
 
   getSong(req, res) {
-    zing.get_song(req.params.id).then((data) => {
+    zing.get_song(req.query.id).then((data) => {
       res.json(data);
     });
   }
 
   getSongInfo(req, res) {
-    zing.get_song_info(req.params.id).then((data) => {
+    zing.get_song_info(req.query.id).then((data) => {
       res.json(data);
     });
   }
@@ -140,8 +140,36 @@ class ZingController {
   }
 
   getPlaylist(req, res) {
-    zing.get_playlist(req.params.id).then((data) => {
+    zing.get_playlist(req.query.id).then((data) => {
       res.json(data);
+    });
+  }
+
+  getSectionBottomPlaylist(req, res) {
+    zing.get_playlist(req.query.id).then((response) => {
+      const { data } = response;
+      const artists = data.song.items
+        .reduce(
+          (prev, current) => {
+            current?.album?.artists.forEach((item) => {
+              if (!item.playlistId) {
+                item = { ...item, playlistId: req.query.id };
+              }
+              prev.push(item);
+            });
+            return prev;
+          },
+
+          []
+        )
+        .reduce((prev, current) => {
+          const findArist = prev?.find((art) => art?.id === current.id);
+          if (!findArist) {
+            prev = [...prev, current];
+          }
+          return prev;
+        }, []);
+      res.json({ ...response, data: artists });
     });
   }
 
@@ -182,7 +210,7 @@ class ZingController {
   }
 
   getSuggestionKeyword(req, res) {
-    zing.get_suggestion_keyword().then((data) => {
+    zing.get_suggestion_keyword(req.query.q).then((data) => {
       res.json(data);
     });
   }
