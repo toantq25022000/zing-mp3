@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
+import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
 
 import styles from './ThemeOption.module.scss';
 
@@ -11,42 +12,18 @@ const cx = classNames.bind(styles);
 
 function ThemeOption({ data, onSetOpenTheme }) {
     const { title, items } = data;
-    const theme = useSelector((state) => state.userConfig.theme);
+    const { theme } = useSelector((state) => state.userConfig.theme);
 
     const dispatch = useDispatch();
 
     const handlePreviewTheme = (itemTheme) => {
-        const htmlElement = document.getElementsByTagName('html')[0];
-        const bgLayout = document.querySelector('.zm-layout');
-        //Set attr for element HTML
-        htmlElement.setAttribute('data-theme', itemTheme.dataTheme);
-        htmlElement.setAttribute('data-themeid', itemTheme.id);
-        if (itemTheme.styleHtml) {
-            htmlElement.style = itemTheme.styleHtml;
-        } else {
-            htmlElement.removeAttribute('style');
-        }
-
-        //Set background for website
-        if (itemTheme.bgLayout) {
-            bgLayout.style.backgroundImage = `url(${itemTheme.bgLayout})`;
-            htmlElement.setAttribute('class', 'theme-bg-image');
-        } else {
-            htmlElement.removeAttribute('style');
-            bgLayout.removeAttribute('style');
-            htmlElement.removeAttribute('class');
-        }
+        handleSetThemeWebsite(itemTheme);
     };
 
     const handleSetThemeForApp = (itemTheme) => {
         dispatch(
             userConfigSlice.actions.setTheme({
-                id: itemTheme.id,
-                title: itemTheme.title,
-                thumbnail: itemTheme.image,
-                bgImg: itemTheme.bgLayout,
-                theme: itemTheme.dataTheme,
-                style: itemTheme.styleHtml,
+                theme: itemTheme,
             }),
         );
         onSetOpenTheme(false);
@@ -56,11 +33,11 @@ function ThemeOption({ data, onSetOpenTheme }) {
         <div className={clsx(cx('wrapper'), 'grid')}>
             <h4 className={cx('title')}>{title}</h4>
             <div className={clsx(cx('body'), 'row')}>
-                {items?.map((item, index) => (
-                    <div key={index} className={clsx(cx('theme-item'), 'col', 'l-2-4', 'm-4', 'c-6')}>
+                {items?.map((item) => (
+                    <div key={item.id} className={clsx(cx('theme-item'), 'col', 'l-2-4', 'm-4', 'c-6')}>
                         <div className={cx('thumbnail')}>
                             <figure>
-                                <img src={item.image} alt="" className={cx('thumbnail__img')} />
+                                <img src={item.thumbnail} alt="" className={cx('thumbnail__img')} />
                             </figure>
 
                             <span

@@ -13,7 +13,7 @@ router.get("/song/streaming", ZingController.getSong);
 router.get("/song/info", ZingController.getSongInfo);
 
 // getLyricSong
-router.get("/song/lyric/:id", ZingController.getSongLyric);
+router.get("/song/lyric", ZingController.getSongLyric);
 
 //getChartHome
 router.get("/chart/home", ZingController.getHomeChart);
@@ -69,7 +69,7 @@ router.get("/hub", ZingController.getHubHome);
 router.get("/hub/:id", ZingController.getHubDetail);
 
 // getSuggestedPlaylists
-router.get("/suggested-playlist/:id", ZingController.getSuggestedPlaylists);
+router.get("/suggested-playlist", ZingController.getSuggestedPlaylists);
 
 // getSuggestionKeyword
 router.get("/ac-suggestions", ZingController.getSuggestionKeyword);
@@ -82,5 +82,8 @@ router.get("/events/:id", ZingController.getEventInfo);
 
 // getRecommenedKeywords
 router.get("/recommended-keyword", ZingController.getRecommenedKeyword);
+
+//getConfig
+router.get("/config", ZingController.getConfig);
 
 module.exports = router;

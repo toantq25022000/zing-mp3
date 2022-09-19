@@ -17,14 +17,53 @@
     &.option {
         padding: 5px 15px;
     }
+
     &.option-theme {
         padding: 10px 10px 10px 15px;
+    }
+
+    &.option-player-full {
+        padding: 10px 20px 10px 14px;
     }
 
     &.noSelect {
         box-shadow: none;
         opacity: 0.5;
         cursor: not-allowed;
+    }
+
+    &.setting-menu-player {
+        height: 40px;
+        align-items: center;
+        padding-right: 15px;
+        color: var(--white);
+
+        justify-content: space-between;
+    }
+
+    .button-size {
+        display: flex;
+        align-items: center;
+        height: 25px;
+        width: 25px;
+        padding: 4px;
+        margin: 0 0 0 10px;
+        font-weight: 500;
+        font-size: 1.2rem;
+        justify-content: center;
+        background-color: var(--alpha-bg);
+
+        &.active {
+            background-color: var(--purple-primary);
+            color: var(--white);
+        }
+
+        &:first-child {
+            font-size: 1rem;
+        }
+        &:last-child {
+            font-size: 1.4rem;
+        }
     }
 }
 
@@ -136,29 +175,4 @@
 .sizes {
     display: flex;
     align-items: center;
-}
-
-.button-size {
-    display: flex;
-    align-items: center;
-    height: 25px;
-    width: 25px;
-    padding: 4px;
-    margin: 0 0 0 10px;
-    font-weight: 500;
-    font-size: 1.2rem;
-    justify-content: center;
-    background-color: var(--alpha-bg);
-
-    &.active {
-        background-color: var(--purple-primary);
-        color: var(--white);
-    }
-
-    &:first-child {
-        font-size: 1rem;
-    }
-    &:last-child {
-        font-size: 1.4rem;
-    }
 }

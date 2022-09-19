@@ -25,36 +25,69 @@ export const handlePlaySongRandom = (currentIndexSong, playlists, arrayIndexRand
     dispatch(songSlice.actions.setIsPlay(true));
 };
 
+export const handlePlaySongFn = (song, songId, isRandom, isPlay, playlists, songSlice, dispatch) => {
+    if (isRandom) dispatch(songSlice.actions.setIsRandom(false));
+    if (songId === song.encodeId) {
+        if (isPlay) {
+            dispatch(songSlice.actions.setIsPlay(false));
+        } else {
+            dispatch(songSlice.actions.setIsPlay(true));
+        }
+    } else {
+        dispatch(songSlice.actions.setSongId(song.encodeId));
+        dispatch(songSlice.actions.setIsPlay(true));
+
+        dispatch(songSlice.actions.setCurrentIndexSong(getCurrentIndexSongOfPlaylist(playlists, song)));
+    }
+};
+
 export const setNumberToThounsandLike = (number) => {
     if (number < 1000) return number;
-    return Math.floor(number / 1000) + 'K';
+    const result = Math.floor(number / 1000);
+    if (result >= 1000) return (result / 1000).toFixed(1) + 'M';
+    return result + 'K';
+};
+
+const handleEncodeStyle = (style) => {
+    style.replace(/\"/gi, '"');
+    const arraySplitSyle = style.split(',"').map((item) => item.replace(/\"/gi, '').replace(/"/gi, ''));
+    return arraySplitSyle.join(';');
 };
 
 export const handleSetThemeWebsite = (theme) => {
+    let themeResult = { ...theme };
     const htmlElement = document.getElementsByTagName('html')[0];
     const bgLayout = document.querySelector('.zm-layout');
-    //Set attr for element HTML
-    htmlElement.setAttribute('data-theme', theme.theme);
-    htmlElement.setAttribute('data-themeid', theme.id);
-    if (theme.style) {
-        htmlElement.style = theme.style;
-    } else {
-        htmlElement.removeAttribute('style');
+
+    if (theme.dynamic) {
+        const hoursCurrent = new Date().getHours();
+        const dynamicResult = theme.dynamic.find(
+            (item) => hoursCurrent >= item.start.hours && item.end.hours > hoursCurrent,
+        );
+        themeResult = dynamicResult;
     }
 
+    //Set attr for element HTML
+    htmlElement.setAttribute('data-theme', themeResult.theme);
+    htmlElement.setAttribute('data-themeid', themeResult.id);
+
     //Set background for website
-    if (theme.bgImg) {
-        bgLayout.style.backgroundImage = `url(${theme.bgImg})`;
-        htmlElement.setAttribute('class', 'theme-bg-image');
+
+    themeResult.bgImg
+        ? (bgLayout.style.backgroundImage = `url(${themeResult.bgImg})`)
+        : (bgLayout.style.backgroundImage = 'none');
+    themeResult.className
+        ? htmlElement.setAttribute('class', themeResult.className)
+        : htmlElement.removeAttribute('class');
+    if (themeResult.style) {
+        htmlElement.setAttribute('style', handleEncodeStyle(themeResult.style));
     } else {
         htmlElement.removeAttribute('style');
-        bgLayout.removeAttribute('style');
-        htmlElement.removeAttribute('class');
     }
 };
 
 export const getCurrentIndexSongOfPlaylist = (playlists, song) => {
-    return playlists.indexOf(song);
+    return playlists.findIndex((item) => item.encodeId === song.encodeId);
 };
 
 export const ChangeToSlug = (slug) => {
@@ -81,4 +114,8 @@ export const ChangeToSlug = (slug) => {
     slug = '@' + slug + '@';
     slug = slug.replace(/\@\-|\-\@|\@/gi, '');
     return slug;
+};
+
+export const handleClickToStopPropagation = (e) => {
+    e.stopPropagation();
 };

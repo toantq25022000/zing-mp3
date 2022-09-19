@@ -1,7 +1,8 @@
 import classNames from 'classnames/bind';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { songSlice } from '~/redux/features/song/songSlice';
 import instance from '~/utils/axios';
 import styles from './PlayerFullScreen.module.scss';
 
@@ -10,84 +11,161 @@ const cx = classNames.bind(styles);
 function Lyric({ audioRef }) {
     const songId = useSelector((state) => state.song.songId);
     const songInfo = useSelector((state) => state.song.songInfo);
+    const isPlay = useSelector((state) => state.song.isPlay);
+    const lyricSong = useSelector((state) => state.song.lyricSong);
+    const sizeTextLyric = useSelector((state) => state.userConfig.sizeTextLyric);
 
     const [lyrics, setLyrics] = useState([]);
+    const [indexTextHighLight, setIndexTextHighLight] = useState(0);
 
-    const handleUpdateLyricNew = () => {
+    const dispatch = useDispatch();
+
+    // lyrics (Array) - output from parseLyric function
+    // time (Number) - current time from audio player
+    const syncLyric = (lyrics, time) => {
+        const scores = [];
+
+        lyrics.forEach((lyric) => {
+            // get the gap or distance or we call it score
+            const score = time - lyric.time;
+
+            // only accept score with positive values
+            if (score >= 0) scores.push(score);
+        });
+
+        if (scores.length === 0) return 0;
+
+        // get the smallest value from scores
+        const closest = Math.min(...scores);
+
+        // return the index of closest lyric
+        return scores.indexOf(closest);
+    };
+
+    const handleHighlightLyricText = (indexTextSong) => {
         const listSentences = document.querySelectorAll('.sentence-item');
         if (listSentences) {
-            for (let i = 0; i < listSentences.length; i++) {
-                const timeStartEle = parseFloat(listSentences[i].getAttribute('data-starttime'));
+            listSentences.forEach((item) => {
+                item.classList.remove('is-over-lyric');
+                item.classList.remove('is-active-lyric');
+            });
 
-                const timeStartEleNext =
-                    i === listSentences.length - 1
-                        ? audioRef.current.duration
-                        : parseFloat(listSentences[i + 1].getAttribute('data-starttime'));
-
-                const itemIndex0 = listSentences[0];
-                const timeStartElement0 = parseFloat(itemIndex0.getAttribute('data-starttime'));
-
-                if (audioRef.current.currentTime < timeStartElement0) {
-                    listSentences[i].classList.remove('is-over-lyric');
-                    listSentences[i].classList.remove('is-active-lyric');
-                } else {
-                    if (
-                        timeStartEle < audioRef.current.currentTime &&
-                        audioRef.current.currentTime > timeStartEleNext - 0.6
-                    ) {
-                        if (listSentences[i].classList.contains('is-active-lyric')) {
-                            listSentences[i].classList.remove('is-active-lyric');
-                        }
-                        listSentences[i].classList.add(cx('is-over-lyric'));
-                    } else if (
-                        timeStartEle - 0.5 <= audioRef.current.currentTime &&
-                        audioRef.current.currentTime < timeStartEleNext
-                    ) {
-                        listSentences[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        if (listSentences[i].classList.contains('is-over-lyric')) {
-                            listSentences[i].classList.remove('is-over-lyric');
-                        }
-                        if (!listSentences[i].classList.contains('is-active-lyric')) {
-                            listSentences[i].classList.add('is-active-lyric');
-                        }
-                    } else {
-                        listSentences[i].classList.remove(cx('is-over-lyric'));
-                        listSentences[i].classList.remove(cx('is-active-lyric'));
+            listSentences.forEach((item, index) => {
+                if (index === indexTextSong) {
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    item.classList.add('is-active-lyric');
+                } else if (index < indexTextSong) {
+                    if (item.classList.contains('is-active-lyric')) {
+                        item.classList.remove('is-active-lyric');
                     }
+                    item.classList.add(cx('is-over-lyric'));
                 }
-            }
+            });
         }
+    };
+
+    const handleUpdateHighlightLyricSync = (timeCurrent) => {
+        const time = timeCurrent;
+        const indexTextSong = syncLyric(lyrics, time);
+
+        setIndexTextHighLight(indexTextSong);
+
+        if (indexTextSong !== indexTextHighLight) {
+            handleHighlightLyricText(indexTextSong);
+        }
+        console.log(lyrics[indexTextSong].text);
+    };
+
+    // parse formated time
+    // "03:24.73" => 204.73 (total time in seconds)
+    const parseTime = (time) => {
+        const minsec = time.split(':');
+
+        const min = parseInt(minsec[0]) * 60;
+        const sec = parseFloat(minsec[1]);
+
+        return min + sec;
+    };
+
+    // lrc (String) - lrc file text
+    const parseLyric = (lrc) => {
+        // will match "[00:00.00] ooooh yeah!"
+        // note: i use named capturing group
+        const regex = /^\[(?<time>\d{2}:\d{2}(.\d{2})?)\](?<text>.*)/;
+
+        // split lrc string to individual lines
+        const lines = lrc.split('\n');
+
+        const output = [];
+
+        lines.forEach((line) => {
+            const match = line.match(regex);
+
+            // if doesn't match, return.
+            if (match == null) return;
+
+            const { time, text } = match.groups;
+            if (text) {
+                output.push({
+                    time: parseTime(time),
+                    text: text.trim(),
+                });
+            }
+        });
+
+        return output;
+    };
+
+    const readLrcSong = async (fileUrl) => {
+        const res = await fetch(fileUrl);
+        const lrc = await res.text();
+        const lyricsResult = parseLyric(lrc);
+        setLyrics(lyricsResult);
     };
 
     audioRef.current.ontimeupdate = () => {
         if (audioRef.current.currentTime) {
-            handleUpdateLyricNew();
+            handleUpdateHighlightLyricSync(audioRef.current.currentTime);
         }
+    };
+
+    audioRef.current.onchange = () => {
+        handleUpdateHighlightLyricSync(audioRef.current.currentTime);
     };
 
     useEffect(() => {
         const getLyric = async () => {
-            try {
-                const response = await instance.get(`/song/lyric/${songId}`);
-                if (response.data) {
-                    const arrayLyric = response.data.sentences.map((sentence) => {
-                        return {
-                            startTime: sentence.words[0].startTime / 1000,
-                            sentence: sentence.words.map((word) => word.data).join(' '),
-                        };
-                    });
-                    setLyrics(arrayLyric);
-                    // console.log(arrayLyric);
-                }
+            //Have lyyric song
+            if (lyricSong) {
+                readLrcSong(lyricSong.file);
+            } else {
+                //Haven't lyric song => call api
 
-                const scrollContentElement = document.querySelector('.scroll-content-lyric');
-                scrollContentElement.scrollTo({ top: 0, behavior: 'smooth' });
-            } catch (error) {
-                console.log(error);
+                try {
+                    const response = await instance.get(`/song/lyric?id=${songId}`);
+
+                    if (response.data) {
+                        dispatch(songSlice.actions.setLyricSong(response.data));
+                        readLrcSong(response.data.file);
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
             }
         };
         getLyric();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [songId]);
+
+    useEffect(() => {
+        if (!isPlay) {
+            const time = audioRef.current.currentTime;
+            const indexTextSong = syncLyric(lyrics, time);
+            setIndexTextHighLight(indexTextSong);
+            handleHighlightLyricText(indexTextSong);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lyrics]);
 
     return (
         <div className={clsx(cx('lyric'), 'grid')}>
@@ -107,15 +185,16 @@ function Lyric({ audioRef }) {
                         </div>
                     </div>
                 </div>
-                <div className={clsx(cx('column', 'is-size-S', 'fullhd-7'), 'col', 'l-7', 'm-12')}>
+                <div className={clsx(cx('column', `is-size-${sizeTextLyric}`, 'fullhd-7'), 'col', 'l-7', 'm-12')}>
                     <div className={clsx(cx('scroll-content'), 'scroll-content-lyric')}>
-                        {lyrics.map((lyric, index) => (
+                        {lyrics?.map((lyric, index) => (
                             <p
                                 key={index}
                                 className={clsx(cx('item'), 'sentence-item')}
-                                data-starttime={lyric.startTime}
+                                data-index={index}
+                                data-time={lyric.time}
                             >
-                                {lyric.sentence}
+                                {lyric.text}
                             </p>
                         ))}
                     </div>

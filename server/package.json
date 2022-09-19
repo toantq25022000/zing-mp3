@@ -19,7 +19,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.1",
     "mongoose-slug-generator": "^1.0.4",
-    "zingmp3-api": "^1.0.10",
     "zingmp3-api-full": "^1.0.14",
     "zingmp3-api-next": "^1.0.4"
   },

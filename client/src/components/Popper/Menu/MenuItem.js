@@ -2,12 +2,18 @@ import { faAngleRight, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
 import Menu from '.';
 import styles from './Menu.module.scss';
 
 const cx = classNames.bind(styles);
 
 function MenuItem({ data }) {
+    const sizeTextLyric = useSelector((state) => state.userConfig.sizeTextLyric);
+
+    const dispatch = useDispatch();
+
     const renderItem = () => {
         switch (data.type) {
             case 'quaility-music':
@@ -32,6 +38,7 @@ function MenuItem({ data }) {
                     </div>
                 );
             case 'theme':
+            case 'playerFull':
                 return (
                     <div
                         className={cx(
@@ -40,7 +47,8 @@ function MenuItem({ data }) {
                                 separate: data.separate,
                                 noSelect: data.isNoneSelected,
                             },
-                            'option-theme',
+                            'option-player-full',
+                            data.isSettingPlayer && 'setting-menu-player',
                         )}
                     >
                         <span className={cx('item-title')}>{data.title}</span>
@@ -50,10 +58,11 @@ function MenuItem({ data }) {
                                     <span
                                         key={option.size}
                                         className={clsx(
-                                            cx(`size-${option.size}`, 'button-size', option.isActive && 'active'),
+                                            cx('button-size', sizeTextLyric === option.size && 'active'),
                                             'zm-btn',
                                         )}
                                         tabIndex="0"
+                                        onClick={() => dispatch(userConfigSlice.actions.setSizeTextLyric(option.size))}
                                     >
                                         A
                                     </span>

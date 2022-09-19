@@ -37,39 +37,40 @@ function PlayerFullScreen({ onClosePlayerFullScreen, audioRef }) {
     const SETTING_NOWPLAYING_OPTION_ITEMS = [
         {
             title: 'Hình nền',
-            type: 'theme',
+            type: 'playerFull',
+            isSettingPlayer: true,
             isCheck: false,
         },
         {
             title: 'Chỉ phát nhạc nền',
-            type: 'theme',
+            type: 'playerFull',
+            isSettingPlayer: true,
             isNoneSelected: true,
             isCheck: false,
         },
         {
             title: 'Cỡ chữ lời nhạc',
-            type: 'theme',
+            type: 'playerFull',
+            isSettingPlayer: true,
             listOptions: [
                 {
                     type: 'size',
                     size: 'S',
-                    isActive: false,
                 },
                 {
                     type: 'size',
                     size: 'M',
-                    isActive: true,
                 },
                 {
                     type: 'size',
                     size: 'L',
-                    isActive: false,
                 },
             ],
         },
         {
             title: 'Luôn phát toàn màn hình',
-            type: 'theme',
+            type: 'playerFull',
+            isSettingPlayer: true,
             isCheck: false,
         },
     ];
@@ -204,7 +205,7 @@ function PlayerFullScreen({ onClosePlayerFullScreen, audioRef }) {
                     {typeTab === 'lyric' ? (
                         <Lyric audioRef={audioRef} />
                     ) : typeTab === 'karaoke' ? (
-                        <Karaoke />
+                        <Karaoke audioRef={audioRef} />
                     ) : (
                         <Playlist />
                     )}

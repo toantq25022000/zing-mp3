@@ -11,15 +11,18 @@ import instance from '~/utils/axios';
 import { authSlice } from '~/redux/features/auth/authSlice';
 import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
 import { songSlice } from '~/redux/features/song/songSlice';
+import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
 
 const cx = classNames.bind(styles);
 
 export default function DefaultLayout({ children }) {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.auth.token);
-    const theme = useSelector((state) => state.userConfig.theme);
+    const { theme } = useSelector((state) => state.userConfig.theme);
+    const config = useSelector((state) => state.userConfig.config);
     const isPlay = useSelector((state) => state.song.isPlay);
     const isOpenSearchResult = useSelector((state) => state.userConfig.isOpenSearchResult);
+
     const headerRef = useRef();
 
     useEffect(() => {
@@ -46,10 +49,17 @@ export default function DefaultLayout({ children }) {
 
     useEffect(() => {
         //handle set theme of user current or default
-        if (theme) {
-            handleSetThemeWebsite(theme);
-        }
+        theme && handleSetThemeWebsite(theme);
     }, [theme]);
+
+    useEffect(() => {
+        if (!theme) {
+            config?.settingDefault &&
+                dispatch(userConfigSlice.actions.setTheme({ theme: config.settingDefault.theme }));
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [config]);
 
     useEffect(() => {
         const keyDownHandler = (event) => {

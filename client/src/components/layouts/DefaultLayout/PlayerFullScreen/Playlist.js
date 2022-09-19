@@ -17,7 +17,7 @@ import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faPause, faPlay, faRadio } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { songSlice } from '~/redux/features/song/songSlice';
-import { getCurrentIndexSongOfPlaylist } from '~/utils/collectionFunctionConstants';
+import { handlePlaySongFn } from '~/utils/collectionFunctionConstants';
 
 const cx = classNames.bind(styles);
 // import required modules
@@ -31,22 +31,7 @@ function Playlist() {
     const isRandom = useSelector((state) => state.song.isRandom);
 
     const handlePlaySong = (song) => {
-        // if song is allowed , not for VIP
-        if (song.streamingStatus === 1) {
-            if (isRandom) dispatch(songSlice.actions.setIsRandom(false));
-            if (songId === song.encodeId) {
-                if (isPlay) {
-                    dispatch(songSlice.actions.setIsPlay(false));
-                } else {
-                    dispatch(songSlice.actions.setIsPlay(true));
-                }
-            } else {
-                dispatch(songSlice.actions.setSongId(song.encodeId));
-                dispatch(songSlice.actions.setIsPlay(true));
-
-                dispatch(songSlice.actions.setCurrentIndexSong(getCurrentIndexSongOfPlaylist(playlists, song)));
-            }
-        }
+        handlePlaySongFn(song, songId, isRandom, isPlay, playlists, songSlice, dispatch);
     };
 
     useEffect(() => {

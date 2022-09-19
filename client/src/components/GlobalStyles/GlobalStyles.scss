@@ -359,6 +359,14 @@ a.active,
 a:hover {
     color: var(--link-text-hover);
 }
+
+a {
+    cursor: pointer;
+    color: inherit;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: normal;
+}
 //Layout background
 
 .theme-bg-image .zm-layout {
@@ -379,8 +387,16 @@ figure {
     margin-top: 30px !important;
 }
 
+.mt-15 {
+    margin-top: 15px !important;
+}
+
 .mb-30 {
     margin-bottom: 30px !important;
+}
+
+.mb-20 {
+    margin-bottom: 20px !important;
 }
 
 .pt-20 {
@@ -445,6 +461,20 @@ figure {
 
 .is-hover-circle:hover {
     background-color: var(--alpha-bg);
+}
+
+.is-rounded {
+    overflow: hidden;
+    border-radius: 999px !important;
+}
+
+.is-hidden {
+    visibility: hidden;
+    opacity: 0;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
 }
 
 img,
@@ -528,8 +558,21 @@ textarea {
     padding: 9px 24px;
 }
 
+.zm-btn.is-small {
+    font-size: 1.2rem;
+    padding: 6px 19px;
+}
+
 .is-upper {
     text-transform: uppercase;
+}
+
+.actions-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 .zm-action {

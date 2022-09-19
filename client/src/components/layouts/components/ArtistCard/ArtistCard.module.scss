@@ -92,6 +92,10 @@
             max-width: 100%;
             line-height: normal;
             color: var(--black);
+
+            &:hover {
+                color: var(--purple-primary);
+            }
         }
     }
 }
@@ -106,6 +110,7 @@
 
     span {
         margin-left: 4px;
+        font-size: 1.2rem;
     }
 }
 
@@ -196,6 +201,10 @@
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 color: var(--text-primary);
+
+                &:hover {
+                    color: var(--purple-primary);
+                }
             }
         }
 

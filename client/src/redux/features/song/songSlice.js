@@ -18,6 +18,7 @@ const initialState = {
             : JSON.parse(localStorage.getItem('zmp3-volume')) || 100,
     arrayIndexRandom: [],
     currentIndexSong: 0,
+    lyricSong: null,
 };
 
 export const songSlice = createSlice({
@@ -58,6 +59,9 @@ export const songSlice = createSlice({
         },
         setCurrentIndexSong: (state, action) => {
             state.currentIndexSong = action.payload;
+        },
+        setLyricSong: (state, action) => {
+            state.lyricSong = action.payload;
         },
     },
 });

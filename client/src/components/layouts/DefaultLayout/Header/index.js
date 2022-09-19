@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ArrowLeft, ArrowRight, Upload, Gear } from 'react-bootstrap-icons';
 import Tippy from '@tippyjs/react';
@@ -30,10 +30,11 @@ import Search from '~/components/layouts/components/Search';
 import Menu from '~/components/Popper/Menu';
 import Modal from '~/components/layouts/Modal';
 import ThemeOption from '~/components/layouts/components/ThemeOption';
-import images from '~/assets/images';
 import Image from '~/components/layouts/components/Image';
 import { authSlice } from '~/redux/features/auth/authSlice';
 import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
+import instance from '~/utils/axios';
+import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
 
 const cx = classNames.bind(styles);
 
@@ -103,227 +104,13 @@ const SETTING_ITEMS = [
     },
 ];
 
-const THEME_ITEMS = [
-    {
-        title: 'Dynamic',
-        items: [
-            {
-                id: 'lodon',
-                title: 'Lodon',
-                image: images.LodonTheme,
-                bgLayout: images.LodonLayout,
-                dataTheme: 'blue',
-                styleHtml: '--layout-bg: #061d50;',
-            },
-            {
-                id: 'dyamic',
-                title: 'Sáng tối',
-                image: images.LightDarkTheme,
-                dataTheme: 'dark',
-            },
-            {
-                id: 'dyamic-blue',
-                title: 'Xanh Da Trời',
-                image: images.BlueTheme,
-                dataTheme: 'blue',
-            },
-            {
-                id: 'dyamic-pink',
-                title: 'Hồng',
-                image: images.PinkTheme,
-                dataTheme: 'pink-light',
-            },
-            {
-                id: 'dyamic-brown',
-                title: 'Nâu',
-                image: images.BrownTheme,
-                dataTheme: 'brown',
-            },
-        ],
-    },
-    {
-        title: 'Chủ Đề',
-        items: [
-            {
-                id: 'xmon',
-                title: 'XNON',
-                image: images.XoneTheme,
-                bgLayout: images.XoneLayout,
-                dataTheme: 'dark',
-                styleHtml: '--purple-primary: #d7cb1f;--progressbar-active-bg: #d7cb1f;--link-text-hover: #d7cb1f;',
-            },
-            {
-                id: 'zma',
-                title: 'Zing Music Awards',
-                image: images.ZMATheme,
-                bgLayout: images.ZMALayout,
-                dataTheme: 'blue',
-                styleHtml:
-                    '--layout-bg: #37075d;--primary-bg: #6a39af;--queue-player-popup-bg: #5d218c;--purple-primary: #ed2b91;--link-text-hover: #fe63da;--sidebar-popup-bg: #572f90;--linear-gradient-bg: linear-gradient(to bottom, #740091, #2d1a4c);',
-            },
-            {
-                id: 'eiffel',
-                title: 'Tháp Eiffel',
-                image: images.EiffelTheme,
-                bgLayout: images.EiffelLayout,
-                dataTheme: 'dark',
-                styleHtml: '--layout-bg: #282828;--primary-bg: #3d3d3d;',
-            },
-        ],
-    },
-    {
-        title: 'Nghệ Sĩ',
-        items: [
-            {
-                id: 'jack',
-                title: 'Jack',
-                image: images.JackTheme,
-                bgLayout: images.JackLayout,
-                dataTheme: 'brown',
-                styleHtml:
-                    '--layout-bg:#767269; --primary-bg:#565147; --queue-player-popup-bg:#726c5e; --purple-primary:#ac8e77; --main-box-shadow:#4242421a; --linear-gradient-bg:linear-gradient(to bottom, #656156, #574f40);',
-            },
-            {
-                id: 'iu',
-                title: 'IU',
-                image: images.IUTheme,
-                bgLayout: images.IULayout,
-                dataTheme: 'gray',
-                styleHtml: '--layout-bg:#e7dfdd; --purple-primary:#409abc; --text-item-hover:#409abc;',
-            },
-            {
-                id: 'ji-chang-wook',
-                title: 'Ji Chang Wook',
-                image: images.JiChangWookTheme,
-                bgLayout: images.JiChangWookLayout,
-                dataTheme: 'green-light',
-                styleHtml: '--layout-bg:#b2d8db;',
-            },
-            {
-                id: 'lisa',
-                title: 'Lisa',
-                image: images.LisaTheme,
-                bgLayout: images.LisaLayout,
-                dataTheme: 'pink-light',
-                styleHtml: '--layout-bg:#b2d8db;',
-            },
-            {
-                id: 'jennie-kim',
-                title: 'Jennie Kim',
-                image: images.JennieTheme,
-                bgLayout: images.JennieLayout,
-                dataTheme: 'gray',
-                styleHtml:
-                    '--layout-bg:#bab8c3; --player-bg:#c6c4d1; --purple-primary:#346875; --primary-bg:#e2e7f5; --text-item-hover:#2a5e6b;',
-            },
-            {
-                id: 'jisoo',
-                title: 'Jisoo',
-                image: images.JisooTheme,
-                bgLayout: images.JisooLayout,
-                dataTheme: 'light',
-                styleHtml: null,
-            },
-            {
-                id: 'rose',
-                title: 'Rosé',
-                image: images.RoseTheme,
-                bgLayout: images.RoseLayout,
-                dataTheme: 'blue',
-                styleHtml: '--layout-bg:#061d50;',
-            },
-        ],
-    },
-    {
-        title: 'Màu Tối',
-        items: [
-            {
-                id: 'dark',
-                title: 'Tối',
-                image: images.DarkTheme,
-                dataTheme: 'dark',
-            },
-            {
-                id: 'purple',
-                title: 'Tím',
-                image: images.PurpleTheme,
-                dataTheme: 'purple',
-            },
-            {
-                id: 'blue',
-                title: 'Xanh Đậm',
-                image: images.BlueTheme,
-                dataTheme: 'blue',
-            },
-            {
-                id: 'blue-light',
-                title: 'Xanh Biển',
-                image: images.BlueLightTheme,
-                dataTheme: 'blue-light',
-            },
-            {
-                id: 'green',
-                title: 'Xanh Lá',
-                image: images.GreenTheme,
-                dataTheme: 'green',
-            },
-            {
-                id: 'brown',
-                title: 'Nâu',
-                image: images.BrownTheme,
-                dataTheme: 'brown',
-            },
-            {
-                id: 'pink',
-                title: 'Hồng',
-                image: images.PinkTheme,
-                dataTheme: 'pink',
-            },
-            {
-                id: 'red',
-                title: 'Đỏ',
-                image: images.RedTheme,
-                dataTheme: 'red',
-            },
-        ],
-    },
-    {
-        title: 'Màu Sáng',
-        items: [
-            {
-                id: 'light',
-                title: 'Sáng',
-                image: images.LightTheme,
-                dataTheme: 'light',
-            },
-            {
-                id: 'gray',
-                title: 'Xám',
-                image: images.GrayTheme,
-                dataTheme: 'gray',
-            },
-            {
-                id: 'green-light',
-                title: 'Xanh Nhạt',
-                image: images.GreenLightTheme,
-                dataTheme: 'green-light',
-            },
-            {
-                id: 'pink-light',
-                title: 'Hồng Cánh Sen',
-                image: images.PinkLightTheme,
-                dataTheme: 'pink-light',
-            },
-        ],
-    },
-];
-
 function Header({ headerRef }) {
     const [openTheme, setOpenTheme] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
-    const theme = useSelector((state) => state.userConfig.theme);
+    const { theme } = useSelector((state) => state.userConfig.theme);
+    const config = useSelector((state) => state.userConfig.config);
 
     const USER_OPTION_ITEMS = [
         {
@@ -360,6 +147,20 @@ function Header({ headerRef }) {
         }
         setOpenTheme(false);
     };
+
+    useEffect(() => {
+        const getConfig = async () => {
+            try {
+                const res = await instance.get('/config');
+                dispatch(userConfigSlice.actions.setConfigTheme(res.data));
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getConfig();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
@@ -440,13 +241,13 @@ function Header({ headerRef }) {
             </div>
             {openTheme && (
                 <Modal className={cx('content-theme')} onClickOverLay={hanldCloseModal}>
-                    <h3 className={cx('heading')}>Giao diện</h3>
+                    <h3 className={cx('heading')}>{config?.theme?.title}</h3>
                     <button className={clsx(cx('close-modal'), 'zm-btn')} onClick={hanldCloseModal}>
                         <FontAwesomeIcon icon={faXmark} />
                     </button>
 
                     <div className={cx('modal-body')}>
-                        {THEME_ITEMS.map((theme, index) => (
+                        {config?.theme?.sections?.map((theme, index) => (
                             <ThemeOption key={index} data={theme} onSetOpenTheme={setOpenTheme} />
                         ))}
                     </div>

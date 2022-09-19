@@ -21,6 +21,7 @@ function Search() {
     const [loading, setLoading] = useState(false);
 
     const isOpenSearchResult = useSelector((state) => state.userConfig.isOpenSearchResult);
+    const isOpenPlayerQueue = useSelector((state) => state.userConfig.isOpenPlayerQueue);
     const dispatch = useDispatch();
 
     const inputRef = useRef();
@@ -34,11 +35,13 @@ function Search() {
 
     const handleOpenSearchWrapper = () => {
         if (isOpenSearchResult) return;
+
         dispatch(userConfigSlice.actions.setIsOpenSearchResult(true));
     };
 
     const handleClickWrapSerach = (e) => {
         e.stopPropagation();
+        if (isOpenPlayerQueue) dispatch(userConfigSlice.actions.setIsOpenPlayerQueue(false));
     };
 
     const handleClearTextSearch = () => {
@@ -153,21 +156,24 @@ function Search() {
                                 <h4 className={cx('search-title')}>Gợi ý kết quả</h4>
                                 {searchResult[1]?.suggestions?.map((result) =>
                                     result.type === 4 ? (
-                                        <div className={cx('suggest-item')} key={result.id}>
-                                            <div className={cx('media')}>
-                                                <div className={cx('media-left')}>
-                                                    <figure className="is-rounded">
-                                                        <img src={result.avatar} alt="" />
-                                                    </figure>
-                                                </div>
-                                                <div className={cx('media-content')}>
-                                                    <h3 className={cx('title')}>{result.name}</h3>
-                                                    <h4 className={cx('subtitle')}>
-                                                        Nghệ sĩ • {setNumberToThounsandLike(result.followers)} quan tâm
-                                                    </h4>
+                                        <a href={`/${result.aliasName}`} key={result.id}>
+                                            <div className={cx('suggest-item')}>
+                                                <div className={cx('media')}>
+                                                    <div className={cx('media-left')}>
+                                                        <figure className="is-rounded">
+                                                            <img src={result.avatar} alt="" />
+                                                        </figure>
+                                                    </div>
+                                                    <div className={cx('media-content')}>
+                                                        <h3 className={cx('title')}>{result.name}</h3>
+                                                        <h4 className={cx('subtitle')}>
+                                                            Nghệ sĩ • {setNumberToThounsandLike(result.followers)} quan
+                                                            tâm
+                                                        </h4>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </a>
                                     ) : (
                                         result.type === 1 && (
                                             <div className={cx('suggest-item', 'song-item')} key={result.id}>
@@ -190,7 +196,7 @@ function Search() {
                                                     <div className={cx('media-content')}>
                                                         <h3 className={cx('title')}>
                                                             <a
-                                                                href={`/album/${ChangeToSlug(result.title)}/${
+                                                                href={`/bai-hat/${ChangeToSlug(result.title)}/${
                                                                     result.id
                                                                 }.html`}
                                                             >

@@ -24,8 +24,10 @@ import { KaraokeIcon, LoopIcon, ShuffleIcon, SpinnerLoadIcon } from '../../compo
 import styles from './Player.module.scss';
 import instance from '~/utils/axios';
 import { songSlice } from '~/redux/features/song/songSlice';
-import { handlePlaySongRandom, secondsToTime } from '~/utils/collectionFunctionConstants';
+import { handleClickToStopPropagation, handlePlaySongRandom, secondsToTime } from '~/utils/collectionFunctionConstants';
 import PlayerFullScreen from '../PlayerFullScreen';
+import PlayerPlaylist from '../../components/PlayerPlaylist';
+import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
 
 const cx = classNames.bind(styles);
 
@@ -45,6 +47,8 @@ function Player() {
     const arrayIndexRandom = useSelector((state) => state.song.arrayIndexRandom);
     const srcAudio = useSelector((state) => state.song.srcAudio);
     const currentIndexSong = useSelector((state) => state.song.currentIndexSong);
+
+    const isOpenPlayerQueue = useSelector((state) => state.userConfig.isOpenPlayerQueue);
     //ref
     const audioRef = useRef();
     const timeCurrentAudioRef = useRef();
@@ -55,6 +59,7 @@ function Player() {
     const sliderHandleTimeRef = useRef();
 
     const playerFullRef = useRef();
+    const playerQueueRef = useRef();
 
     const dispatch = useDispatch();
 
@@ -70,7 +75,8 @@ function Player() {
         isSeeking = false;
     };
 
-    const handlePlayAndPauseSong = () => {
+    const handlePlayAndPauseSong = (e) => {
+        e.stopPropagation();
         if (!songId) return;
         if (isPlay) {
             dispatch(songSlice.actions.setIsPlay(false));
@@ -98,6 +104,7 @@ function Player() {
             }
         } else {
             inputTimeSongRef.current.addEventListener('change', (e) => {
+                e.stopPropagation();
                 const seekTime = (e.target.value * audioRef.current.duration) / 100;
                 audioRef.current.currentTime = seekTime;
             });
@@ -109,6 +116,7 @@ function Player() {
         if (isSeeking) {
             let seekTime;
             inputTimeSongRef.current.addEventListener('input', (e) => {
+                e.stopPropagation();
                 const valueInput = e.target.value;
                 seekTime = (valueInput * audioRef.current.duration) / 100;
                 const percentTime = (seekTime / audioRef.current.duration) * 100;
@@ -125,6 +133,7 @@ function Player() {
 
     // Method 2 to seek volumn
     const handleChangeVolume = (e) => {
+        e.stopPropagation();
         const valueInputVolume = parseInt(inputVolumeSongRef.current.value);
         if (valueInputVolume === 0) {
             dispatch(songSlice.actions.setIsVolumeOff(true));
@@ -134,7 +143,8 @@ function Player() {
     };
 
     //On or off volume
-    const handleOnOffVolume = () => {
+    const handleOnOffVolume = (e) => {
+        e.stopPropagation();
         if (!isVolumeOff) {
             dispatch(songSlice.actions.setIsVolumeOff(true));
             dispatch(songSlice.actions.setVolume(0));
@@ -146,6 +156,35 @@ function Player() {
             inputVolumeSongRef.current.value = 100;
             audioRef.current.volume = 1;
         }
+    };
+
+    //player queue
+    const handleOpenPlayerQueuePlaylist = (e) => {
+        e.stopPropagation();
+        dispatch(userConfigSlice.actions.setIsOpenPlayerQueue(true));
+        playerQueueRef.current.classList.add(cx('player-queue-animation-enter'));
+        setTimeout(() => {
+            playerQueueRef.current.classList.add(cx('player-queue-animation-enter'));
+            playerQueueRef.current.classList.add(cx('player-queue-animation-enter-active'));
+        }, 100);
+        setTimeout(() => {
+            playerQueueRef.current.classList.remove(cx('player-queue-animation-enter'));
+            playerQueueRef.current.classList.remove(cx('player-queue-animation-enter-active'));
+        }, 800);
+    };
+
+    const handleCloselayerQueuePlaylist = (e) => {
+        e.stopPropagation();
+        playerQueueRef.current.classList.add(cx('player-queue-animation-exit'));
+        setTimeout(() => {
+            playerQueueRef.current.classList.add(cx('player-queue-animation-exit'));
+            playerQueueRef.current.classList.add(cx('player-queue-animation-exit-active'));
+        }, 100);
+        setTimeout(() => {
+            playerQueueRef.current.classList.remove(cx('player-queue-animation-exit'));
+            playerQueueRef.current.classList.remove(cx('player-queue-animation-exit-active'));
+            dispatch(userConfigSlice.actions.setIsOpenPlayerQueue(false));
+        }, 800);
     };
 
     //Handle open player full screen
@@ -173,12 +212,14 @@ function Player() {
     };
 
     //handle event loop song
-    const handleLoopSong = () => {
+    const handleLoopSong = (e) => {
+        e.stopPropagation();
         dispatch(songSlice.actions.setIsLoop(!isLoop));
     };
 
     //Handle random
-    const handleTouchBtnRandom = () => {
+    const handleTouchBtnRandom = (e) => {
+        e.stopPropagation();
         dispatch(songSlice.actions.setIsRandom(!isRandom));
     };
 
@@ -205,7 +246,8 @@ function Player() {
         }
     };
 
-    const handleNextSong = () => {
+    const handleNextSong = (e) => {
+        e.stopPropagation();
         dispatch(songSlice.actions.setIsPlay(false));
         if (isRandom) {
             if (isLoop) dispatch(songSlice.actions.setIsLoop(false));
@@ -225,7 +267,8 @@ function Player() {
         }
     };
 
-    const handlePreviousSong = () => {
+    const handlePreviousSong = (e) => {
+        e.stopPropagation();
         dispatch(songSlice.actions.setIsPlay(false));
         if (isRandom) {
             if (isLoop) dispatch(songSlice.actions.setIsLoop(false));
@@ -246,8 +289,6 @@ function Player() {
             }
         }
     };
-
-    const handleRedirectPlaylist = () => {};
 
     useEffect(() => {
         const getSongResponse = async () => {
@@ -317,6 +358,15 @@ function Player() {
         };
     }, []);
 
+    useEffect(() => {
+        document.addEventListener('click', handleCloselayerQueuePlaylist);
+
+        return () => {
+            document.removeEventListener('click', handleCloselayerQueuePlaylist);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isOpenPlayerQueue]);
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('nowplaying-full')} ref={playerFullRef}>
@@ -324,10 +374,10 @@ function Player() {
                     <PlayerFullScreen onClosePlayerFullScreen={handleClosePlayerFullScreen} audioRef={audioRef} />
                 )}
             </div>
-            <div
-                className={cx('inner', 'clickable', isOpenPlayerFullScreen && 'opac')}
-                onClick={handleRedirectPlaylist}
-            >
+            <div className={cx('player-queue')} ref={playerQueueRef}>
+                {isOpenPlayerQueue && <PlayerPlaylist onClosePlayerQueuePlaylist={handleCloselayerQueuePlaylist} />}
+            </div>
+            <div className={cx('inner', 'clickable', isOpenPlayerFullScreen && 'opac')}>
                 <div className={cx('player-controls')}>
                     <div className={cx('player-controls__left')}>
                         <div className={cx('song-detail')}>
@@ -481,6 +531,7 @@ function Player() {
                                 onTouchEnd={seekEnd}
                                 onMouseMove={currentTimeSong}
                                 onTouchMove={currentTimeSong}
+                                onClick={handleClickToStopPropagation}
                             />
                             <div className={cx('duration-bar', 'progress__track')}>
                                 <div
@@ -553,6 +604,7 @@ function Player() {
                                         max="100"
                                         defaultValue={volume}
                                         onChange={handleChangeVolume}
+                                        onClick={handleClickToStopPropagation}
                                     />
                                 </div>
                             </div>
@@ -563,10 +615,20 @@ function Player() {
                             <Tippy content="Danh sách phát">
                                 <button
                                     className={clsx(
-                                        cx('tooltip-btn', 'icon-width', 'queue-expand-btn'),
+                                        cx(
+                                            'tooltip-btn',
+                                            'icon-width',
+                                            'queue-expand-btn',
+                                            isOpenPlayerQueue && 'active',
+                                        ),
                                         'is-hover-circle',
                                         'zm-btn',
                                     )}
+                                    onClick={(e) => {
+                                        isOpenPlayerQueue
+                                            ? handleCloselayerQueuePlaylist(e)
+                                            : handleOpenPlayerQueuePlaylist(e);
+                                    }}
                                 >
                                     <FontAwesomeIcon icon={faList} className={cx('icon-hover')} />
                                 </button>

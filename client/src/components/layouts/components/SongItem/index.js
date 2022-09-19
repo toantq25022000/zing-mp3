@@ -19,7 +19,7 @@ import { artistSlice } from '~/redux/features/artist/artistSlice';
 
 const cx = classNames.bind(styles);
 
-function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
+function SongItem({ data, isAlbum, onDoubleClickSong, onPlayOrPauseSong }) {
     //state
     //const
     const isSongVip = data.streamingStatus === 2;
@@ -61,11 +61,20 @@ function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
         dispatch(artistSlice.actions.setArtistCardInfo(null));
     };
 
+    const handlePlayOrPauseSong = (e) => {
+        e.stopPropagation();
+        onPlayOrPauseSong();
+    };
+
     return (
         <div className={cx('wrapper')} onDoubleClick={onDoubleClickSong} id={data.encodeId}>
             <div
                 className={clsx(
-                    cx('container', { isActiveSong: data.encodeId === songId ? true : false }, { 'is-vip': isSongVip }),
+                    cx('container', {
+                        isActiveSong: data.encodeId === songId ? true : false,
+                        'is-vip': isSongVip,
+                        'full-left': isAlbum,
+                    }),
                     'bor-b-1',
                 )}
             >
@@ -81,9 +90,9 @@ function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
                                 <img src={data.thumnail || data.thumbnailM} alt="" />
                             </figure>
                             <div className={clsx(cx('opacity-bg'), 'opacity')}></div>
-                            <div className={cx('actions-container')}>
+                            <div className={cx('actions-container')} onClick={onPlayOrPauseSong}>
                                 <div className={clsx(cx('box-actions'), 'zm-action')}>
-                                    <button className={clsx(cx('btn-play'), 'zm-btn')} onClick={onPlayOrPauseSong}>
+                                    <button className={clsx(cx('btn-play'), 'zm-btn')} onClick={handlePlayOrPauseSong}>
                                         {isPlay ? (
                                             data.encodeId === songId ? (
                                                 <span className={cx('icon-play-gif')}></span>
@@ -127,11 +136,13 @@ function SongItem({ data, onDoubleClickSong, onPlayOrPauseSong }) {
                             </div>
                         </div>
                     </div>
-                    <Link className={cx('body-content')} to="/album">
-                        <div className={cx('album-info')}>
-                            <span className={cx('album-name')}>{data?.album?.title}</span>
-                        </div>
-                    </Link>
+                    {!isAlbum && (
+                        <Link className={cx('body-content')} to="/album">
+                            <div className={cx('album-info')}>
+                                <span className={cx('album-name')}>{data?.album?.title}</span>
+                            </div>
+                        </Link>
+                    )}
                     <div className={cx('body-right')}>
                         <div className={cx('hover-items')}>
                             <div className="level">

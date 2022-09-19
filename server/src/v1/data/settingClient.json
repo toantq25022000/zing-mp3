@@ -1,0 +1,745 @@
+{
+  "settingDefault": {
+    "theme": {
+      "id": "purple",
+      "theme": "purple",
+      "title": "Tím",
+      "className": "",
+      "style": "",
+      "bgImg": "",
+      "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/purple.jpg",
+      "isVip": false,
+      "forceUpdate": false
+    }
+  },
+  "theme": {
+    "title": "Giao Diện",
+    "sections": [
+      {
+        "title": "Dynamic",
+        "items": [
+          {
+            "id": "london",
+            "theme": "light",
+            "title": "London",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/London-thumb.png",
+            "isVip": false,
+            "forceUpdate": false,
+            "dynamic": [
+              {
+                "id": "lodon-blue",
+                "theme": "blue",
+                "title": "",
+                "className": "theme-bg-image",
+                "style": "\"--layout-bg\": \"#061d50\"",
+                "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/London-Mid1.jpg",
+                "thumbnail": "",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 0,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 6,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "london-light",
+                "theme": "light",
+                "title": "",
+                "className": "theme-bg-image",
+                "style": "",
+                "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/London-light1.jpg",
+                "thumbnail": "",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 6,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 12,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "london-light",
+                "theme": "light",
+                "title": "",
+                "className": "theme-bg-image",
+                "style": "",
+                "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/London-light1.jpg",
+                "thumbnail": "",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 12,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 18,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "lodon-blue",
+                "theme": "blue",
+                "title": "",
+                "className": "theme-bg-image",
+                "style": "\"--layout-bg\": \"#061d50\"",
+                "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/London-Mid1.jpg",
+                "thumbnail": "",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 18,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 24,
+                  "minutes": 0
+                }
+              }
+            ]
+          },
+          {
+            "id": "dynamic",
+            "theme": "light",
+            "title": "Sáng tối",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/dynamic-light-dark-1.jpg",
+            "isVip": false,
+            "forceUpdate": false,
+            "dynamic": [
+              {
+                "id": "dark",
+                "theme": "dark",
+                "title": "Tối",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/dark.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 0,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 6,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "light",
+                "theme": "light",
+                "title": "Sáng",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/light.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 6,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 12,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "light",
+                "theme": "light",
+                "title": "Sáng",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/light.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 12,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 18,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "dark",
+                "theme": "dark",
+                "title": "Tối",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/dark.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 18,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 24,
+                  "minutes": 0
+                }
+              }
+            ]
+          },
+          {
+            "id": "dynamic-blue",
+            "theme": "light",
+            "title": "Xanh Da trời",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/dynamic-blue.jpg",
+            "isVip": false,
+            "forceUpdate": false,
+            "dynamic": [
+              {
+                "id": "blue",
+                "theme": "blue",
+                "title": "Xanh đậm",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/blue.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 0,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 6,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "blue-light",
+                "theme": "blue-light",
+                "title": "Xanh biển",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/blue-light.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 6,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 12,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "blue-light",
+                "theme": "blue-light",
+                "title": "Xanh biển",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/blue-light.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 12,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 18,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "blue",
+                "theme": "blue",
+                "title": "Xanh đậm",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/blue.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 18,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 24,
+                  "minutes": 0
+                }
+              }
+            ]
+          },
+          {
+            "id": "dynamic-pink",
+            "theme": "light",
+            "title": "Hồng",
+            "className": "",
+            "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/dynamic-pink.jpg",
+            "isVip": false,
+            "forceUpdate": false,
+            "dynamic": [
+              {
+                "id": "pink",
+                "theme": "pink",
+                "title": "Hồng",
+                "className": "",
+                "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.1)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.2)\"",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/pink.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 0,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 6,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "pink-light",
+                "theme": "pink-light",
+                "title": "Hồng Cánh Sen",
+                "className": "",
+                "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/pink-light.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 6,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 12,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "pink-light",
+                "theme": "pink-light",
+                "title": "Hồng Cánh Sen",
+                "className": "",
+                "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/pink-light.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 12,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 18,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "pink",
+                "theme": "pink",
+                "title": "Hồng",
+                "className": "",
+                "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.1)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.2)\"",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/pink.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 18,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 24,
+                  "minutes": 0
+                }
+              }
+            ]
+          },
+          {
+            "id": "dynamic-brown",
+            "theme": "light",
+            "title": "Nâu",
+            "className": "",
+            "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/dynamic-brown.jpg",
+            "isVip": false,
+            "forceUpdate": false,
+            "dynamic": [
+              {
+                "id": "brown",
+                "theme": "brown",
+                "title": "Nâu",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/brown.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 0,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 6,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "gray",
+                "theme": "gray",
+                "title": "Xám",
+                "className": "",
+                "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/gray.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 6,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 12,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "gray",
+                "theme": "gray",
+                "title": "Xám",
+                "className": "",
+                "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/gray.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 12,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 18,
+                  "minutes": 0
+                }
+              },
+              {
+                "id": "brown",
+                "theme": "brown",
+                "title": "Nâu",
+                "className": "",
+                "style": "",
+                "bgImg": "",
+                "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/brown.jpg",
+                "isVip": false,
+                "forceUpdate": false,
+                "start": {
+                  "hours": 18,
+                  "minutes": 0
+                },
+                "end": {
+                  "hours": 24,
+                  "minutes": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Chủ đề",
+        "items": [
+          {
+            "id": "xone",
+            "theme": "dark",
+            "title": "XONE",
+            "className": "theme-bg-image",
+            "style": "\"--miniplayer-bg-img\": \"url(https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/xone-miniplayer.jpg)\",\"--purple-primary\": \"#d7cb1f\",\"--progressbar-active-bg\": \"#d7cb1f\",\"--link-text-hover\": \"#d7cb1f\",\"--header-bg-img\": \"url(https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/xone-header.jpg)\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/xone-bg.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/xone-thumbn.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "zma",
+            "theme": "blue",
+            "title": "Zing Music Awards",
+            "className": "theme-bg-image zma",
+            "style": "\"--layout-bg\": \"#37075d\",\"--primary-bg\": \"#6a39af\",\"--queue-player-popup-bg\": \"#5d218c\",\"--purple-primary\": \"#ed2b91\",\"--box-hot-item-bg\": \"rgba(254,255,255,0.1)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.2)\",\"--link-text-hover\": \"#fe63da\",\"--sidebar-popup-bg\": \"#572f90\",\"--linear-gradient-bg\": \"linear-gradient(to bottom, #740091, #2d1a4c)\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/zma.svg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/zma.jpg",
+            "isVip": false,
+            "forceUpdate": false,
+            "expireTime": 9223372036854775807
+          },
+          {
+            "id": "eiffel",
+            "theme": "dark",
+            "title": "Tháp Eiffel",
+            "className": "theme-bg-image",
+            "style": "\"--layout-bg\": \"#282828\",\"--primary-bg\": \"#3d3d3d\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/eiffel.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/eiffel.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          }
+        ]
+      },
+      {
+        "title": "Nghệ sĩ",
+        "items": [
+          {
+            "id": "jack",
+            "theme": "brown",
+            "title": "Jack",
+            "className": "theme-bg-image",
+            "style": "\"--layout-bg\": \"#767269\",\"--primary-bg\": \"#565147\",\"--queue-player-popup-bg\": \"#726c5e\",\"--purple-primary\": \"#ac8e77\",\"--main-box-shadow\": \"#4242421a\",\"--linear-gradient-bg\": \"linear-gradient(to bottom, #656156, #574f40)\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/jack.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/jack.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "iu",
+            "theme": "gray",
+            "title": "IU",
+            "className": "theme-bg-image",
+            "style": "\"--layout-bg\": \"#e7dfdd\",\"--purple-primary\": \"#409abc\",\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\",\"--text-item-hover\": \"#409abc\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/iu.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/iu.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "ju-chang-wook",
+            "theme": "green-light",
+            "title": "Ji Chang Wook",
+            "className": "theme-bg-image",
+            "style": "\"--layout-bg\": \"#b2d8db\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/ji-chang-wook.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/ji-chang-wook.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "lisa",
+            "theme": "pink-light",
+            "title": "Lisa",
+            "className": "theme-bg-image",
+            "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/lisa.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/lisa.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "jennie",
+            "theme": "gray",
+            "title": "Jennie Kim",
+            "className": "theme-bg-image",
+            "style": "\"--layout-bg\": \"#bab8c3\",\"--player-bg\": \"#c6c4d1\",\"--purple-primary\": \"#346875\",\"--primary-bg\": \"#e2e7f5\",\"--text-item-hover\": \"#2a5e6b\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/jennie.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/jennie.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "jisoo",
+            "theme": "light",
+            "title": "Jisoo",
+            "className": "theme-bg-image",
+            "style": "",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/jisoo.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/jisoo.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "rose",
+            "theme": "blue",
+            "title": "Rosé",
+            "className": "theme-bg-image",
+            "style": "\"--layout-bg\": \"#061d50\"",
+            "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/rose.jpg",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/rose.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          }
+        ]
+      },
+      {
+        "title": "Màu Tối",
+        "items": [
+          {
+            "id": "dark",
+            "theme": "dark",
+            "title": "Tối",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/dark.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "purple",
+            "theme": "purple",
+            "title": "Tím",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/purple.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "blue",
+            "theme": "blue",
+            "title": "Xanh đậm",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/blue.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "blue-light",
+            "theme": "blue-light",
+            "title": "Xanh biển",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/blue-light.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "green",
+            "theme": "green",
+            "title": "Xanh lá",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/green.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "brown",
+            "theme": "brown",
+            "title": "Nâu",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/brown.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "pink",
+            "theme": "pink",
+            "title": "Hồng",
+            "className": "",
+            "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.1)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.2)\"",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/pink.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "red",
+            "theme": "red",
+            "title": "Đỏ",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/red.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          }
+        ]
+      },
+      {
+        "title": "Màu Sáng",
+        "items": [
+          {
+            "id": "light",
+            "theme": "light",
+            "title": "Sáng",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/light.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "gray",
+            "theme": "gray",
+            "title": "Xám",
+            "className": "",
+            "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/gray.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "green-light",
+            "theme": "green-light",
+            "title": "Xanh nhạt",
+            "className": "",
+            "style": "",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/green-light.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          },
+          {
+            "id": "pink-light",
+            "theme": "pink-light",
+            "title": "Hồng Cánh Sen",
+            "className": "",
+            "style": "\"--box-hot-item-bg\": \"rgba(254,255,255,0.3)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.4)\"",
+            "bgImg": "",
+            "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/pink-light.jpg",
+            "isVip": false,
+            "forceUpdate": false
+          }
+        ]
+      }
+    ],
+    "default": {
+      "id": "zma",
+      "theme": "blue",
+      "title": "Zing Music Awards",
+      "className": "theme-bg-image zma",
+      "style": "\"--layout-bg\": \"#37075d\",\"--primary-bg\": \"#6a39af\",\"--queue-player-popup-bg\": \"#5d218c\",\"--purple-primary\": \"#ed2b91\",\"--box-hot-item-bg\": \"rgba(254,255,255,0.1)\",\"--box-hot-item-bg-hover\": \"rgba(254,255,255,0.2)\",\"--link-text-hover\": \"#fe63da\",\"--sidebar-popup-bg\": \"#572f90\",\"--linear-gradient-bg\": \"linear-gradient(to bottom, #740091, #2d1a4c)\"",
+      "bgImg": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme-background/zma.svg",
+      "thumbnail": "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/theme/zma.jpg",
+      "isVip": false,
+      "forceUpdate": false,
+      "expireTime": 9223372036854775807
+    }
+  }
+}

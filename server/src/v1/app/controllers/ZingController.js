@@ -1,5 +1,6 @@
 const { ZingMp3 } = require("zingmp3-api-full");
 const { zing } = require("zingmp3-api-next");
+const dataConfig = require("../../data/settingClient.json");
 
 class ZingController {
   //
@@ -22,7 +23,7 @@ class ZingController {
   }
 
   getSongLyric(req, res) {
-    zing.get_song_lyric(req.params.id).then((data) => {
+    zing.get_song_lyric(req.query.id).then((data) => {
       res.json(data);
     });
   }
@@ -174,7 +175,7 @@ class ZingController {
   }
 
   getSuggestedPlaylists(req, res) {
-    zing.get_suggested_playlists(req.params.id).then((data) => {
+    zing.get_suggested_playlists(req.query.id).then((data) => {
       res.json(data);
     });
   }
@@ -212,6 +213,15 @@ class ZingController {
   getSuggestionKeyword(req, res) {
     zing.get_suggestion_keyword(req.query.q).then((data) => {
       res.json(data);
+    });
+  }
+
+  getConfig(req, res) {
+    const data = dataConfig;
+    res.json({
+      err: 0,
+      msg: "success",
+      data,
     });
   }
 }
