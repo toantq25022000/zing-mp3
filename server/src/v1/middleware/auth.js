@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
     req.userId = decoded.userId;
     next();
   } catch (error) {
-    console.log(err);
+    console.log(error);
     res.status(403).json({ success: false, message: "Internal token" });
   }
 };

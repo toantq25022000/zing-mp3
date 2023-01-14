@@ -75,14 +75,19 @@ class ZingController {
   }
 
   getCardInfoArtist(req, res) {
-    zing.get_artist(req.query.alias).then((response) => {
+    ZingMp3.getArtist(req.query.alias).then((response) => {
       const { data } = response;
+      if (!data)
+        return res
+          .status(403)
+          .json({ err: 1, message: "not found alias name" });
       const cardInfo = {
         ...response,
         data: {
-          album: data.sections.find(
-            (section) => section.itemType === "release-date"
-          )?.items,
+          album:
+            data?.sections?.find(
+              (section) => section.itemType === "release-date"
+            )?.items || {},
           alias: data.alias,
           awards: data.awards,
           id: data.id,
@@ -111,13 +116,13 @@ class ZingController {
   }
 
   getCategoryMV(req, res) {
-    zing.get_category_mv(req.params.id).then((data) => {
+    zing.get_category_mv(req.query.id).then((data) => {
       res.json(data);
     });
   }
 
   getMV(req, res) {
-    zing.get_mv(req.params.id).then((data) => {
+    zing.get_mv(req.query.id).then((data) => {
       res.json(data);
     });
   }
@@ -129,7 +134,7 @@ class ZingController {
   }
 
   getHubDetail(req, res) {
-    zing.get_hub_detail(req.params.id).then((data) => {
+    zing.get_hub_detail(req.query.id).then((data) => {
       res.json(data);
     });
   }
@@ -187,7 +192,7 @@ class ZingController {
   }
 
   getEventInfo(req, res) {
-    zing.get_event_info(req.params.id).then((data) => {
+    zing.get_event_info(req.query.id).then((data) => {
       res.json(data);
     });
   }

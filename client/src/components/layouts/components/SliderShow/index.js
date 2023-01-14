@@ -8,10 +8,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 //Import css component
 import './SilderShow.css';
-import SliderItem from '../SliderItem';
 import styles from './SliderShow.module.scss';
+import SliderItem from './SliderItem';
 
-function SliderShow() {
+const SliderShow = () => {
     const sliders = useSelector((state) => state.collect.sliders);
 
     return (
@@ -51,6 +51,6 @@ function SliderShow() {
             )}
         </div>
     );
-}
+};
 
 export default SliderShow;

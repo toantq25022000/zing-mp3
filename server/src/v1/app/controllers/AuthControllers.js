@@ -14,7 +14,7 @@ class AuthController {
 
       return res.status(200).json({ is_exists: !!user });
     } catch (error) {
-      console.log(err);
+      console.log(error);
       res
         .status(500)
         .json({ success: false, message: "Internal server error" });
@@ -36,7 +36,6 @@ class AuthController {
     const first_name = splitFullName[0];
     const last_name = splitFullName.slice(1).join(" ");
 
-    console.log(first_name, last_name);
     try {
       //All good
       const hashedPassword = await argon2.hash(password);
@@ -59,8 +58,8 @@ class AuthController {
         message: "Register account successfully",
         accessToken,
       });
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error);
       res
         .status(500)
         .json({ success: false, message: "Internal server error" });
@@ -73,7 +72,6 @@ class AuthController {
 
   async loginWithEmail(req, res) {
     const { email, password } = req.body;
-    console.log(req.body);
     if (!email || !password)
       return res
         .status(400)
@@ -98,7 +96,7 @@ class AuthController {
       );
       res.json({ success: true, message: "Login successfully", accessToken });
     } catch (error) {
-      console.log(err);
+      console.log(error);
       res
         .status(500)
         .json({ success: false, message: "Internal server error" });

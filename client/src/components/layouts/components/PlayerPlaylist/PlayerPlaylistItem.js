@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { songSlice } from '~/redux/features/song/songSlice';
 import { handlePlaySongFn } from '~/utils/collectionFunctionConstants';
 import styles from './PlayerPlaylist.module.scss';
@@ -15,6 +16,7 @@ function PlayerPlaylistItem({ data, indexSong }) {
     const isPlay = useSelector((state) => state.song.isPlay);
     const currentIndexSong = useSelector((state) => state.song.currentIndexSong);
     const playlists = useSelector((state) => state.playlist.playlists);
+    const playlistInfo = useSelector((state) => state.playlist.playlistInfo);
 
     const dispatch = useDispatch();
 
@@ -76,7 +78,7 @@ function PlayerPlaylistItem({ data, indexSong }) {
                         <h3 className={cx('title')}>Tiếp theo</h3>
                         <h4 className={cx('subtitle')}>
                             <span>Từ playlist</span>
-                            <a href="/">Góc nhạc Thanh Hưng</a>
+                            <Link to={playlistInfo.link}>{playlistInfo.title}</Link>
                         </h4>
                     </div>
                 )}

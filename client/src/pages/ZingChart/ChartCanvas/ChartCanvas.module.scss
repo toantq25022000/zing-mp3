@@ -1,0 +1,204 @@
+.wrapper {
+    position: relative;
+    padding-bottom: 30px;
+    background-color: var(--chart-layout-bg);
+    margin-top: -70px;
+    flex-grow: 1;
+}
+
+.container {
+    padding-top: 110px;
+    position: relative;
+    width: 100%;
+    flex-grow: 1;
+    margin: 0 auto;
+}
+
+.header {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.chart-title {
+    display: flex;
+    align-items: center;
+    margin-top: 0;
+
+    .title {
+        text-transform: none;
+        font-size: 4rem;
+        font-weight: 700;
+        line-height: normal;
+        letter-spacing: normal;
+        color: var(--text-item-hover);
+        margin: 0;
+    }
+}
+
+.bg-blur,
+.bg-alpha,
+.bg-alpha-1 {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0 calc(var(--padding-section) * -1);
+}
+
+.bg-blur {
+    background: var(--bg-chart) top/cover no-repeat;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+}
+
+.bg-alpha {
+    z-index: 0;
+    background-image: linear-gradient(180deg, hsla(0, 0%, 100%, 0) 37%, var(--layout-bg));
+}
+
+.bg-alpha-1 {
+    opacity: 0.9;
+    z-index: 0;
+    background-image: linear-gradient(180deg, var(--layout-bg), var(--layout-bg));
+}
+
+.content {
+    position: relative;
+    height: 300px;
+    max-width: 100%;
+    margin-bottom: 10px;
+}
+
+@keyframes chartjs-render-animation {
+    from {
+        opacity: 0.99;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.chartjs-render-monitor {
+    animation: chartjs-render-animation 0.001s;
+}
+
+.zm-chart-tooltip {
+    top: 0;
+    left: 0;
+    z-index: 98;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    max-width: 240px;
+    min-width: 175px;
+    position: absolute;
+    padding: 5px 10px 5px 5px;
+    background: currentColor;
+    font-size: 11px;
+    border-radius: 4px;
+    transition: all 0.1s ease;
+    pointer-events: none;
+    opacity: 0;
+
+    color: rgb(39, 189, 156);
+    opacity: 1;
+    left: 447.102px;
+    top: 68px;
+    background-color: rgb(39, 189, 156);
+
+    .caret {
+        position: absolute;
+        left: calc(50% - 7px);
+        z-index: 0;
+        content: '';
+        top: 98%;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid;
+
+        &::before {
+            content: '';
+            clear: both;
+            display: block;
+            position: absolute;
+            width: 1px;
+            background: currentColor;
+            z-index: -1;
+            pointer-events: none;
+            transform: translateX(-50%);
+            bottom: 3px;
+        }
+
+        &::after {
+            content: '';
+            top: -1px;
+            clear: both;
+            display: block;
+            position: absolute;
+            width: 1px;
+            background: currentColor;
+            z-index: -1;
+            pointer-events: none;
+            transform: translateX(-50%);
+        }
+    }
+}
+
+.song-data {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+
+    .song-right {
+        font-size: 13px;
+        font-weight: 700;
+        margin-left: 10px;
+    }
+}
+
+.song-left {
+    display: flex;
+    align-items: center;
+}
+
+.song-left .song-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 5px;
+    flex-shrink: 0;
+}
+
+.zm-chart-tooltip .song-info {
+    color: #fff;
+    font-weight: 700;
+    line-height: 1.5;
+    overflow: hidden;
+    white-space: nowrap;
+    flex: 1 1;
+
+    .song-title {
+        font-size: 1.2rem;
+        max-width: 78px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .song-artists {
+        display: block;
+        font-size: 1rem;
+        font-weight: 400;
+        color: hsla(0, 0%, 100%, 0.8);
+        max-width: 75px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}

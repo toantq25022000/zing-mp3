@@ -44,6 +44,16 @@
     min-width: 100%;
     position: relative;
 
+    &.video-item {
+        .card-subtitle {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 100%;
+            line-height: normal;
+        }
+    }
+
     &.card--artist {
         text-align: center;
 
@@ -130,8 +140,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            border-radius: 50%;
         }
     }
 }
@@ -142,6 +150,12 @@
     overflow: hidden;
     border-radius: 4px;
     flex-shrink: 0;
+
+    &.video-image {
+        figure {
+            padding-bottom: 56.25%;
+        }
+    }
 
     figure {
         line-height: 0;

@@ -1,6 +1,6 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import instance from '~/utils/axios';
 import classNames from 'classnames/bind';
 import styles from './DetailPlaylist.module.scss';
@@ -9,15 +9,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical, faPause, faPlay, faSort } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
-import SongItem from '~/components/layouts/components/SongItem';
+import SongItem from '~/components/SongItem';
 import { songSlice } from '~/redux/features/song/songSlice';
 import { playlistSlice } from '~/redux/features/playlist/playlistSlice';
 import {
-    getCurrentIndexSongOfPlaylist,
+    arrayPlaylistCanPlay,
+    handleGetSongAndPlaySongInPlayList,
     handlePlaySongRandom,
     setNumberToThounsandLike,
 } from '~/utils/collectionFunctionConstants';
 import Carousel from '~/components/layouts/components/Carousel';
+import Button from '~/components/Button';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import DetailPlaylistSkeleton from './DetailPlaylistSkeleton';
 
 const cx = classNames.bind(styles);
 
@@ -35,8 +40,9 @@ function DetailPlaylist() {
     const isPlay = useSelector((state) => state.song.isPlay);
     const dispatch = useDispatch();
 
-    const [playlistResult, setPlaylistResult] = useState(null);
+    const [playlistResult, setPlaylistResult] = useState({});
     const [suggestPlaylists, setSuggestPlaylists] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const getPlaylist = async () => {
@@ -52,6 +58,7 @@ function DetailPlaylist() {
                 if (pathNameURL !== response.data.link) {
                     window.history.pushState({}, null, response.data.link);
                 }
+                setIsLoading(false);
             } catch (error) {
                 navigate('/');
                 console.log(error);
@@ -63,7 +70,6 @@ function DetailPlaylist() {
             instance
                 .get(`/suggested-playlist?id=${idPlaylist}`)
                 .then((res) => {
-                    console.log(res);
                     const data = res.data.filter((item) => item.viewType === 'slider');
                     setSuggestPlaylists(data);
                 })
@@ -71,6 +77,7 @@ function DetailPlaylist() {
         };
         getPlaylist();
         getSuggestedPlaylists();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idPlaylist]);
 
@@ -89,7 +96,16 @@ function DetailPlaylist() {
     }, [songId]);
 
     const releaseDateUpdatePlaylist = (date) => {
-        if (date) return date;
+        if (date) {
+            if (date.includes('/')) {
+                return date;
+            } else {
+                const dd = date.slice(0, 2);
+                const mm = date.slice(2, 4);
+                const yy = date.slice(4);
+                return dd + '/' + mm + '/' + yy;
+            }
+        }
         const d = new Date();
         const mm = d.getMonth() + 1;
         const dd = d.getDate();
@@ -107,48 +123,20 @@ function DetailPlaylist() {
         return fixHours + (minutes >= 10 ? '' : '0') + minutes + ' phút';
     };
 
-    const arrayPlaylistCanPlay = useMemo(() => {
-        if (playlistResult) {
-            const songList = playlistResult?.song?.items?.filter((song) => song.streamingStatus === 1);
-            let sectionSongList = [];
-
-            if (playlistResult.sections) {
-                playlistResult.sections.forEach((section) => {
-                    sectionSongList = [...sectionSongList, ...section.items];
-                });
-            }
-
-            return [...songList, ...sectionSongList];
-        }
-    }, [playlistResult]);
-
     const handleGetSong = (song) => {
-        // if song is allowed , not for VIP
-        if (song.streamingStatus === 1) {
-            if (isRandom) dispatch(songSlice.actions.setIsRandom(false));
-            if (songId === song.encodeId) {
-                if (isPlay) {
-                    dispatch(songSlice.actions.setIsPlay(false));
-                } else {
-                    dispatch(songSlice.actions.setIsPlay(true));
-                }
-            } else {
-                dispatch(songSlice.actions.setSongId(song.encodeId));
-                dispatch(songSlice.actions.setIsPlay(true));
-                if (!(playlistId === idPlaylist && playlists?.length > 0)) {
-                    dispatch(playlistSlice.actions.setPlaylists(arrayPlaylistCanPlay));
-                    dispatch(playlistSlice.actions.setPlaylistId(idPlaylist));
-                    dispatch(
-                        playlistSlice.actions.setPlaylistInfo({
-                            title: playlistResult.title,
-                            link: playlistResult.link,
-                        }),
-                    );
-                    console.log('dispatch playlists new');
-                }
-                dispatch(songSlice.actions.setCurrentIndexSong(getCurrentIndexSongOfPlaylist(playlists, song)));
-            }
-        }
+        handleGetSongAndPlaySongInPlayList({
+            song,
+            isRandom,
+            isPlay,
+            songId,
+            playlistId,
+            idPlaylist,
+            playlists,
+            playlistResult,
+            songSlice,
+            playlistSlice,
+            dispatch,
+        });
     };
 
     const handlePlaySongPlaylist = () => {
@@ -157,212 +145,220 @@ function DetailPlaylist() {
         }
         // phát ngẫu nhiên danh sách nhạc
         else {
-            dispatch(songSlice.actions.setIsPlay(true));
             dispatch(songSlice.actions.setIsRandom(true));
             dispatch(playlistSlice.actions.setPlaylistId(idPlaylist));
             dispatch(playlistSlice.actions.setPlaylistInfo({ title: playlistResult.title, link: playlistResult.link }));
-            dispatch(playlistSlice.actions.setPlaylists(arrayPlaylistCanPlay));
-            handlePlaySongRandom(-1, arrayPlaylistCanPlay, [], dispatch, songSlice);
+            dispatch(playlistSlice.actions.setPlaylists(arrayPlaylistCanPlay(playlistResult)));
+            handlePlaySongRandom(-1, arrayPlaylistCanPlay(playlistResult), [], dispatch, songSlice);
+
+            setTimeout(() => {
+                dispatch(songSlice.actions.setIsPlay(true));
+            }, 200);
         }
     };
 
     return (
-        playlistResult && (
-            <div className={clsx(cx('wrapper'), 'pt-20')}>
-                <div className={cx('container')}>
-                    <div className={clsx(cx('inner'), 'mb-30', 'clearfix')}>
-                        <div className={clsx(cx('playlist-header', 'sticky'), 'media')}>
-                            <div className={cx('media-left')}>
-                                <div
-                                    className={cx('header-thumbnail', {
-                                        isPlaying: isPlay ? (idPlaylist === playlistId ? true : false) : false,
-                                    })}
-                                >
-                                    <div className={cx('card-image')}>
-                                        <div
-                                            className={cx(
-                                                'thumb',
-                                                isPlay
-                                                    ? idPlaylist === playlistId
-                                                        ? 'thumb-rotate'
-                                                        : 'thumb-rotate-off'
-                                                    : 'thumb-rotate-off',
-                                            )}
-                                        >
-                                            <figure>
-                                                <img
-                                                    src={playlistResult.thumbnailM || playlistResult.thumbnail}
-                                                    alt=""
-                                                />
-                                            </figure>
-                                            <div className={cx('opacity')}></div>
-                                        </div>
-                                        <div className={cx('actions-container')}>
-                                            <div className={clsx(cx('playlist-actions'), 'zm-action')}>
-                                                <button
-                                                    className={clsx(cx('action-play'), 'zm-btn')}
-                                                    onClick={handlePlaySongPlaylist}
-                                                >
-                                                    <span
-                                                        className={cx(
-                                                            isPlay
-                                                                ? idPlaylist === playlistId
-                                                                    ? 'icon-play-gif'
-                                                                    : 'icon-play-circle'
-                                                                : 'icon-play-circle',
-                                                        )}
-                                                    ></span>
-                                                </button>
+        <>
+            {isLoading && <DetailPlaylistSkeleton />}
+            {!isLoading && (
+                <div className={clsx(cx('wrapper'), 'pt-20')}>
+                    <div className={cx('container')}>
+                        <div className={clsx(cx('inner'), 'mb-30', 'clearfix')}>
+                            <div className={clsx(cx('playlist-header', 'sticky'), 'media')}>
+                                <div className={cx('media-left')}>
+                                    <div
+                                        className={cx('header-thumbnail', {
+                                            isPlaying: isPlay ? (idPlaylist === playlistId ? true : false) : false,
+                                        })}
+                                    >
+                                        <div className={cx('card-image')}>
+                                            <div
+                                                className={cx(
+                                                    'thumb',
+                                                    isPlay
+                                                        ? idPlaylist === playlistId
+                                                            ? 'thumb-rotate'
+                                                            : 'thumb-rotate-off'
+                                                        : 'thumb-rotate-off',
+                                                )}
+                                            >
+                                                <figure>
+                                                    <img
+                                                        src={playlistResult.thumbnailM || playlistResult.thumbnail}
+                                                        alt=""
+                                                    />
+                                                </figure>
+                                                <div className={cx('opacity')}></div>
+                                            </div>
+                                            <div className={cx('actions-container')}>
+                                                <div className={clsx(cx('playlist-actions'), 'zm-action')}>
+                                                    <button
+                                                        className={clsx(cx('action-play'), 'zm-btn')}
+                                                        onClick={handlePlaySongPlaylist}
+                                                    >
+                                                        <span
+                                                            className={cx(
+                                                                isPlay
+                                                                    ? idPlaylist === playlistId
+                                                                        ? 'icon-play-gif'
+                                                                        : 'icon-play-circle'
+                                                                    : 'icon-play-circle',
+                                                            )}
+                                                        ></span>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className={cx('media-content')}>
-                                <div className={cx('content-top')}>
-                                    <h3 className={cx('title')}>{playlistResult?.title}</h3>
-                                    <div className={cx('release')}>
-                                        Cập nhật: {releaseDateUpdatePlaylist(playlistResult?.releaseDate)}
-                                    </div>
-                                    <div className={cx('artists')}>
-                                        {playlistResult.artists &&
-                                            playlistResult.artists
-                                                .map((artist) => (
-                                                    <a key={artist.id} href="/" className={cx('is-ghost')}>
-                                                        {artist.name}
-                                                    </a>
-                                                ))
-                                                .reduce((prev, current) => [prev, ', ', current])}
-                                    </div>
-                                    <div className={cx('like')}>
-                                        {setNumberToThounsandLike(playlistResult?.like)} người yêu thích
-                                    </div>
-                                </div>
-
-                                <div className={cx('actions')}>
-                                    <button
-                                        className={clsx(
-                                            cx('btn-play-all'),
-                                            'zm-btn',
-                                            'is-outlined',
-                                            'is-active',
-                                            'is-medium ',
-                                            'is-upper',
-                                        )}
-                                        onClick={handlePlaySongPlaylist}
-                                    >
-                                        {playlistId === idPlaylist ? (
-                                            isPlay ? (
-                                                <FontAwesomeIcon icon={faPause} className={cx('icon')} />
+                                <div className={cx('media-content')}>
+                                    <div className={cx('content-top')}>
+                                        <h3 className={cx('title')}>{playlistResult.title}</h3>
+                                        <div className={cx('release')}>
+                                            Cập nhật: {releaseDateUpdatePlaylist(playlistResult.releaseDate)}
+                                        </div>
+                                        <div className={cx('artists')}>
+                                            {playlistResult.artists ? (
+                                                playlistResult.artists
+                                                    .map((artist) => (
+                                                        <Link
+                                                            to={artist.link}
+                                                            key={artist.id}
+                                                            className={cx('is-ghost')}
+                                                        >
+                                                            {artist.name}
+                                                        </Link>
+                                                    ))
+                                                    .reduce((prev, current) => [prev, ', ', current])
                                             ) : (
-                                                <FontAwesomeIcon icon={faPlay} className={cx('icon')} />
-                                            )
-                                        ) : (
-                                            <FontAwesomeIcon icon={faPlay} className={cx('icon')} />
-                                        )}
+                                                <Skeleton width={200} height={10} />
+                                            )}
+                                        </div>
+                                        <div className={cx('like')}>
+                                            {setNumberToThounsandLike(playlistResult.like)} người yêu thích
+                                        </div>
+                                    </div>
 
-                                        <span>
+                                    <div className={cx('actions')}>
+                                        <Button
+                                            className={cx('btn-play-all')}
+                                            rounded
+                                            outlined
+                                            active
+                                            upper
+                                            leftIcon={
+                                                <FontAwesomeIcon
+                                                    icon={
+                                                        playlistId === idPlaylist ? (isPlay ? faPause : faPlay) : faPlay
+                                                    }
+                                                />
+                                            }
+                                            onClick={handlePlaySongPlaylist}
+                                        >
                                             {playlistId === idPlaylist
                                                 ? isPlay
                                                     ? 'Tạm dừng'
                                                     : 'Tiếp tục phát'
                                                 : 'Phát ngẫu nhiên'}
-                                        </span>
-                                    </button>
-                                    <div className={clsx(cx('level-wrap'), 'level')}>
-                                        <Tippy content="Thêm vào thư viện">
-                                            <button className={clsx(cx('tooltip-btn'), 'zm-btn')}>
-                                                <FontAwesomeIcon icon={faHeartRegular} />
-                                            </button>
-                                        </Tippy>
-                                        <Tippy content="Khác">
-                                            <button className={clsx(cx('tooltip-btn'), 'zm-btn')}>
-                                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                                            </button>
-                                        </Tippy>
+                                        </Button>
+
+                                        <div className={clsx(cx('level-wrap'), 'level')}>
+                                            <Tippy content="Thêm vào thư viện">
+                                                <Button
+                                                    className={cx('tooltip-btn')}
+                                                    rounded
+                                                    tooltip
+                                                    leftIcon={<FontAwesomeIcon icon={faHeartRegular} />}
+                                                ></Button>
+                                            </Tippy>
+                                            <Tippy content="Khác">
+                                                <Button
+                                                    className={clsx(cx('tooltip-btn'), 'ml-10')}
+                                                    rounded
+                                                    tooltip
+                                                    leftIcon={<FontAwesomeIcon icon={faEllipsisVertical} />}
+                                                ></Button>
+                                            </Tippy>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className={cx('playlist-content')}>
-                            <div className={cx('description')}>
-                                {playlistResult.sortDescription && (
-                                    <>
-                                        <span>Lời tựa </span> {playlistResult.sortDescription}
-                                    </>
-                                )}
-                            </div>
-                            <div className={clsx(cx('song-list-select'), 'mb-10')}>
-                                <div
-                                    className={clsx(
-                                        cx('box-header', { 'select-header': playlistResult.isAlbum }),
-                                        'media',
-                                    )}
-                                >
-                                    <div className={cx('zm-media-left')}>
-                                        <div className={cx('sort-wrapper')}>
-                                            <div className={clsx(cx('group-dropdown'), 'mr-10')}>
-                                                <div className={cx('dropdown-trigger')}>
-                                                    <button className={clsx(cx('btn-sort'), 'zm-btn')}>
-                                                        <FontAwesomeIcon icon={faSort} />
-                                                    </button>
+                            <div className={cx('playlist-content')}>
+                                <div className={cx('description')}>
+                                    <span>Lời tựa </span> {playlistResult?.sortDescription}
+                                </div>
+                                <div className={clsx(cx('song-list-select'), 'mb-10')}>
+                                    <div
+                                        className={clsx(
+                                            cx('box-header', { 'select-header': playlistResult.isAlbum }),
+                                            'media',
+                                        )}
+                                    >
+                                        <div className={cx('zm-media-left')}>
+                                            <div className={cx('sort-wrapper')}>
+                                                <div className={clsx(cx('group-dropdown'), 'mr-10')}>
+                                                    <div className={cx('dropdown-trigger')}>
+                                                        <button className={clsx(cx('btn-sort'), 'zm-btn')}>
+                                                            <FontAwesomeIcon icon={faSort} />
+                                                        </button>
+                                                    </div>
                                                 </div>
+                                                <div className={cx('column-text')}>Bài hát</div>
                                             </div>
-                                            <div className={cx('column-text')}>Bài hát</div>
+                                        </div>
+
+                                        <div className={cx('zm-media-content')}>
+                                            <div className={clsx(cx('column-text'), 'ml-10')}>Album</div>
+                                        </div>
+
+                                        <div className={cx('zm-media-right')}>
+                                            <div className={cx('column-text')}>Thời gian</div>
                                         </div>
                                     </div>
 
-                                    <div className={cx('zm-media-content')}>
-                                        <div className={clsx(cx('column-text'), 'ml-10')}>Album</div>
-                                    </div>
-
-                                    <div className={cx('zm-media-right')}>
-                                        <div className={cx('column-text')}>Thời gian</div>
-                                    </div>
-                                </div>
-
-                                <div className={cx('song-list')}>
-                                    {playlistResult?.song?.items?.map((song) => (
-                                        <SongItem
-                                            key={song.encodeId}
-                                            data={song}
-                                            isAlbum={playlistResult.isAlbum}
-                                            onDoubleClickSong={() => handleGetSong(song)}
-                                            onPlayOrPauseSong={() => handleGetSong(song)}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                            <h3 className={cx('bottom-info')}>
-                                <span>{playlistResult?.song?.items.length} bài hát</span>•
-                                <span>{getSumDurationPlaylist()}</span>
-                            </h3>
-
-                            {playlistResult?.sections?.map((section, index) => (
-                                <div className={cx('container-section', 'channel-section')} key={index}>
-                                    <h3 className={cx('channel-title')}>{section.title}</h3>
                                     <div className={cx('song-list')}>
-                                        {section?.items?.map((song) => (
+                                        {playlistResult?.song?.items?.map((song) => (
                                             <SongItem
                                                 key={song.encodeId}
                                                 data={song}
-                                                isAlbum={false}
+                                                isAlbum={playlistResult.isAlbum}
                                                 onDoubleClickSong={() => handleGetSong(song)}
                                                 onPlayOrPauseSong={() => handleGetSong(song)}
                                             />
                                         ))}
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
-                    {suggestPlaylists &&
-                        suggestPlaylists.map((section, index) => <Carousel key={index} dataSection={section} />)}
+                                <h3 className={cx('bottom-info')}>
+                                    <span>{playlistResult?.song?.items.length} bài hát</span>•
+                                    <span>{getSumDurationPlaylist()}</span>
+                                </h3>
 
-                    <div className={cx('artist-section')}></div>
+                                {playlistResult?.sections?.map((section, index) => (
+                                    <div className={cx('container-section', 'channel-section')} key={index}>
+                                        <h3 className={cx('channel-title')}>{section.title}</h3>
+                                        <div className={cx('song-list')}>
+                                            {section?.items?.map((song) => (
+                                                <SongItem
+                                                    key={song.encodeId}
+                                                    data={song}
+                                                    isAlbum={false}
+                                                    onDoubleClickSong={() => handleGetSong(song)}
+                                                    onPlayOrPauseSong={() => handleGetSong(song)}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        {suggestPlaylists &&
+                            suggestPlaylists.map((section, index) => <Carousel key={index} dataSection={section} />)}
+
+                        <div className={cx('artist-section')}></div>
+                    </div>
                 </div>
-            </div>
-        )
+            )}
+        </>
     );
 }
 

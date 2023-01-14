@@ -16,13 +16,13 @@ router.get("/song/info", ZingController.getSongInfo);
 router.get("/song/lyric", ZingController.getSongLyric);
 
 //getChartHome
-router.get("/chart/home", ZingController.getHomeChart);
+router.get("/chart-home", ZingController.getHomeChart);
 
 //getNewReleaseChart
-router.get("/chart/new-release", ZingController.getNewReleaseChart);
+router.get("/chart-new-release", ZingController.getNewReleaseChart);
 
 //getWeekChart
-router.get("/chart/week/:id", ZingController.getWeekChart);
+router.get("/chart-week/:id", ZingController.getWeekChart);
 
 // getDetailPlaylist
 router.get("/playlist", ZingController.getPlaylist);
@@ -49,12 +49,12 @@ router.get("/search", ZingController.SearchAll);
 router.get("/search-by-type", ZingController.SearchByType);
 
 // getMV
-router.get("/mv/:id", ZingController.getMV);
+router.get("/video", ZingController.getMV);
 // getListMV
-router.get("/mv/list", ZingController.getListMV);
+router.get("/video/list", ZingController.getListMV);
 
 // getCategoryMV
-router.get("/mv/category", ZingController.getCategoryMV);
+router.get("/video/category", ZingController.getCategoryMV);
 
 // getRadio
 router.get("/radio", ZingController.getRadio);
@@ -63,10 +63,10 @@ router.get("/radio", ZingController.getRadio);
 router.get("/list-by-genre/:id", ZingController.getListByGenre);
 
 // getHubHome
-router.get("/hub", ZingController.getHubHome);
+router.get("/hub/list", ZingController.getHubHome);
 
 // getHubDetail
-router.get("/hub/:id", ZingController.getHubDetail);
+router.get("/hub", ZingController.getHubDetail);
 
 // getSuggestedPlaylists
 router.get("/suggested-playlist", ZingController.getSuggestedPlaylists);
@@ -74,11 +74,11 @@ router.get("/suggested-playlist", ZingController.getSuggestedPlaylists);
 // getSuggestionKeyword
 router.get("/ac-suggestions", ZingController.getSuggestionKeyword);
 
-// getEvents
-router.get("/events", ZingController.getEvents);
-
 // getEventInfo
-router.get("/events/:id", ZingController.getEventInfo);
+router.get("/events", ZingController.getEventInfo);
+
+// getEvents
+router.get("/events/list", ZingController.getEvents);
 
 // getRecommenedKeywords
 router.get("/recommended-keyword", ZingController.getRecommenedKeyword);

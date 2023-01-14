@@ -1,0 +1,64 @@
+.media {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.media-left {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.image,
+.title,
+.subtitle,
+.artist,
+.tooltip {
+    border-radius: 99px;
+}
+
+.image {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+
+.info {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.title {
+    height: 10px;
+    width: 80%;
+}
+
+.subtitle {
+    height: 10px;
+    width: 65%;
+}
+
+.media-content {
+    margin-left: 10px;
+    flex: 1;
+}
+
+.artist {
+    width: 30px;
+    height: 10px;
+}
+
+.media-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.tooltip {
+    width: 20px;
+    height: 20px;
+}

@@ -40,6 +40,7 @@ function Carousel({ dataSection }) {
                                         key={item.id || item.encodeId}
                                         isArtist={dataSection.sectionType === 'artist'}
                                         isPlaylist={dataSection.sectionType === 'playlist'}
+                                        isVideo={dataSection.sectionType === 'video'}
                                     />
                                 ))}
                             </>

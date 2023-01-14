@@ -1,17 +1,16 @@
 import clsx from 'clsx';
+import Tippy from '@tippyjs/react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import styles from './CardItem.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
-import Tippy from '@tippyjs/react';
-import { Link } from 'react-router-dom';
+
+import styles from './Card.module.scss';
 
 const cx = classNames.bind(styles);
 
 function CardItem({ data, isMix = false }) {
-    // console.log(data.artists);
-
     const handleLikePlayList = (e) => {
         e.preventDefault();
         e.stopPropagation();

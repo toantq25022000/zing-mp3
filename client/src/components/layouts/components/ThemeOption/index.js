@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
+import Button from '~/components/Button';
 import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
 import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
 
@@ -50,25 +51,26 @@ function ThemeOption({ data, onSetOpenTheme }) {
 
                             <div className={cx('opacity')}></div>
                             <div className={clsx(cx('theme-actions'), 'theme-actions-g')}>
-                                <button
-                                    className={clsx(
-                                        cx('action-btn', {
-                                            active: true,
-                                        }),
-                                        'zm-btn',
-                                        'is-outlined',
-                                        'mb-10',
-                                    )}
+                                <Button
+                                    className={clsx(cx('action-btn'), 'mb-10')}
+                                    rounded
+                                    outlined
+                                    active
+                                    upper
                                     onClick={() => handleSetThemeForApp(item)}
                                 >
                                     Áp dụng
-                                </button>
-                                <button
-                                    className={clsx(cx('action-btn'), 'zm-btn', 'is-outlined')}
+                                </Button>
+
+                                <Button
+                                    className={cx('action-btn')}
+                                    rounded
+                                    outlined
+                                    upper
                                     onClick={() => handlePreviewTheme(item)}
                                 >
                                     Xem trước
-                                </button>
+                                </Button>
                             </div>
                         </div>
                         <h5 className={cx('name')}>{item.title}</h5>

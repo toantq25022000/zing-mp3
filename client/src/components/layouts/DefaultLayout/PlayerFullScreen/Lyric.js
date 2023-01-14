@@ -2,8 +2,11 @@ import classNames from 'classnames/bind';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { collectSlice } from '~/redux/features/collect/collectSlice';
 import { songSlice } from '~/redux/features/song/songSlice';
 import instance from '~/utils/axios';
+import { getRadomTwoBGLyric } from '~/utils/collectionFunctionConstants';
+import { SpinnerLoadIcon } from '../../components/Icons';
 import styles from './PlayerFullScreen.module.scss';
 
 const cx = classNames.bind(styles);
@@ -17,6 +20,7 @@ function Lyric({ audioRef }) {
 
     const [lyrics, setLyrics] = useState([]);
     const [indexTextHighLight, setIndexTextHighLight] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -65,15 +69,13 @@ function Lyric({ audioRef }) {
     };
 
     const handleUpdateHighlightLyricSync = (timeCurrent) => {
-        const time = timeCurrent;
-        const indexTextSong = syncLyric(lyrics, time);
+        const indexTextSong = syncLyric(lyrics, timeCurrent);
 
         setIndexTextHighLight(indexTextSong);
 
         if (indexTextSong !== indexTextHighLight) {
             handleHighlightLyricText(indexTextSong);
         }
-        console.log(lyrics[indexTextSong].text);
     };
 
     // parse formated time
@@ -136,19 +138,33 @@ function Lyric({ audioRef }) {
     useEffect(() => {
         const getLyric = async () => {
             //Have lyyric song
-            if (lyricSong) {
-                readLrcSong(lyricSong.file);
+            if (lyricSong && lyricSong.encodeId === songId) {
+                dispatch(collectSlice.actions.setListBackgroundLyric(lyricSong.data.defaultIBGUrls || []));
+                readLrcSong(lyricSong?.data?.file);
             } else {
                 //Haven't lyric song => call api
-
+                setLoading(true);
                 try {
                     const response = await instance.get(`/song/lyric?id=${songId}`);
 
                     if (response.data) {
-                        dispatch(songSlice.actions.setLyricSong(response.data));
+                        dispatch(
+                            songSlice.actions.setLyricSong({
+                                encodeId: songId,
+                                data: response.data,
+                            }),
+                        );
+
+                        console.log('call');
+                        dispatch(collectSlice.actions.setListBackgroundLyric(response.data.defaultIBGUrls || []));
+                        dispatch(collectSlice.actions.setArrayIndexListBGRandomLyric([]));
+
+                        getRadomTwoBGLyric(response.data.defaultIBGUrls, [], collectSlice, dispatch);
                         readLrcSong(response.data.file);
                     }
+                    setLoading(false);
                 } catch (error) {
+                    setLoading(false);
                     console.log(error);
                 }
             }
@@ -182,22 +198,29 @@ function Lyric({ audioRef }) {
                                     alt=""
                                 />
                             </figure>
+                            {isPlay ? <i className={cx('playing-icon-gif')}></i> : <></>}
                         </div>
                     </div>
                 </div>
                 <div className={clsx(cx('column', `is-size-${sizeTextLyric}`, 'fullhd-7'), 'col', 'l-7', 'm-12')}>
-                    <div className={clsx(cx('scroll-content'), 'scroll-content-lyric')}>
-                        {lyrics?.map((lyric, index) => (
-                            <p
-                                key={index}
-                                className={clsx(cx('item'), 'sentence-item')}
-                                data-index={index}
-                                data-time={lyric.time}
-                            >
-                                {lyric.text}
-                            </p>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div className={cx('loading')}>
+                            <SpinnerLoadIcon />
+                        </div>
+                    ) : (
+                        <div className={clsx(cx('scroll-content'), 'scroll-content-lyric')}>
+                            {lyrics?.map((lyric, index) => (
+                                <p
+                                    key={index}
+                                    className={clsx(cx('item'), 'sentence-item')}
+                                    data-index={index}
+                                    data-time={lyric.time}
+                                >
+                                    {lyric.text}
+                                </p>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

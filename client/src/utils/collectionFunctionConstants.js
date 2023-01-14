@@ -11,6 +11,75 @@ export const secondsToTime = (second) => {
     //return `${m}:${s}`;
 };
 
+//arrayPlaylistCanPlay
+export const arrayPlaylistCanPlay = (playlistResult) => {
+    if (playlistResult) {
+        let songList = playlistResult?.song?.items?.filter((song) => song.streamingStatus === 1);
+
+        let sectionSongList = [];
+
+        if (playlistResult.sections) {
+            playlistResult.sections.forEach((section) => {
+                sectionSongList = [...sectionSongList, ...section.items];
+            });
+        }
+
+        return [...songList, ...sectionSongList];
+    }
+};
+
+// get first song can play in playlist
+export const getFirstSongCanPlayInPlaylist = (playlists) => {
+    return playlists.find((song) => song.streamingStatus === 1);
+};
+
+//getSongAndPlaySongPlaylist
+
+export const handleGetSongAndPlaySongInPlayList = ({ ...props }) => {
+    const {
+        song,
+        isRandom,
+        isPlay,
+        songId,
+        playlistId,
+        idPlaylist,
+        playlists,
+        playlistResult,
+        songSlice,
+        playlistSlice,
+        dispatch,
+    } = props;
+    // if song is allowed , not for VIP
+    if (song.streamingStatus === 1) {
+        if (isRandom) dispatch(songSlice.actions.setIsRandom(false));
+
+        if (songId === song.encodeId) {
+            if (isPlay) {
+                dispatch(songSlice.actions.setIsPlay(false));
+            } else {
+                dispatch(songSlice.actions.setIsPlay(true));
+            }
+        } else {
+            dispatch(songSlice.actions.setSongId(song.encodeId));
+            if (!(playlistId === idPlaylist && playlists?.length > 0)) {
+                dispatch(playlistSlice.actions.setPlaylists(arrayPlaylistCanPlay(playlistResult)));
+                dispatch(playlistSlice.actions.setPlaylistId(idPlaylist));
+                dispatch(
+                    playlistSlice.actions.setPlaylistInfo({
+                        title: playlistResult.title,
+                        link: playlistResult.link,
+                    }),
+                );
+                console.log('dispatch playlists new');
+            }
+            dispatch(songSlice.actions.setCurrentIndexSong(getCurrentIndexSongOfPlaylist(playlists, song)));
+            setTimeout(() => {
+                dispatch(songSlice.actions.setIsPlay(true));
+            }, 300);
+        }
+    }
+};
+
 export const handlePlaySongRandom = (currentIndexSong, playlists, arrayIndexRandom, dispatch, songSlice) => {
     let newIndex;
     do {
@@ -23,6 +92,28 @@ export const handlePlaySongRandom = (currentIndexSong, playlists, arrayIndexRand
     dispatch(songSlice.actions.setCurrentIndexSong(newIndex));
     dispatch(songSlice.actions.setSongId(playlists[newIndex].encodeId));
     dispatch(songSlice.actions.setIsPlay(true));
+};
+
+export const getRadomTwoBGLyric = (listBackgroundLyric, arrayIndexListBGRandomLyric, collectSlice, dispatch) => {
+    let arrayTwoRandom = [];
+    let arrayIndexRandom = [...arrayIndexListBGRandomLyric];
+    if (arrayIndexListBGRandomLyric.length === listBackgroundLyric.length) {
+        arrayIndexRandom = [];
+    }
+
+    for (let i = 0; i < 2; i++) {
+        let newIndex;
+        do {
+            newIndex = Math.floor(Math.random() * listBackgroundLyric.length);
+        } while (arrayTwoRandom.includes(newIndex) || arrayIndexRandom.includes(newIndex));
+        arrayTwoRandom.push(newIndex);
+    }
+
+    const updateArrayIndexRandom = [...arrayIndexRandom, ...arrayTwoRandom];
+    const updateTwoBgLyric = arrayTwoRandom?.map((item) => listBackgroundLyric[item]);
+
+    dispatch(collectSlice.actions.setArrayIndexListBGRandomLyric(updateArrayIndexRandom));
+    dispatch(collectSlice.actions.setTwoBackgroundForUILyric(updateTwoBgLyric));
 };
 
 export const handlePlaySongFn = (song, songId, isRandom, isPlay, playlists, songSlice, dispatch) => {
@@ -58,7 +149,6 @@ export const handleSetThemeWebsite = (theme) => {
     let themeResult = { ...theme };
     const htmlElement = document.getElementsByTagName('html')[0];
     const bgLayout = document.querySelector('.zm-layout');
-
     if (theme.dynamic) {
         const hoursCurrent = new Date().getHours();
         const dynamicResult = theme.dynamic.find(

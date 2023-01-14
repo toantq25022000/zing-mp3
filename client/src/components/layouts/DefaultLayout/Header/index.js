@@ -20,7 +20,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faVuejs } from '@fortawesome/free-brands-svg-icons';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import classNames from 'classnames/bind';
 
@@ -35,6 +35,7 @@ import { authSlice } from '~/redux/features/auth/authSlice';
 import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
 import instance from '~/utils/axios';
 import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
+import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
@@ -180,33 +181,50 @@ function Header({ headerRef }) {
                     <div className={cx('inner__right')}>
                         <Tippy content="Chủ đề">
                             <div className={clsx(cx('setting'), 'hide-on-mobile')}>
-                                <button className={clsx(cx('icon', 'size'), 'zm-btn')} onClick={handleOpenModalSetting}>
-                                    <ThemeIcon />
-                                </button>
+                                <Button
+                                    className={cx('icon', 'size')}
+                                    rounded
+                                    outlined
+                                    tooltip
+                                    leftIcon={<ThemeIcon />}
+                                    onClick={handleOpenModalSetting}
+                                ></Button>
                             </div>
                         </Tippy>
 
                         <Tippy content="Nâng cấp VIP">
                             <div className={clsx(cx('setting'), 'hide-on-mobile')}>
-                                <button className={clsx(cx('icon', 'size'), 'zm-btn')}>
-                                    <FontAwesomeIcon icon={faVuejs} />
-                                </button>
+                                <Button
+                                    className={cx('icon', 'size')}
+                                    rounded
+                                    outlined
+                                    tooltip
+                                    leftIcon={<FontAwesomeIcon icon={faVuejs} />}
+                                ></Button>
                             </div>
                         </Tippy>
 
                         <Tippy content="Tải lên">
                             <div className={clsx(cx('setting'), 'hide-on-mobile')}>
-                                <button className={clsx(cx('icon', 'size'), 'zm-btn')}>
-                                    <Upload />
-                                </button>
+                                <Button
+                                    className={cx('icon', 'size')}
+                                    rounded
+                                    outlined
+                                    tooltip
+                                    leftIcon={<Upload />}
+                                ></Button>
                             </div>
                         </Tippy>
                         <Menu items={SETTING_ITEMS} placement="bottom-end" trigger="click" className={cx('menu-list')}>
                             <Tippy content="Cài đặt">
                                 <div className={clsx(cx('setting'), 'hide-on-mobile')}>
-                                    <button className={clsx(cx('icon', 'size'), 'zm-btn')}>
-                                        <Gear />
-                                    </button>
+                                    <Button
+                                        className={cx('icon', 'size')}
+                                        rounded
+                                        outlined
+                                        tooltip
+                                        leftIcon={<Gear />}
+                                    ></Button>
                                 </div>
                             </Tippy>
                         </Menu>
@@ -226,15 +244,11 @@ function Header({ headerRef }) {
                                 </div>
                             </Menu>
                         ) : (
-                            <Link to="/login">
+                            <Button rounded outlined tooltip to="/login">
                                 <div className={cx('avatar')}>
-                                    <Image
-                                        src="https://s120-ava-talk-zmp3.zmdcdn.me/3/a/a/b/27/120/b4701d451aea1101afa6d78875e0f7f6.jpg"
-                                        alt=""
-                                        className={cx('avatar__img')}
-                                    />
+                                    <Image className={cx('avatar__img')} alt="" />
                                 </div>
-                            </Link>
+                            </Button>
                         )}
                     </div>
                 </div>
@@ -242,9 +256,11 @@ function Header({ headerRef }) {
             {openTheme && (
                 <Modal className={cx('content-theme')} onClickOverLay={hanldCloseModal}>
                     <h3 className={cx('heading')}>{config?.theme?.title}</h3>
-                    <button className={clsx(cx('close-modal'), 'zm-btn')} onClick={hanldCloseModal}>
-                        <FontAwesomeIcon icon={faXmark} />
-                    </button>
+                    <Tippy content="Đóng">
+                        <button className={clsx(cx('close-modal'), 'zm-btn')} onClick={hanldCloseModal}>
+                            <FontAwesomeIcon icon={faXmark} />
+                        </button>
+                    </Tippy>
 
                     <div className={cx('modal-body')}>
                         {config?.theme?.sections?.map((theme, index) => (

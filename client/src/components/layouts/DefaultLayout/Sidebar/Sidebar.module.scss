@@ -13,10 +13,6 @@
     }
 }
 
-.zm-sidebar {
-    height: calc(100vh - 90px);
-}
-
 .logo {
     width: 240px;
     height: 70px;
@@ -151,7 +147,6 @@
         align-items: center;
         color: var(--text-primary);
         font-weight: 700;
-        bottom: 90px;
         z-index: 13;
         cursor: pointer;
         background-color: var(--sidebar-bg);
@@ -228,7 +223,7 @@
     .logo__img {
         width: 45px;
         height: 45px;
-        background-image: url(https://zjs.zmdcdn.me/zmp3-desktop/releases/v1.7.26/static/media/icon_zing_mp3_60.f6b51045.svg);
+        background-image: var(--logo-img-mini);
     }
 
     .vip-baner-sidebar {

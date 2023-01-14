@@ -11,8 +11,15 @@ const cx = classNames.bind(styles);
 
 function MenuItem({ data }) {
     const sizeTextLyric = useSelector((state) => state.userConfig.sizeTextLyric);
+    const isTurnOnModeWallpaper = useSelector((state) => state.userConfig.isTurnOnModeWallpaper);
 
     const dispatch = useDispatch();
+
+    const handleChangeCheckboxSwitch = (e) => {
+        if (data.isModeWallpaper) {
+            dispatch(userConfigSlice.actions.setIsTurnOnModeWallpaper(e.target.checked));
+        }
+    };
 
     const renderItem = () => {
         switch (data.type) {
@@ -71,7 +78,12 @@ function MenuItem({ data }) {
                         ) : (
                             <span className={cx('icon-check')}>
                                 <label className={cx('switch')}>
-                                    <input type="checkbox" disabled={data.isNoneSelected} />
+                                    <input
+                                        type="checkbox"
+                                        disabled={data.isNoneSelected}
+                                        onChange={handleChangeCheckboxSwitch}
+                                        checked={data.isModeWallpaper ? isTurnOnModeWallpaper : false}
+                                    />
                                     <span className={cx('slider', 'round')}></span>
                                 </label>
                             </span>

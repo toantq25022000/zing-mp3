@@ -3,7 +3,7 @@ import styles from './SliderItem.module.scss';
 
 const cx = classNames.bind(styles);
 
-function SliderItem({ imgSrc }) {
+const SliderItem = ({ imgSrc }) => {
     return (
         <div className={cx('wrapper')}>
             <figure className={cx('figure')}>
@@ -11,6 +11,6 @@ function SliderItem({ imgSrc }) {
             </figure>
         </div>
     );
-}
+};
 
 export default SliderItem;

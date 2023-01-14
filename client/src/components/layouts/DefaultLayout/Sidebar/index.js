@@ -38,7 +38,7 @@ export default function Sidebar() {
     };
 
     return (
-        <div className={cx('wrraper', 'zm-sidebar')} ref={sibarRef}>
+        <div className={clsx(cx('wrraper', 'zm-sidebar'), 'sidebar-wrapper')} ref={sibarRef}>
             <div className={clsx(cx('logo'), 'hide-on-mobile')}>
                 <div className={cx('logo__img')}></div>
             </div>
@@ -47,8 +47,8 @@ export default function Sidebar() {
                 <nav className={cx('navbar-menu', 'mb-15')}>
                     <NavbarItem title="Cá nhân" Icon={Fan} to="/mymusic" isExpanded={expanded} />
                     <NavbarItem title="Khám phá" Icon={Vinyl} to="/" isExpanded={expanded} />
-                    <NavbarItem title="#zingchart" Icon={MusicNoteList} to="/mymusic" isExpanded={expanded} />
-                    <NavbarItem title="Radio" Icon={Soundwave} liveLable={true} to="/mymusic" isExpanded={expanded} />
+                    <NavbarItem title="#zingchart" Icon={MusicNoteList} to="/zing-chart" isExpanded={expanded} />
+                    <NavbarItem title="Radio" Icon={Soundwave} liveLable={true} to="/radio" isExpanded={expanded} />
                     <NavbarItem title="Theo dõi" Icon={Newspaper} to="/mymusic" isExpanded={expanded} />
                 </nav>
 
@@ -93,7 +93,7 @@ export default function Sidebar() {
                     </div>
                 </div>
                 <div className={clsx(cx('create-playlist'), 'hide-on-mobile')}>
-                    <button className={cx('btn-add')}>
+                    <button className={clsx(cx('btn-add'), 'sidebar___create-playlist--btn')}>
                         <Plus className={cx('add-icon')} />
                         <span>Tạo playlist mới</span>
                     </button>

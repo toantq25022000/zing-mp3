@@ -40,7 +40,6 @@ function Playlist() {
             clearTimeout(timeout);
             timeout = setTimeout(function () {
                 // const scrollIntoViewSong = (ref) => {
-                //     console.log({ ref });
                 // };
                 // if (document.getElementById('song-' + songId)) {
                 //     scrollIntoViewSong(document.getElementById('song-' + songId));
@@ -125,7 +124,7 @@ function Playlist() {
                                     {songId === song.encodeId && isPlay ? (
                                         <i className={cx('playing-icon-gif')}></i>
                                     ) : (
-                                        ''
+                                        <></>
                                     )}
                                 </div>
                                 <div className={cx('meta-info')}>

@@ -1,5 +1,1 @@
-function Radio() {
-    return ( <>Radio</> );
-}
-
-export default Radio;
+export { default } from './Radio';

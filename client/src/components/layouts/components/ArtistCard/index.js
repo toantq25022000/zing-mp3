@@ -1,8 +1,9 @@
+import { useSelector } from 'react-redux';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
+
 import { setNumberToThounsandLike } from '~/utils/collectionFunctionConstants';
 import styles from './ArtistCard.module.scss';
 
@@ -72,31 +73,32 @@ function ArtistCard() {
                                 </div>
                             </div>
                         )}
-
-                        <div className={cx('album')}>
-                            <h3 className={cx('title')}>Mới nhất</h3>
-                            <div className={cx('album__list')}>
-                                {cardInfo?.album.slice(0, 4).map((item, index) => (
-                                    <div className={cx('album__item')} key={index}>
-                                        <div className={cx('album__thumb')}>
-                                            <figure>
-                                                <img src={item.thumbnail || item.thumbnailM} alt="" />
-                                            </figure>
-                                        </div>
-                                        <div className={cx('album__content')}>
-                                            <h3 className={cx('title')}>
-                                                <a href={item.link}>{item.title}</a>
-                                            </h3>
-                                            <div className={cx('subtitle')}>
-                                                {item.releaseDateText.includes('/')
-                                                    ? item.releaseDateText.split('/')[1]
-                                                    : item.releaseDateText}
+                        {cardInfo.album && (
+                            <div className={cx('album')}>
+                                <h3 className={cx('title')}>Mới nhất</h3>
+                                <div className={cx('album__list')}>
+                                    {cardInfo.album.slice(0, 4).map((item, index) => (
+                                        <div className={cx('album__item')} key={index}>
+                                            <div className={cx('album__thumb')}>
+                                                <figure>
+                                                    <img src={item.thumbnail || item.thumbnailM} alt="" />
+                                                </figure>
+                                            </div>
+                                            <div className={cx('album__content')}>
+                                                <h3 className={cx('title')}>
+                                                    <a href={item.link}>{item.title}</a>
+                                                </h3>
+                                                <div className={cx('subtitle')}>
+                                                    {item.releaseDateText.includes('/')
+                                                        ? item.releaseDateText.split('/')[1]
+                                                        : item.releaseDateText}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             )}

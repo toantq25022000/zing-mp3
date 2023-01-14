@@ -4,6 +4,7 @@ const initialState = {
     theme: JSON.parse(localStorage.getItem('zm3_user_setting')) || { theme: null },
     config: null,
     isOpenSearchResult: false,
+    isTurnOnModeWallpaper: JSON.parse(localStorage.getItem('zm3_user_mode_wallpaper')) || false,
     isOpenPlayerQueue: false,
     sizeTextLyric: 'S',
 };
@@ -27,6 +28,11 @@ export const userConfigSlice = createSlice({
         },
         setSizeTextLyric: (state, action) => {
             state.sizeTextLyric = action.payload;
+        },
+
+        setIsTurnOnModeWallpaper: (state, action) => {
+            state.isTurnOnModeWallpaper = action.payload;
+            localStorage.setItem('zm3_user_mode_wallpaper', action.payload);
         },
     },
 });

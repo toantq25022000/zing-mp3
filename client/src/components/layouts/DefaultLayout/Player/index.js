@@ -35,6 +35,7 @@ function Player() {
     //State
     const [isLoadingPlay, setIsLoadingPlay] = useState(false);
     const [isOpenPlayerFullScreen, setIsOpenPlayerFullScreen] = useState(false);
+    const [showPlayer, setShowPlayer] = useState(true);
     //selector
     const songId = useSelector((state) => state.song.songId);
     const volume = useSelector((state) => state.song.volume);
@@ -175,16 +176,18 @@ function Player() {
 
     const handleCloselayerQueuePlaylist = (e) => {
         e.stopPropagation();
-        playerQueueRef.current.classList.add(cx('player-queue-animation-exit'));
-        setTimeout(() => {
+        if (playerQueueRef.current) {
             playerQueueRef.current.classList.add(cx('player-queue-animation-exit'));
-            playerQueueRef.current.classList.add(cx('player-queue-animation-exit-active'));
-        }, 100);
-        setTimeout(() => {
-            playerQueueRef.current.classList.remove(cx('player-queue-animation-exit'));
-            playerQueueRef.current.classList.remove(cx('player-queue-animation-exit-active'));
-            dispatch(userConfigSlice.actions.setIsOpenPlayerQueue(false));
-        }, 800);
+            setTimeout(() => {
+                playerQueueRef.current.classList.add(cx('player-queue-animation-exit'));
+                playerQueueRef.current.classList.add(cx('player-queue-animation-exit-active'));
+            }, 100);
+            setTimeout(() => {
+                playerQueueRef.current.classList.remove(cx('player-queue-animation-exit'));
+                playerQueueRef.current.classList.remove(cx('player-queue-animation-exit-active'));
+                dispatch(userConfigSlice.actions.setIsOpenPlayerQueue(false));
+            }, 800);
+        }
     };
 
     //Handle open player full screen
@@ -243,6 +246,10 @@ function Player() {
             else {
                 handlePlaySongRandom(currentIndexSong, playlists, arrayIndexRandom, dispatch, songSlice);
             }
+
+            setTimeout(() => {
+                dispatch(songSlice.actions.setIsPlay(true));
+            }, 300);
         }
     };
 
@@ -257,14 +264,15 @@ function Player() {
             if (currentIndexSong === playlists.length - 1) {
                 dispatch(songSlice.actions.setCurrentIndexSong(0));
                 dispatch(songSlice.actions.setSongId(playlists[0].encodeId));
-                dispatch(songSlice.actions.setIsPlay(true));
             } else {
                 const indexSongNext = currentIndexSong + 1;
                 dispatch(songSlice.actions.setCurrentIndexSong(indexSongNext));
                 dispatch(songSlice.actions.setSongId(playlists[indexSongNext].encodeId));
-                dispatch(songSlice.actions.setIsPlay(true));
             }
         }
+        setTimeout(() => {
+            dispatch(songSlice.actions.setIsPlay(true));
+        }, 300);
     };
 
     const handlePreviousSong = (e) => {
@@ -280,17 +288,27 @@ function Player() {
                 indexSongPrevious = playlists.length - 1;
                 dispatch(songSlice.actions.setCurrentIndexSong(indexSongPrevious));
                 dispatch(songSlice.actions.setSongId(playlists[indexSongPrevious].encodeId));
-                dispatch(songSlice.actions.setIsPlay(true));
             } else {
                 indexSongPrevious = currentIndexSong - 1;
                 dispatch(songSlice.actions.setCurrentIndexSong(indexSongPrevious));
                 dispatch(songSlice.actions.setSongId(playlists[indexSongPrevious].encodeId));
-                dispatch(songSlice.actions.setIsPlay(true));
             }
         }
+
+        setTimeout(() => {
+            dispatch(songSlice.actions.setIsPlay(true));
+        }, 300);
     };
 
     useEffect(() => {
+        if (!songId) {
+            document.querySelector('.zm-layout').classList.remove('has-player');
+            setShowPlayer(false);
+            return;
+        } else {
+            document.querySelector('.zm-layout').classList.add('has-player');
+            setShowPlayer(true);
+        }
         const getSongResponse = async () => {
             try {
                 const response = await instance.get(`/song/info?id=${songId}`);
@@ -345,13 +363,19 @@ function Player() {
     useEffect(() => {
         const handleResizeWindow = () => {
             //Update sliderhandle circle time
-            const sliderHanldeTimeY = (
-                ((progressbarTimeRef.current.clientWidth - 12) * inputTimeSongRef.current.value) /
-                100
-            ).toFixed(4);
-            sliderHandleTimeRef.current.style.transform = `translate(${sliderHanldeTimeY}px, -3.5px)`;
+            if (progressbarTimeRef.current) {
+                const sliderHanldeTimeY = (
+                    ((progressbarTimeRef.current.clientWidth - 12) * inputTimeSongRef.current.value) /
+                    100
+                ).toFixed(4);
+                sliderHandleTimeRef.current.style.transform = `translate(${sliderHanldeTimeY}px, -3.5px)`;
+            }
         };
-        window.addEventListener('resize', handleResizeWindow);
+        if (progressbarTimeRef.current) {
+            window.addEventListener('resize', handleResizeWindow);
+        } else {
+            window.addEventListener('resize', handleResizeWindow);
+        }
 
         return () => {
             window.removeEventListener('resize', handleResizeWindow);
@@ -368,284 +392,300 @@ function Player() {
     }, [isOpenPlayerQueue]);
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('nowplaying-full')} ref={playerFullRef}>
-                {isOpenPlayerFullScreen && (
-                    <PlayerFullScreen onClosePlayerFullScreen={handleClosePlayerFullScreen} audioRef={audioRef} />
-                )}
-            </div>
-            <div className={cx('player-queue')} ref={playerQueueRef}>
-                {isOpenPlayerQueue && <PlayerPlaylist onClosePlayerQueuePlaylist={handleCloselayerQueuePlaylist} />}
-            </div>
-            <div className={cx('inner', 'clickable', isOpenPlayerFullScreen && 'opac')}>
-                <div className={cx('player-controls')}>
-                    <div className={cx('player-controls__left')}>
-                        <div className={cx('song-detail')}>
-                            <div className={cx('song-thumb')}>
-                                <Link to="/">
-                                    <div className={cx('thumb')}>
-                                        <figure className="image">
-                                            <img src={songInfo?.thumbnail || songInfo?.thumbnailM} alt="" />
-                                        </figure>
-                                    </div>
-                                </Link>
-                            </div>
-                            <div className={cx('song-info')}>
-                                <div className={cx('name-wrapper')}>
-                                    <span className={cx('name')}>{songInfo?.title}</span>
+        showPlayer && (
+            <div className={cx('wrapper')} id="playing-now-bar-wrapper">
+                <div className={cx('nowplaying-full')} ref={playerFullRef}>
+                    {isOpenPlayerFullScreen && (
+                        <PlayerFullScreen onClosePlayerFullScreen={handleClosePlayerFullScreen} audioRef={audioRef} />
+                    )}
+                </div>
+                <div className={cx('player-queue')} ref={playerQueueRef}>
+                    {isOpenPlayerQueue && <PlayerPlaylist onClosePlayerQueuePlaylist={handleCloselayerQueuePlaylist} />}
+                </div>
+                <div
+                    className={clsx(
+                        cx('inner', 'clickable', isOpenPlayerFullScreen && 'opac'),
+                        'player-control-playing-now',
+                    )}
+                >
+                    <div className={cx('player-controls')}>
+                        <div className={cx('player-controls__left')}>
+                            <div className={cx('song-detail')}>
+                                <div className={cx('song-thumb')}>
+                                    <Link to="/">
+                                        <div className={cx('thumb')}>
+                                            <figure className="image">
+                                                <img src={songInfo.thumbnail || songInfo.thumbnailM} alt="" />
+                                            </figure>
+                                        </div>
+                                    </Link>
                                 </div>
-                                <h3 className={cx('artist')}>
-                                    {songInfo?.artists.length > 0 &&
-                                        songInfo.artists
-                                            .map((artist) => (
-                                                <Link key={artist.id} to={artist.link} className={cx('is-ghost')}>
-                                                    {artist.name}
-                                                </Link>
-                                            ))
-                                            .reduce((prev, current) => [prev, ', ', current])}
-                                </h3>
-                            </div>
-                            <div className={cx('actions-song-left')}>
-                                <div className={clsx(cx('level-left'), 'level')}>
-                                    <div className={cx('level-item')}>
-                                        <Tippy content="Thêm vào thư viện">
-                                            <button
-                                                className={clsx(
-                                                    cx('animation-like', 'icon-width'),
-                                                    'is-hover-circle',
-                                                    'zm-btn',
-                                                )}
-                                            >
-                                                <span className={cx('icon', 'is-like')}>
-                                                    <FontAwesomeIcon
-                                                        icon={faHeartRegular}
-                                                        className={cx('icon-hover')}
-                                                    />
-                                                </span>
-                                                <span className={cx('icon', 'is-like-full')}>
-                                                    <FontAwesomeIcon icon={faHeartSolid} className={cx('icon-hover')} />
-                                                </span>
-                                            </button>
-                                        </Tippy>
+                                <div className={cx('song-info')}>
+                                    <div className={cx('name-wrapper')}>
+                                        <span className={cx('name')}>{songInfo?.title}</span>
                                     </div>
-                                    <div className={cx('level-item')}>
-                                        <Tippy content="Xem thêm">
-                                            <button
-                                                className={clsx(cx('more', 'icon-width'), 'is-hover-circle', 'zm-btn')}
-                                            >
-                                                <FontAwesomeIcon icon={faEllipsis} className={cx('icon-hover')} />
-                                            </button>
-                                        </Tippy>
+                                    <h3 className={cx('artist')}>
+                                        {songInfo?.artists.length > 0 &&
+                                            songInfo.artists
+                                                .map((artist) => (
+                                                    <Link key={artist.id} to={artist.link} className={cx('is-ghost')}>
+                                                        {artist.name}
+                                                    </Link>
+                                                ))
+                                                .reduce((prev, current) => [prev, ', ', current])}
+                                    </h3>
+                                </div>
+                                <div className={cx('actions-song-left')}>
+                                    <div className={clsx(cx('level-left'), 'level')}>
+                                        <div className={cx('level-item')}>
+                                            <Tippy content="Thêm vào thư viện">
+                                                <button
+                                                    className={clsx(
+                                                        cx('animation-like', 'icon-width'),
+                                                        'is-hover-circle',
+                                                        'zm-btn',
+                                                    )}
+                                                >
+                                                    <span className={cx('icon', 'is-like')}>
+                                                        <FontAwesomeIcon
+                                                            icon={faHeartRegular}
+                                                            className={cx('icon-hover')}
+                                                        />
+                                                    </span>
+                                                    <span className={cx('icon', 'is-like-full')}>
+                                                        <FontAwesomeIcon
+                                                            icon={faHeartSolid}
+                                                            className={cx('icon-hover')}
+                                                        />
+                                                    </span>
+                                                </button>
+                                            </Tippy>
+                                        </div>
+                                        <div className={cx('level-item')}>
+                                            <Tippy content="Xem thêm">
+                                                <button
+                                                    className={clsx(
+                                                        cx('more', 'icon-width'),
+                                                        'is-hover-circle',
+                                                        'zm-btn',
+                                                    )}
+                                                >
+                                                    <FontAwesomeIcon icon={faEllipsis} className={cx('icon-hover')} />
+                                                </button>
+                                            </Tippy>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className={cx('player-controls__player-bar')}>
-                        <div className={cx('level-item')}>
-                            <div className={cx('controls')}>
-                                <Tippy
-                                    trigger="mouseenter focus click"
-                                    content={isRandom ? 'Tắt phát ngẫu nhiên' : 'Bật phát ngẫu nhiên'}
-                                >
+                        <div className={cx('player-controls__player-bar')}>
+                            <div className={cx('level-item')}>
+                                <div className={cx('controls')}>
+                                    <Tippy
+                                        trigger="mouseenter focus click"
+                                        content={isRandom ? 'Tắt phát ngẫu nhiên' : 'Bật phát ngẫu nhiên'}
+                                    >
+                                        <button
+                                            className={clsx(
+                                                cx('tooltip-btn', 'icon-width', { isActiveRandom: isRandom }),
+                                                'is-hover-circle',
+                                                'hide-on-mobile',
+                                                'zm-btn',
+                                            )}
+                                            onClick={handleTouchBtnRandom}
+                                        >
+                                            <ShuffleIcon className={cx('icon-hover', 'icon-no-pd')} />
+                                        </button>
+                                    </Tippy>
                                     <button
                                         className={clsx(
-                                            cx('tooltip-btn', 'icon-width', { isActiveRandom: isRandom }),
+                                            cx('tooltip-btn', 'icon-width'),
                                             'is-hover-circle',
                                             'hide-on-mobile',
                                             'zm-btn',
                                         )}
-                                        onClick={handleTouchBtnRandom}
+                                        onClick={handlePreviousSong}
                                     >
-                                        <ShuffleIcon className={cx('icon-hover', 'icon-no-pd')} />
+                                        <FontAwesomeIcon icon={faBackwardStep} className={cx('icon-hover')} />
                                     </button>
-                                </Tippy>
-                                <button
-                                    className={clsx(
-                                        cx('tooltip-btn', 'icon-width'),
-                                        'is-hover-circle',
-                                        'hide-on-mobile',
-                                        'zm-btn',
-                                    )}
-                                    onClick={handlePreviousSong}
-                                >
-                                    <FontAwesomeIcon icon={faBackwardStep} className={cx('icon-hover')} />
-                                </button>
-                                <button
-                                    className={clsx(cx('tooltip-btn', 'btn-play'), 'zm-btn')}
-                                    onClick={handlePlayAndPauseSong}
-                                >
-                                    {isLoadingPlay ? (
-                                        <SpinnerLoadIcon />
-                                    ) : isPlay ? (
-                                        <FontAwesomeIcon
-                                            icon={faPause}
-                                            className={cx('icon-hover', 'icon-toggle-play')}
-                                        />
-                                    ) : (
-                                        <FontAwesomeIcon
-                                            icon={faPlay}
-                                            className={cx('icon-hover', 'icon-toggle-play', 'icon-play')}
-                                        />
-                                    )}
-                                </button>
+                                    <button
+                                        className={clsx(cx('tooltip-btn', 'btn-play'), 'zm-btn')}
+                                        onClick={handlePlayAndPauseSong}
+                                    >
+                                        {isLoadingPlay ? (
+                                            <SpinnerLoadIcon />
+                                        ) : isPlay ? (
+                                            <FontAwesomeIcon
+                                                icon={faPause}
+                                                className={cx('icon-hover', 'icon-toggle-play')}
+                                            />
+                                        ) : (
+                                            <FontAwesomeIcon
+                                                icon={faPlay}
+                                                className={cx('icon-hover', 'icon-toggle-play', 'icon-play')}
+                                            />
+                                        )}
+                                    </button>
+                                    <button
+                                        className={clsx(cx('tooltip-btn', 'icon-width'), 'is-hover-circle', 'zm-btn')}
+                                        onClick={handleNextSong}
+                                    >
+                                        <FontAwesomeIcon icon={faForwardStep} className={cx('icon-hover')} />
+                                    </button>
+                                    <Tippy
+                                        trigger="mouseenter focus click"
+                                        content={isLoop ? 'Bật phát lại tất cả' : 'Bật phát lại một bài'}
+                                    >
+                                        <button
+                                            className={clsx(
+                                                cx('tooltip-btn', 'icon-width', { isActiveLoop: isLoop }),
+                                                'is-hover-circle',
+                                                'hide-on-mobile',
+                                                'zm-btn',
+                                            )}
+                                            onClick={handleLoopSong}
+                                        >
+                                            <LoopIcon className={cx('icon-hover', 'icon-no-pd')} />
+                                        </button>
+                                    </Tippy>
+                                </div>
+                            </div>
+                            <div className={clsx(cx('level-item', 'wrapper-time-song'), 'mb-5', 'hide-on-mobile')}>
+                                <div className={cx('time-left')} ref={timeCurrentAudioRef}>
+                                    00:00
+                                </div>
+                                <input
+                                    ref={inputTimeSongRef}
+                                    type="range"
+                                    className={cx('progress-time-input')}
+                                    step="1"
+                                    min="0"
+                                    max="100"
+                                    defaultValue="0"
+                                    onMouseDown={seekStart}
+                                    onTouchStart={seekStart}
+                                    onMouseUp={seekEnd}
+                                    onTouchEnd={seekEnd}
+                                    onMouseMove={currentTimeSong}
+                                    onTouchMove={currentTimeSong}
+                                    onClick={handleClickToStopPropagation}
+                                />
+                                <div className={cx('duration-bar', 'progress__track')}>
+                                    <div
+                                        ref={progressbarTimeRef}
+                                        className={cx('slider-bar')}
+                                        style={{
+                                            borderRadius: '4px',
+                                            background:
+                                                'linear-gradient(to right,var(--progressbar-active-bg) 0%,var(--progressbar-active-bg) 0%,var(--progressbar-player-bg) 0%,var(--progressbar-player-bg) 100%)',
+                                        }}
+                                    >
+                                        <div className={cx('slider-handle')} ref={sliderHandleTimeRef}></div>
+                                    </div>
+                                </div>
+                                <div className={cx('time-right')}>{secondsToTime(songInfo.duration)}</div>
+                            </div>
+                        </div>
+                        <div className={clsx(cx('player-controls__right'), 'hide-on-mobile')}>
+                            <div className={cx('level-item')}>
                                 <button
                                     className={clsx(cx('tooltip-btn', 'icon-width'), 'is-hover-circle', 'zm-btn')}
-                                    onClick={handleNextSong}
+                                    disabled={!songInfo.mvlink}
                                 >
-                                    <FontAwesomeIcon icon={faForwardStep} className={cx('icon-hover')} />
+                                    <FontAwesomeIcon icon={faVideo} className={cx('icon-hover')} />
                                 </button>
-                                <Tippy
-                                    trigger="mouseenter focus click"
-                                    content={isLoop ? 'Bật phát lại tất cả' : 'Bật phát lại một bài'}
-                                >
+                            </div>
+
+                            <div className={cx('level-item')}>
+                                <Tippy content="Xem lời bài hát">
+                                    <button
+                                        className={clsx(cx('tooltip-btn', 'icon-width'), 'is-hover-circle', 'zm-btn')}
+                                        onClick={handleOpenPlayerFullScreen}
+                                    >
+                                        <KaraokeIcon className={cx('icon-hover')} />
+                                    </button>
+                                </Tippy>
+                            </div>
+
+                            <div className={cx('level-item')}>
+                                <Tippy content="Chế độ cửa sổ">
+                                    <button
+                                        className={clsx(cx('tooltip-btn', 'icon-width'), 'is-hover-circle', 'zm-btn')}
+                                    >
+                                        <FontAwesomeIcon icon={faExpand} className={cx('icon-hover')} />
+                                    </button>
+                                </Tippy>
+                            </div>
+                            <div className={cx('level-item')}>
+                                <div className={cx('group-volumn')}>
                                     <button
                                         className={clsx(
-                                            cx('tooltip-btn', 'icon-width', { isActiveLoop: isLoop }),
+                                            cx('tooltip-btn', 'icon-width', 'btn-volumn'),
                                             'is-hover-circle',
-                                            'hide-on-mobile',
                                             'zm-btn',
                                         )}
-                                        onClick={handleLoopSong}
+                                        onClick={handleOnOffVolume}
                                     >
-                                        <LoopIcon className={cx('icon-hover', 'icon-no-pd')} />
+                                        {isVolumeOff ? (
+                                            <FontAwesomeIcon icon={faVolumeXmark} className={cx('icon-hover')} />
+                                        ) : (
+                                            <FontAwesomeIcon icon={faVolumeLow} className={cx('icon-hover')} />
+                                        )}
+                                    </button>
+
+                                    <div className={cx('volumn-wrap')}>
+                                        <input
+                                            ref={inputVolumeSongRef}
+                                            className={cx('volumn-input')}
+                                            type="range"
+                                            step="1"
+                                            min="0"
+                                            max="100"
+                                            defaultValue={volume}
+                                            onChange={handleChangeVolume}
+                                            onClick={handleClickToStopPropagation}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={cx('separate')}></div>
+
+                            <div className={cx('level-item', 'expand-wrap')}>
+                                <Tippy content="Danh sách phát">
+                                    <button
+                                        className={clsx(
+                                            cx(
+                                                'tooltip-btn',
+                                                'icon-width',
+                                                'queue-expand-btn',
+                                                isOpenPlayerQueue && 'active',
+                                            ),
+                                            'is-hover-circle',
+                                            'zm-btn',
+                                        )}
+                                        onClick={(e) => {
+                                            isOpenPlayerQueue
+                                                ? handleCloselayerQueuePlaylist(e)
+                                                : handleOpenPlayerQueuePlaylist(e);
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={faList} className={cx('icon-hover')} />
                                     </button>
                                 </Tippy>
                             </div>
-                        </div>
-                        <div className={clsx(cx('level-item', 'wrapper-time-song'), 'mb-5', 'hide-on-mobile')}>
-                            <div className={cx('time-left')} ref={timeCurrentAudioRef}>
-                                00:00
-                            </div>
-                            <input
-                                ref={inputTimeSongRef}
-                                type="range"
-                                className={cx('progress-time-input')}
-                                step="1"
-                                min="0"
-                                max="100"
-                                defaultValue="0"
-                                onMouseDown={seekStart}
-                                onTouchStart={seekStart}
-                                onMouseUp={seekEnd}
-                                onTouchEnd={seekEnd}
-                                onMouseMove={currentTimeSong}
-                                onTouchMove={currentTimeSong}
-                                onClick={handleClickToStopPropagation}
-                            />
-                            <div className={cx('duration-bar', 'progress__track')}>
-                                <div
-                                    ref={progressbarTimeRef}
-                                    className={cx('slider-bar')}
-                                    style={{
-                                        borderRadius: '4px',
-                                        background:
-                                            'linear-gradient(to right,var(--progressbar-active-bg) 0%,var(--progressbar-active-bg) 0%,var(--progressbar-player-bg) 0%,var(--progressbar-player-bg) 100%)',
-                                    }}
-                                >
-                                    <div className={cx('slider-handle')} ref={sliderHandleTimeRef}></div>
-                                </div>
-                            </div>
-                            <div className={cx('time-right')}>{secondsToTime(songInfo.duration)}</div>
-                        </div>
-                    </div>
-                    <div className={clsx(cx('player-controls__right'), 'hide-on-mobile')}>
-                        <div className={cx('level-item')}>
-                            <button
-                                className={clsx(cx('tooltip-btn', 'icon-width'), 'is-hover-circle', 'zm-btn')}
-                                disabled={!songInfo.mvlink}
-                            >
-                                <FontAwesomeIcon icon={faVideo} className={cx('icon-hover')} />
-                            </button>
-                        </div>
-
-                        <div className={cx('level-item')}>
-                            <Tippy content="Xem lời bài hát">
-                                <button
-                                    className={clsx(cx('tooltip-btn', 'icon-width'), 'is-hover-circle', 'zm-btn')}
-                                    onClick={handleOpenPlayerFullScreen}
-                                >
-                                    <KaraokeIcon className={cx('icon-hover')} />
-                                </button>
-                            </Tippy>
-                        </div>
-
-                        <div className={cx('level-item')}>
-                            <Tippy content="Chế độ cửa sổ">
-                                <button className={clsx(cx('tooltip-btn', 'icon-width'), 'is-hover-circle', 'zm-btn')}>
-                                    <FontAwesomeIcon icon={faExpand} className={cx('icon-hover')} />
-                                </button>
-                            </Tippy>
-                        </div>
-                        <div className={cx('level-item')}>
-                            <div className={cx('group-volumn')}>
-                                <button
-                                    className={clsx(
-                                        cx('tooltip-btn', 'icon-width', 'btn-volumn'),
-                                        'is-hover-circle',
-                                        'zm-btn',
-                                    )}
-                                    onClick={handleOnOffVolume}
-                                >
-                                    {isVolumeOff ? (
-                                        <FontAwesomeIcon icon={faVolumeXmark} className={cx('icon-hover')} />
-                                    ) : (
-                                        <FontAwesomeIcon icon={faVolumeLow} className={cx('icon-hover')} />
-                                    )}
-                                </button>
-
-                                <div className={cx('volumn-wrap')}>
-                                    <input
-                                        ref={inputVolumeSongRef}
-                                        className={cx('volumn-input')}
-                                        type="range"
-                                        step="1"
-                                        min="0"
-                                        max="100"
-                                        defaultValue={volume}
-                                        onChange={handleChangeVolume}
-                                        onClick={handleClickToStopPropagation}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className={cx('separate')}></div>
-
-                        <div className={cx('level-item', 'expand-wrap')}>
-                            <Tippy content="Danh sách phát">
-                                <button
-                                    className={clsx(
-                                        cx(
-                                            'tooltip-btn',
-                                            'icon-width',
-                                            'queue-expand-btn',
-                                            isOpenPlayerQueue && 'active',
-                                        ),
-                                        'is-hover-circle',
-                                        'zm-btn',
-                                    )}
-                                    onClick={(e) => {
-                                        isOpenPlayerQueue
-                                            ? handleCloselayerQueuePlaylist(e)
-                                            : handleOpenPlayerQueuePlaylist(e);
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={faList} className={cx('icon-hover')} />
-                                </button>
-                            </Tippy>
                         </div>
                     </div>
                 </div>
+                <audio
+                    ref={audioRef}
+                    src={srcAudio}
+                    loop={isLoop}
+                    autoPlay={isPlay}
+                    onTimeUpdate={handleUpdateTimeAudio}
+                    onEnded={handleEndAudio}
+                />
             </div>
-            <audio
-                ref={audioRef}
-                src={srcAudio}
-                loop={isLoop}
-                autoPlay={isPlay}
-                onTimeUpdate={handleUpdateTimeAudio}
-                onEnded={handleEndAudio}
-            />
-        </div>
+        )
     );
 }
 

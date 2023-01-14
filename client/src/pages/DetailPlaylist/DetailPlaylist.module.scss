@@ -27,6 +27,7 @@
     position: relative;
     max-width: 100%;
 
+    .thumb-img-skeletom,
     figure {
         width: 200px;
         height: 200px;
@@ -197,17 +198,12 @@
     align-self: normal;
     justify-content: space-between;
     align-items: flex-start;
+    .btn-play-all {
+        margin-right: 10px;
 
-    .actions {
-        .btn-play-all {
-            display: flex;
-            align-items: center;
-            margin-right: 10px;
-
-            .icon {
-                font-size: 16px;
-                margin-right: 5px;
-            }
+        .icon {
+            font-size: 16px;
+            margin-right: 5px;
         }
     }
 }
@@ -259,10 +255,6 @@
         width: 35px;
         height: 35px;
         background-color: var(--alpha-bg);
-    }
-
-    .tooltip-btn + .tooltip-btn {
-        margin-left: 10px;
     }
 }
 
@@ -428,6 +420,7 @@
             margin-right: 0;
 
             .header-thumbnail {
+                .thumb-img-skeletom,
                 figure {
                     width: 100%;
                 }

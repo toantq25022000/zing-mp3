@@ -12,11 +12,13 @@ import { authSlice } from '~/redux/features/auth/authSlice';
 import { handleSetThemeWebsite } from '~/utils/collectionFunctionConstants';
 import { songSlice } from '~/redux/features/song/songSlice';
 import { userConfigSlice } from '~/redux/features/userConfig/userConfigSlice';
+import { useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 export default function DefaultLayout({ children }) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const token = useSelector((state) => state.auth.token);
     const { theme } = useSelector((state) => state.userConfig.theme);
     const config = useSelector((state) => state.userConfig.config);
@@ -26,6 +28,7 @@ export default function DefaultLayout({ children }) {
     const headerRef = useRef();
 
     useEffect(() => {
+        if (!token) navigate('/login');
         const getCurrentUser = async () => {
             try {
                 const currentUser = await instance.get('/auth/current-user', {
@@ -41,6 +44,7 @@ export default function DefaultLayout({ children }) {
         };
 
         getCurrentUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, dispatch]);
 
     const handleChangeStatePlaySong = () => {
